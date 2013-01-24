@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">rezolventa</string>
+    <string name="user_prompt">User:</string>
+    <string name="course_prompt">Course:</string>
+    <string name="group_prompt">Group:</string>
+    <string name="subgroup_prompt">Subgroup:</string>
+    <string name="department_prompt">Department:</string>
+    <string name="lecturer_prompt">Lecturer:</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_logout">Logout</string>
+    <string name="login">Login:</string>
+    <string name="password">Password:</string>
+    <string-array name="user_array">
+        <item>Student</item>
+        <item>Lecturer</item>
+    </string-array>
+    <string-array name="department_array">
+        <item>Higher Algebra and Information Security</item>
+        <item>Theory of Functions</item>
+        <item>Functional Analysis</item>
+        <item>Mathematical Cybernetics</item>
+        <item>Geometry, Topology and Mathematical Teaching Metho</item>
+        <item>Web-technologies and Computer Simulation</item>
+        <item>Nonlinear Analysis and Analytical Economics</item>
+        <item>Differential Equations and Systems Analysis</item>
+        <item>General Mathematics and Informatics</item>
+        <item>Theoretic and Applied Mechanics</item>
+        <item>Bio and NanoMechanics</item>
+    </string-array>
+    <string-array name="lecturer_array">
+        <item>Суздаль</item>
+        <item>Крылов</item>
+        <item>Яблонский</item>
+        <item>Панина</item>
+    </string-array>
+    <string-array name="course_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string-array name="group_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="subgroup_array">
+        <item>a</item>
+        <item>b</item>
+    </string-array>
+
+    <!--Validate messages-->
+    <string name="validate.messages.login.not_empty">Please, specify login.</string>
+    <string name="validate.messages.login.length">The length must be greater than {0} and less than {1} characters.</string>
+    <string name="validate.messages.password.not_empty">Please, specify password.</string>
+    <string name="validate.messages.password.length">The length must be greater than {0} and less than {1} characters.</string>
+    <string name="validate.messages.incorrect.login_or_password">Incorrect login or password..</string>
+</resources>

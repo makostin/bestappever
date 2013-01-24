@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        <TextView android:id="@+id/day"
+                  android:layout_width="fill_parent"
+                  android:layout_height="30dp"
+                  android:background="#A12F7D"
+                  android:textColor="#FFF"
+                  android:textStyle="bold"
+                  android:textSize="16sp"
+                  android:paddingTop="10dp"
+                  android:paddingLeft="10dp"
+                  android:text="day"/>
+        <TextView android:id="@+id/course_group"
+                  android:layout_width="fill_parent"
+                  android:layout_height="20dp"
+                  android:layout_below="@id/day"
+                  android:background="#A12F7D"
+                  android:textColor="#FFF"
+                  android:paddingLeft="10dp"
+                  android:textSize="12sp"
+                  android:text="group"/>
+        <TextView android:id="@+id/lecturer"
+                  android:layout_width="fill_parent"
+                  android:layout_height="20dp"
+                  android:layout_below="@id/day"
+                  android:background="#A12F7D"
+                  android:textColor="#FFF"
+                  android:paddingLeft="10dp"
+                  android:textSize="12sp"
+                  android:text="lecturer"
+                  android:visibility="invisible"/>
+        <TextView android:id="@+id/welcome"
+                  android:layout_width="wrap_content"
+                  android:layout_height="20dp"
+                  android:layout_alignRight="@id/course_group"
+                  android:background="#A12F7D"
+                  android:textColor="#FFF"
+                  android:layout_marginTop="15dp"
+                  android:paddingRight="10dp"
+                  android:textSize="12sp"
+                  android:text="Welcome, "
+                  android:visibility="invisible"/>
+        <TextView android:id="@+id/login"
+                  android:layout_width="wrap_content"
+                  android:layout_height="20dp"
+                  android:layout_alignRight="@id/course_group"
+                  android:background="#A12F7D"
+                  android:textColor="#FFF"
+                  android:textStyle="bold"
+                  android:layout_marginTop="30dp"
+                  android:paddingRight="10dp"
+                  android:textSize="12sp"
+                  android:text="login"
+                  android:visibility="invisible"/>
+        <LinearLayout android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:layout_below="@id/course_group"
+                      android:id="@+id/layout_main">
+            <ListView android:id="@+id/list"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:drawSelectorOnTop="false"
+                    />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

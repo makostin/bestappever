@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
+  <endpoint implementation="com.mmf.soap.impl.SoapLessonServiceImpl" name="LessonService" url-pattern="/service/lessons"/>
+  <endpoint implementation="com.mmf.soap.impl.SoapAuthenticationServiceImpl" name="AuthenticateService" url-pattern="/service/authenticate"/>
+  <endpoint implementation="com.mmf.soap.impl.SoapUserServiceImpl" name="DepartmentService" url-pattern="/service/lecturers"/>
+</endpoints>

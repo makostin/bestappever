@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="persistence" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.mmf.db.model.ClassroomEntity</class>
+        <class>com.mmf.db.model.DepartmentEntity</class>
+        <class>com.mmf.db.model.LessonEntity</class>
+        <class>com.mmf.db.model.GroupEntity</class>
+        <class>com.mmf.db.model.DisciplineEntity</class>
+        <class>com.mmf.db.model.UserEntity</class>
+        <class>com.mmf.db.model.UserRoleEntity</class>
+        <class>com.mmf.db.model.ClassTimeEntity</class>
+        <class>com.mmf.db.model.CurriculumEntity</class>
+        <class>com.mmf.db.model.TimetableCellEntity</class>
+        <class>com.mmf.db.model.SettingsEntity</class>
+        <class>com.mmf.db.model.SpecialtyEntity</class>
+
+        <properties>
+            <property name="hibernate.connection.useUnicode" value="true" />
+            <property name="hibernate.connection.characterEncoding" value="UTF-8" />
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/schedule" />
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.connection.username" value="root" />
+            <property name="hibernate.connection.password" value="admin" />
+            <property name="hibernate.show_sql" value="true"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

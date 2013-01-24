@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="../css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="../css/site.css" rel="stylesheet" type="text/css">
+    <script type="text/JavaScript" src="../js/jquery-1.7.2.min.js"></script>
+    <script type="text/JavaScript" src="../js/jquery.jeditable.mini.js"></script>
+    <script type="text/JavaScript" src="../js/date.js"></script>
+    <script type="text/JavaScript" src="../js/jquery.dropdown.js"></script>
+    <script type="text/JavaScript" src="../js/jquery.strenchbox.js"></script>
+    <script type="text/JavaScript" src="../js/base.js"></script>
+</head>
+<body>
+<div class="main-section fh-content">
+    <h2 class="page-head green">
+        Настройки
+    </h2>
+
+    <div class="admin section-content">
+        <div class="top-line">
+            <div class="left"></div>
+            <div class="right"></div>
+        </div>
+        <div class="body-line tabs">
+            <div class="left">
+                <ul class="tab-menu">
+                    <li class="active"><a class="group" href="#">Группы</a><span></span></li>
+                    <li><a class="subj" href="#">Предметы</a><span></span></li>
+                    <li><a class="dep" href="#">Кафедры</a><span></span></li>
+                    <li><a class="lect" href="#">Преподователи</a><span></span></li>
+                    <li><a class="aud" href="#">Аудитории</a><span></span></li>
+                </ul>
+            </div>
+            <div class="right tabs-container">
+                <div class="indent">
+                    <div class="tab group-tab clearfix" style="display: block;">
+                        <div class="form">
+                            <div class="fieldset">
+                                <label>Группа</label>
+                                <input type="text"/>
+                            </div>
+                            <div class="fieldset">
+                                <label>Курс</label>
+                                <select>
+                                    <option>Первый курс</option>
+                                    <option>Второй курс</option>
+                                    <option>Третий курс</option>
+                                    <option>Четвёртый курс</option>
+                                    <option>Пятый курс</option>
+                                    <option>Шестой курс</option>
+                                </select>
+                            </div>
+                            <div class="fieldset">
+                                <input type="button" class="blue" value="Добавить"/>
+                            </div>
+                        </div>
+                        <div class="groups">
+                            <h3>Первый курс</h3>
+
+                            <div class="group-line clearfix">
+                                <div class="group">
+                                    <span>1</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>2</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>3</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>4</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>5</span>
+                                    <span class="delete"></span>
+                                </div>
+                            </div>
+                            <h3>Второй курс</h3>
+
+                            <div class="group-line clearfix">
+                                <div class="group">
+                                    <span>1</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>2</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>3</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>4</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>5</span>
+                                    <span class="delete"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab discipline-tab" style="display: none;">
+                        <ul>
+                            <li class="clearfix">
+                                <div class="edit">Предмет 1</div>
+                                <span></span></li>
+                            <li class="clearfix">
+                                <div class="edit">Предмет 2</div>
+                                <span></span></li>
+                            <li class="clearfix">
+                                <div class="edit">Предмет 3</div>
+                                <span></span></li>
+                            <li class="clearfix">
+                                <div class="edit">Предмет 4</div>
+                                <span></span></li>
+                            <li class="clearfix">
+                                <div class="edit">Предмет 5</div>
+                                <span></span></li>
+                        </ul>
+                    </div>
+                    <div class="tab dep-tab discipline-tab" style="display: none;">
+                        <ul>
+                            <li class="clearfix">
+                                <div class="edit">Кафедра 1</div>
+                                <span></span></li>
+                            <li class="clearfix">
+                                <div class="edit">Кафедра 2</div>
+                                <span></span></li>
+                            <li class="clearfix">
+                                <div class="edit">Кафедра 3</div>
+                                <span></span></li>
+                            <li class="clearfix">
+                                <div class="edit">Кафедра 4</div>
+                                <span></span></li>
+                            <li class="clearfix">
+                                <div class="edit">Кафедра 5</div>
+                                <span></span></li>
+                        </ul>
+                    </div>
+                    <div class="tab lect-tab group-tab clearfix" style="display: none;">
+                        <div class="form">
+                            <div class="fieldset">
+                                <label>Преподователь</label>
+                                <input type="text"/>
+                            </div>
+                            <div class="fieldset">
+                                <label>Кафедра</label>
+                                <select>
+                                    <option>Кафедра 1</option>
+                                    <option>Кафедра 2</option>
+                                    <option>Кафедра 3</option>
+                                    <option>Кафедра 4</option>
+                                    <option>Кафедра 5</option>
+                                </select>
+                            </div>
+                            <div class="fieldset">
+                                <input type="button" class="blue" value="Добавить"/>
+                            </div>
+                        </div>
+                        <div class="groups">
+                            <h3>Кафедра 1</h3>
+
+                            <div class="group-line clearfix">
+                                <div class="group">
+                                    <span>Преподователь 1</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>Преподователь 2</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>Преподователь 3</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>Преподователь 4</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>Преподователь 5</span>
+                                    <span class="delete"></span>
+                                </div>
+                            </div>
+                            <h3>Кафедра 2</h3>
+
+                            <div class="group-line clearfix">
+                                <div class="group">
+                                    <span>Преподователь 6</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>Преподователь 7</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>Преподователь 8</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>Преподователь 9</span>
+                                    <span class="delete"></span>
+                                </div>
+                                <div class="group">
+                                    <span>Преподователь 10</span>
+                                    <span class="delete"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab" style="display: none;">5</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
