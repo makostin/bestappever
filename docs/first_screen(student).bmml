@@ -89,6 +89,8 @@
       <controlProperties>
         <borderStyle>square</borderStyle>
         <color>13421772</color>
+        <href>first_screen%28lecturer%29%26bm%3Bfirst_screen%28lecturer%29.bmml%26bm%3Bfirst_screen%28lecturer%29.bmml%26bm%3Bfirst_screen%28lecturer%29.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22173%2C139%2C329%2C194%22%20href%3D%22first_screen%28lecturer%29.bmml%22%20alt%3D%22first_screen%28lecturer%29%22%20id%3D%2297%22/%3E</map>
       </controlProperties>
     </control>
     <control controlID="98" controlTypeID="com.balsamiq.mockups::Canvas" x="742" y="149" w="158" h="55" measuredW="100" measuredH="70" zOrder="2" locked="false" isInGroup="-1">
@@ -153,12 +155,12 @@
         <text/>
       </controlProperties>
     </control>
-    <control controlID="108" controlTypeID="com.balsamiq.mockups::Canvas" x="975" y="598" w="48" h="48" measuredW="100" measuredH="70" zOrder="12" locked="false" isInGroup="-1">
+    <control controlID="108" controlTypeID="com.balsamiq.mockups::Button" x="840" y="526" w="112" h="27" measuredW="63" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
       <controlProperties>
-        <backgroundAlpha>0</backgroundAlpha>
-        <borderStyle>none</borderStyle>
         <href>day_schedule_screen%26bm%3Bday_schedule_screen.bmml%26bm%3Bday_schedule_screen.bmml%26bm%3Bday_schedule_screen.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22252%2C588%2C300%2C636%22%20href%3D%22day_schedule_screen.bmml%22%20alt%3D%22day_schedule_screen%22%20id%3D%22108%22/%3E</map>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22117%2C516%2C229%2C543%22%20href%3D%22day_schedule_screen.bmml%22%20alt%3D%22day_schedule_screen%22%20id%3D%22108%22/%3E</map>
+        <size>16</size>
+        <text>Apply</text>
       </controlProperties>
     </control>
   </controls>
