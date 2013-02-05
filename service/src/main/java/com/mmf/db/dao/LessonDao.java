@@ -1,7 +1,6 @@
 package com.mmf.db.dao;
 
 import com.mmf.business.domain.Lesson;
-import com.mmf.db.model.LessonEntity;
 
 import java.util.List;
 

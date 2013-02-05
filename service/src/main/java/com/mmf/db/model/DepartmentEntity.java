@@ -14,7 +14,8 @@ public class DepartmentEntity implements EntityClass<Long>{
     private static final long serialVersionUID = -6012109122619024379L;
     private Long id;
     private String name;
-    private Set<UserEntity> users;
+    private String description;
+    private Set<LecturerEntity> lecturers;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,11 +38,19 @@ public class DepartmentEntity implements EntityClass<Long>{
     }
 
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-    public Set<UserEntity> getUsers() {
-        return users;
+    public Set<LecturerEntity> getLecturers() {
+        return lecturers;
     }
 
-    public void setUsers(Set<UserEntity> users) {
-        this.users = users;
+    public void setLecturers(Set<LecturerEntity> lecturers) {
+        this.lecturers = lecturers;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

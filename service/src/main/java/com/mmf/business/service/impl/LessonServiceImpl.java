@@ -1,19 +1,10 @@
 package com.mmf.business.service.impl;
 
-import com.mmf.business.domain.Lesson;
-import com.mmf.business.domain.utils.LessonHelper;
-import com.mmf.business.service.BusinessServiceException;
 import com.mmf.business.service.LessonService;
 import com.mmf.db.dao.LessonDao;
-import com.mmf.db.dao.jpa.LessonDaoImpl;
-import com.mmf.db.model.LessonEntity;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author svetlana.voyteh

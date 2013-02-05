@@ -1,7 +1,6 @@
 package com.mmf.business.domain.utils;
 
 import com.mmf.business.domain.Lesson;
-import com.mmf.db.model.LessonEntity;
 
 /**
  * @author svetlana.voyteh

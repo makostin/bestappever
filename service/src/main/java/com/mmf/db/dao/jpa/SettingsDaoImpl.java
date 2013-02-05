@@ -1,7 +1,6 @@
 package com.mmf.db.dao.jpa;
 
 import com.mmf.db.dao.SettingsDao;
-import com.mmf.db.model.SettingsEntity;
 
 import javax.inject.Named;
 

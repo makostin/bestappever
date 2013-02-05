@@ -8,6 +8,7 @@ import java.util.Date;
  * @date: 1/21/12
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "usermmf")
 public class UserEntity implements EntityClass<Long>{
 
@@ -15,14 +16,12 @@ public class UserEntity implements EntityClass<Long>{
     private Long id;
     private String name;
     private String surname;
+    private String patronymic;
     private String login;
     private String password;
     private String passwordSalt;
     private String passwordFormat;
-    private GroupEntity group;
-    private UserRoleEntity userRole;
-    private DepartmentEntity department;
-    private Date dateOfEntrance;
+    private Boolean isAdmin;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,16 +59,6 @@ public class UserEntity implements EntityClass<Long>{
         this.password = password;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ID_Group")
-    public GroupEntity getGroup() {
-        return group;
-    }
-
-    public void setGroup(GroupEntity group) {
-        this.group = group;
-    }
-
     public String getPasswordSalt() {
         return passwordSalt;
     }
@@ -86,25 +75,6 @@ public class UserEntity implements EntityClass<Long>{
         this.passwordFormat = passwordFormat;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "ID_UserRole")
-    public UserRoleEntity getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRoleEntity userRole) {
-        this.userRole = userRole;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "ID_Department")
-    public DepartmentEntity getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(DepartmentEntity department) {
-        this.department = department;
-    }
 
     public String getSurname() {
         return surname;
@@ -114,11 +84,19 @@ public class UserEntity implements EntityClass<Long>{
         this.surname = surname;
     }
 
-    public Date getDateOfEntrance() {
-        return dateOfEntrance;
+    public String getPatronymic() {
+        return patronymic;
     }
 
-    public void setDateOfEntrance(Date dateOfEntrance) {
-        this.dateOfEntrance = dateOfEntrance;
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 }

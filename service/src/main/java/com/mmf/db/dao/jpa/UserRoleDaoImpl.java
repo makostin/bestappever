@@ -1,7 +1,6 @@
 package com.mmf.db.dao.jpa;
 
 import com.mmf.db.dao.UserRoleDao;
-import com.mmf.db.model.UserRoleEntity;
 
 import javax.inject.Named;
 

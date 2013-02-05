@@ -1,5 +1,6 @@
 package com.mmf.db.util;
 
+import org.apache.cxf.common.i18n.Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -2,7 +2,6 @@ package com.mmf.business.service.impl;
 
 import com.mmf.business.service.ClassTimeService;
 import com.mmf.db.dao.ClassTimeDao;
-import com.mmf.db.model.ClassTimeEntity;
 
 import javax.inject.Inject;
 import javax.inject.Named;

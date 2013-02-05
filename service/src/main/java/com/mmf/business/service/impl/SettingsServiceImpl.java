@@ -2,7 +2,6 @@ package com.mmf.business.service.impl;
 
 import com.mmf.business.service.SettingsService;
 import com.mmf.db.dao.SettingsDao;
-import com.mmf.db.model.SettingsEntity;
 
 import javax.inject.Inject;
 import javax.inject.Named;

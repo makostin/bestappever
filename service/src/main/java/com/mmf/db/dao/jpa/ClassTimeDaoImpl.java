@@ -1,7 +1,6 @@
 package com.mmf.db.dao.jpa;
 
 import com.mmf.db.dao.ClassTimeDao;
-import com.mmf.db.model.ClassTimeEntity;
 
 import javax.inject.Named;
 

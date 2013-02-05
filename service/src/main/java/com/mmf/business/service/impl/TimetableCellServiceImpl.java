@@ -2,7 +2,6 @@ package com.mmf.business.service.impl;
 
 import com.mmf.business.service.TimetableCellService;
 import com.mmf.db.dao.TimetableCellDao;
-import com.mmf.db.model.TimetableCellEntity;
 
 import javax.inject.Inject;
 import javax.inject.Named;

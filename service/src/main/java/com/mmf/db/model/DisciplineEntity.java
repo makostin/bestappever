@@ -13,7 +13,7 @@ public class DisciplineEntity implements EntityClass<Long>{
     private static final long serialVersionUID = -3771558372410085731L;
     private Long id;
     private String name;
-    private String type;
+    private DisciplineTypeEntity disciplineType;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,11 +35,13 @@ public class DisciplineEntity implements EntityClass<Long>{
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    @ManyToOne
+    @JoinColumn(name = "IdDisciplineType")
+    public DisciplineTypeEntity getDisciplineType() {
+        return disciplineType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDisciplineType(DisciplineTypeEntity disciplineType) {
+        this.disciplineType = disciplineType;
     }
 }

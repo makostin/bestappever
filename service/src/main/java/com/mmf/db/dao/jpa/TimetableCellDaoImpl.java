@@ -1,7 +1,6 @@
 package com.mmf.db.dao.jpa;
 
 import com.mmf.db.dao.TimetableCellDao;
-import com.mmf.db.model.TimetableCellEntity;
 
 import javax.inject.Named;
 

@@ -1,7 +1,5 @@
 package com.mmf.db.dao;
 
-import com.mmf.db.model.UserRoleEntity;
-
 /**
  * @author svetlana.voyteh
  * @date: 5/12/12

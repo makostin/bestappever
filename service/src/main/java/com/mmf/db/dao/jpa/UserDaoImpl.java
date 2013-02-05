@@ -49,7 +49,7 @@ public class UserDaoImpl extends GenericJpaDao<Long, UserEntity> implements User
 
                 GroupEntity group = new GroupEntity();
                 group.setNumber(resultSet.getInt("Number"));
-                group.setSubGroup(resultSet.getString("SubGroup"));
+                group.setName(resultSet.getString("SubGroup"));
 
                 user.setGroup(group);
                 user.setLogin(login);

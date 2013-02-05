@@ -2,7 +2,6 @@ package com.mmf.db.dao.jpa;
 
 import com.mmf.business.domain.Lesson;
 import com.mmf.db.dao.LessonDao;
-import com.mmf.db.model.LessonEntity;
 
 import javax.inject.Named;
 import java.sql.*;

@@ -3,7 +3,6 @@ package com.mmf.rest.impl;
 import com.mmf.business.service.BusinessServiceException;
 import com.mmf.business.service.LessonService;
 import com.mmf.db.model.GroupEntity;
-import com.mmf.db.model.LessonEntity;
 import com.mmf.db.model.UserEntity;
 import com.mmf.rest.RestLessonService;
 import org.slf4j.Logger;
@@ -66,7 +65,7 @@ public class RestLessonServiceImpl implements RestLessonService{
             LessonEntity lesson = lessonService.get(id);
             for(GroupEntity group : lesson.getGroups()){
                 group.setLessons(new HashSet<LessonEntity>());
-                group.setUsers(new HashSet<UserEntity>());
+                group.setStudents(new HashSet<UserEntity>());
             }
             return Response.ok(lesson).build();
         } catch (BusinessServiceException e) {
