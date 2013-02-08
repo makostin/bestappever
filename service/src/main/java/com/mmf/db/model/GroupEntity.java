@@ -9,7 +9,7 @@ import java.util.Set;
  * @date: 1/21/12
  */
 @Entity
-@Table(name = "group")
+@Table(name = "studygroup")
 public class GroupEntity implements EntityClass<Long>{
 
     private static final long serialVersionUID = 6498292117645011293L;
@@ -68,7 +68,7 @@ public class GroupEntity implements EntityClass<Long>{
     }
 
     @ManyToOne
-    @JoinColumn(name = "idMainGroup")
+    @JoinColumn(name = "IdMainGroup")
     public GroupEntity getMainGroup() {
         return mainGroup;
     }
