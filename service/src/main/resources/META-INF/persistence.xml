@@ -5,27 +5,32 @@
     <persistence-unit name="persistence" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <class>com.mmf.db.model.ClassroomEntity</class>
-        <class>com.mmf.db.model.DepartmentEntity</class>
-        <class>com.mmf.db.model.LessonEntity</class>
-        <class>com.mmf.db.model.GroupEntity</class>
-        <class>com.mmf.db.model.DisciplineEntity</class>
-        <class>com.mmf.db.model.UserEntity</class>
-        <class>com.mmf.db.model.UserRoleEntity</class>
-        <class>com.mmf.db.model.ClassTimeEntity</class>
         <class>com.mmf.db.model.CurriculumEntity</class>
-        <class>com.mmf.db.model.TimetableCellEntity</class>
-        <class>com.mmf.db.model.SettingsEntity</class>
+        <class>com.mmf.db.model.DepartmentEntity</class>
+        <class>com.mmf.db.model.DisciplineEntity</class>
+        <class>com.mmf.db.model.DisciplineTimeEntity</class>
+        <class>com.mmf.db.model.DisciplineTypeEntity</class>
+        <class>com.mmf.db.model.DisciplineTypeEntity</class>
+        <class>com.mmf.db.model.DisciplineTypeEntity</class>
+        <class>com.mmf.db.model.GroupEntity</class>
+        <class>com.mmf.db.model.LecturerEntity</class>
+        <class>com.mmf.db.model.NoteEntity</class>
+        <class>com.mmf.db.model.ScheduleEntity</class>
         <class>com.mmf.db.model.SpecialtyEntity</class>
+        <class>com.mmf.db.model.StudentEntity</class>
+        <class>com.mmf.db.model.StudyEntity</class>
+        <class>com.mmf.db.model.UserEntity</class>
 
         <properties>
             <property name="hibernate.connection.useUnicode" value="true" />
             <property name="hibernate.connection.characterEncoding" value="UTF-8" />
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/schedule" />
+            <property name="hibernate.connection.url" value="jdbc:mysql://sdc:3306/schedule" />
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.connection.username" value="root" />
-            <property name="hibernate.connection.password" value="admin" />
+            <property name="hibernate.connection.password" value="root" />
             <property name="hibernate.show_sql" value="true"/>
+            <property name="hbm2ddl.auto" value="create"/>
         </properties>
 
     </persistence-unit>

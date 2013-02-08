@@ -4,12 +4,10 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-       xmlns:jaxws="http://cxf.apache.org/jaxws"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-          http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
           http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
     <context:annotation-config/>
@@ -27,23 +25,23 @@
 
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
-    <import resource="classpath:META-INF/cxf/cxf.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-    <context:property-placeholder/>
-    <context:annotation-config/>
-    <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>
-    <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
+    <!--<import resource="classpath:META-INF/cxf/cxf.xml" />-->
+    <!--/<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />-->
+    <!--<context:property-placeholder/>-->
+    <!--<context:annotation-config/>-->
+    <!--<bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>-->
+    <!--<bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>-->
 
-    <jaxrs:server id="services" address="/">
-        <jaxrs:serviceBeans>
-            <bean class="com.mmf.rest.impl.RestDisciplineServiceImpl" />
-            <bean class="com.mmf.rest.impl.RestClassroomServiceImpl" />
-            <bean class="com.mmf.rest.impl.RestDepartmentServiceImpl" />
-            <bean class="com.mmf.rest.impl.RestUserServiceImpl" />
-            <bean class="com.mmf.rest.impl.RestLessonServiceImpl" />
-        </jaxrs:serviceBeans>
-        <jaxrs:providers>
-            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
-        </jaxrs:providers>
-    </jaxrs:server>
+    <!--<jaxrs:server id="services" address="/">-->
+        <!--<jaxrs:serviceBeans>-->
+            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestDisciplineServiceImpl" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestClassroomServiceImpl" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestDepartmentServiceImpl" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestUserServiceImpl" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestLessonServiceImpl" />&ndash;&gt;-->
+        <!--</jaxrs:serviceBeans>-->
+        <!--<jaxrs:providers>-->
+            <!--<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>-->
+        <!--</jaxrs:providers>-->
+    <!--</jaxrs:server>-->
 </beans>
