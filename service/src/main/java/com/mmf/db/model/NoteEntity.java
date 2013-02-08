@@ -48,7 +48,7 @@ public class NoteEntity implements EntityClass<Long>{
     }
 
     @ManyToOne
-    @JoinColumn(name = "IdCSchedule")
+    @JoinColumn(name = "IdSchedule")
     public ScheduleEntity getSchedule() {
         return schedule;
     }
