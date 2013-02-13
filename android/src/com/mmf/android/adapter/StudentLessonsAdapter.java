@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.mmf.R;
-import com.mmf.db.model.Lesson;
 
 import java.util.List;
 

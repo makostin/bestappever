@@ -1,13 +1,6 @@
 package com.mmf.service;
 
 import com.mmf.db.DaoLayerException;
-import com.mmf.db.DaoObjectsFactory;
-import com.mmf.db.dao.LecturerOptionDao;
-import com.mmf.db.dao.LessonDao;
-import com.mmf.db.dao.StudentOptionDao;
-import com.mmf.db.model.LecturerOption;
-import com.mmf.db.model.Lesson;
-import com.mmf.db.model.StudentOption;
 import com.mmf.soap.RequestSoap;
 import com.mmf.soap.RequestSoapException;
 import com.mmf.soap.object.LessonSoap;

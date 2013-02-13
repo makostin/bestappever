@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import com.mmf.R;
 import com.mmf.android.service.CustomService;
-import com.mmf.db.model.LecturerOption;
-import com.mmf.db.model.StudentOption;
 import com.mmf.service.BusinessLayerException;
 import com.mmf.service.LecturerOptionService;
 import com.mmf.service.StudentOptionService;

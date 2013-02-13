@@ -1,6 +1,5 @@
 package com.mmf.soap.object;
 
-import com.mmf.db.model.Lesson;
 import org.ksoap2.serialization.SoapObject;
 
 /**

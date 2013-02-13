@@ -12,7 +12,6 @@ import com.mmf.R;
 import com.mmf.android.adapter.LecturerLessonsAdapter;
 import com.mmf.android.listener.ActivitySwipeDetector;
 import com.mmf.android.adapter.StudentLessonsAdapter;
-import com.mmf.db.model.Lesson;
 import com.mmf.service.BusinessLayerException;
 import com.mmf.service.LecturerOptionService;
 import com.mmf.service.LessonService;

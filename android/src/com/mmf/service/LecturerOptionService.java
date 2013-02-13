@@ -1,13 +1,7 @@
 package com.mmf.service;
 
-import com.mmf.R;
 import com.mmf.db.DaoLayerException;
-import com.mmf.db.DaoObjectsFactory;
-import com.mmf.db.dao.LecturerOptionDao;
-import com.mmf.db.model.LecturerOption;
-import com.mmf.db.model.StudentOption;
 import com.mmf.util.Logger;
-import com.mmf.util.StringUtils;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -15,7 +9,6 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

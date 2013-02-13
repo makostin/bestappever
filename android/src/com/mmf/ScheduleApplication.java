@@ -9,7 +9,7 @@ import com.mmf.db.DatabaseConnector;
  * @author svetlana.voyteh
  * @date: 3/12/12
  */
-public class RezolventaApplication extends Application {
+public class ScheduleApplication extends Application {
 
     private static DatabaseConnector databaseConnector;
     private static Context applicationContext;

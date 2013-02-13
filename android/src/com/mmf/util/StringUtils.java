@@ -1,6 +1,6 @@
 package com.mmf.util;
 
-import com.mmf.RezolventaApplication;
+import com.mmf.ScheduleApplication;
 
 /**
  * @author svetlana.voyteh
@@ -12,11 +12,11 @@ public class StringUtils {
     }
 
     public static String getStringByResource(int resourceId){
-        return RezolventaApplication.getCurrentApplicationContext().getResources().getString(resourceId);
+        return ScheduleApplication.getCurrentApplicationContext().getResources().getString(resourceId);
     }
 
     public static String[] getStringArrayByResource(int resourceId){
-        return RezolventaApplication.getCurrentApplicationContext().getResources().getStringArray(resourceId);
+        return ScheduleApplication.getCurrentApplicationContext().getResources().getStringArray(resourceId);
     }
     
     public static String getSelectionString(String[] strings){

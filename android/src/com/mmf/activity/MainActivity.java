@@ -9,14 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import com.mmf.R;
-import com.mmf.db.model.LecturerOption;
-import com.mmf.db.model.StudentOption;
 import com.mmf.service.BusinessLayerException;
 import com.mmf.service.LecturerOptionService;
 import com.mmf.service.StudentOptionService;
 import com.mmf.util.Logger;
-
-import java.util.List;
 
 /**
  * @author svetlana.voyteh
