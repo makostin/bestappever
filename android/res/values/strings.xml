@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">rezolventa</string>
+    <string name="app_name">Schedule</string>
     <string name="user_prompt">User:</string>
     <string name="course_prompt">Course:</string>
     <string name="group_prompt">Group:</string>

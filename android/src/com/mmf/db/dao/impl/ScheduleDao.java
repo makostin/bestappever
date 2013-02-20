@@ -18,11 +18,11 @@ public class ScheduleDao extends AbstractEntityDao<Schedule>{
     public static final String DISCIPLINE_COLUMN = "discipline";
     public static final String GROUP_NUMBER_COLUMN = "groupNumber";
     public static final String COURSE_COLUMN = "course";
-    public static final String SUPGROUP_COLUMN = "supGroup";
+    public static final String SUBGROUP_COLUMN = "subGroup";
     public static final String DAY_COLUMN = "day";
     public static final String DATE_COLUMN = "date";
     public static final String NUMBER_COLUMN = "number";
-    public static final String ID_LECTURER_COLUMN = "idLecturer";
+    public static final String SYSTEM_ID_LECTURER_COLUMN = "idLecturer";
 
     public ScheduleDao() {
         super(TABLE_NAME, DATABASE_VERSION_1);
@@ -35,11 +35,11 @@ public class ScheduleDao extends AbstractEntityDao<Schedule>{
         addColumnV1(DISCIPLINE_COLUMN, "text not null");
         addColumnV1(GROUP_NUMBER_COLUMN, "int");
         addColumnV1(COURSE_COLUMN, "int");
-        addColumnV1(SUPGROUP_COLUMN, "text");
+        addColumnV1(SUBGROUP_COLUMN, "text");
         addColumnV1(DAY_COLUMN, "int");
         addColumnV1(DATE_COLUMN, "long");
         addColumnV1(NUMBER_COLUMN, "int");
-        addColumnV1(ID_LECTURER_COLUMN, "long");
+        addColumnV1(SYSTEM_ID_LECTURER_COLUMN, "long");
     }
 
     private void addColumnV1(String name, String def) {
@@ -58,8 +58,8 @@ public class ScheduleDao extends AbstractEntityDao<Schedule>{
         result.setDate(getLong(cursor, DATE_COLUMN));
         result.setGroupNumber(getInt(cursor, GROUP_NUMBER_COLUMN));
         result.setNumber(getInt(cursor, NUMBER_COLUMN));
-        result.setSupGroup(getString(cursor, SUPGROUP_COLUMN));
-        result.setLecturerId(getLong(cursor, ID_LECTURER_COLUMN));
+        result.setSubGroup(getString(cursor, SUBGROUP_COLUMN));
+        result.setLecturerId(getLong(cursor, SYSTEM_ID_LECTURER_COLUMN));
         return result;
     }
 
@@ -73,7 +73,7 @@ public class ScheduleDao extends AbstractEntityDao<Schedule>{
         put(values, DATE_COLUMN, entity.getDate());
         put(values, GROUP_NUMBER_COLUMN, entity.getGroupNumber());
         put(values, NUMBER_COLUMN, entity.getNumber());
-        put(values, SUPGROUP_COLUMN, entity.getSupGroup());
-        put(values, ID_LECTURER_COLUMN, entity.getLecturerId());
+        put(values, SUBGROUP_COLUMN, entity.getSubGroup());
+        put(values, SYSTEM_ID_LECTURER_COLUMN, entity.getLecturerId());
     }
 }

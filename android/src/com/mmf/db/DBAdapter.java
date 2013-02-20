@@ -1,14 +1,8 @@
 package com.mmf.db;
 
-import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.mmf.ScheduleApplication;
 import com.mmf.util.Logger;
-import com.mmf.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author svetlana.voyteh
@@ -33,16 +27,16 @@ public class DBAdapter {
 
     private DBAdapter() {
         databaseConnector = ScheduleApplication.getDatabaseConnector();
-        currentDatabase = databaseConnector.getWritableDatabase();
-        currentDatabase.setLockingEnabled(false);
+//        currentDatabase = databaseConnector.getWritableDatabase();
+//        currentDatabase.setLockingEnabled(false);
     }
 
     public void close() {
-        Logger.getInstance().debug("Closing entity manager");
+        Logger.getInstance().debug("Closing DBAdapter");
         currentDatabase.close();
         databaseConnector.close();
         DBAdapterInstance = null;
-        Logger.getInstance().debug("Entity manager closed");
+        Logger.getInstance().debug("DBAdapter is closed");
     }
 
     public synchronized SQLiteDatabase getCurrentDatabase() {
@@ -64,5 +58,10 @@ public class DBAdapter {
             currentDatabase.setTransactionSuccessful();
             currentDatabase.endTransaction();
         }
+    }
+
+    public synchronized void setDataBase() {
+        currentDatabase = databaseConnector.getWritableDatabase();
+        currentDatabase.setLockingEnabled(false);
     }
 }

@@ -8,6 +8,7 @@ public class Lecturer implements Entity{
     private static final long serialVersionUID = -7103450854982721729L;
 
     private Long id;
+    private Long systemId;
     private Long departmentId;
     private String fullName;
 
@@ -35,5 +36,13 @@ public class Lecturer implements Entity{
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Long getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(Long systemId) {
+        this.systemId = systemId;
     }
 }

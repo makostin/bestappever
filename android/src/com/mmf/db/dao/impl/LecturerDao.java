@@ -15,6 +15,7 @@ public class LecturerDao extends AbstractEntityDao<Lecturer>{
 
     public static final String FULLNAME_COLUMN = "fullname";
     public static final String ID_DEPARTMENT_COLUMN = "idDepartment";
+    public static final String SYSTEM_ID_COLUMN = "systemId";
 
     public LecturerDao() {
         super(TABLE_NAME, DATABASE_VERSION_1);
@@ -24,6 +25,7 @@ public class LecturerDao extends AbstractEntityDao<Lecturer>{
     private void init() {
         addColumnV1(FULLNAME_COLUMN, "text not null");
         addColumnV1(ID_DEPARTMENT_COLUMN, "long");
+        addColumnV1(SYSTEM_ID_COLUMN, "long");
     }
 
     private void addColumnV1(String name, String def) {
@@ -36,6 +38,7 @@ public class LecturerDao extends AbstractEntityDao<Lecturer>{
 
         result.setFullName(getString(cursor, FULLNAME_COLUMN));
         result.setDepartmentId(getLong(cursor, ID_DEPARTMENT_COLUMN));
+        result.setSystemId(getLong(cursor, SYSTEM_ID_COLUMN));
         return result;
     }
 
@@ -43,5 +46,6 @@ public class LecturerDao extends AbstractEntityDao<Lecturer>{
     protected void _entityTo(Lecturer entity, ContentValues values) {
         put(values, FULLNAME_COLUMN, entity.getFullName());
         put(values, ID_DEPARTMENT_COLUMN, entity.getDepartmentId());
+        put(values, SYSTEM_ID_COLUMN, entity.getSystemId());
     }
 }

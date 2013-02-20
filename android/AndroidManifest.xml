@@ -21,7 +21,5 @@
         <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.LoginActivity"/>
 
-        <receiver android:name=".android.OnAlarmReceiver" android:process=":remote"/>
-        <service android:enabled="true" android:name=".android.service.CustomService"/>
     </application>
 </manifest> 

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.mmf.R;
+import com.mmf.db.model.Schedule;
 
 import java.util.List;
 
@@ -15,11 +16,11 @@ import java.util.List;
  * @author svetlana.voyteh
  * @date: 4/6/12
  */
-public class LecturerLessonsAdapter extends ArrayAdapter<Lesson> {
+public class LecturerLessonsAdapter extends ArrayAdapter<Schedule> {
 
     int resource;
 
-    public LecturerLessonsAdapter(Context context, int textViewResourceId, List<Lesson> objects) {
+    public LecturerLessonsAdapter(Context context, int textViewResourceId, List<Schedule> objects) {
         super(context, textViewResourceId, objects);
         this.resource = textViewResourceId;
     }
@@ -27,7 +28,7 @@ public class LecturerLessonsAdapter extends ArrayAdapter<Lesson> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LinearLayout lessonView;
-        Lesson lesson = getItem(position);
+        Schedule lesson = getItem(position);
         if(convertView == null){
             lessonView = new LinearLayout(getContext());
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
@@ -44,10 +45,10 @@ public class LecturerLessonsAdapter extends ArrayAdapter<Lesson> {
         TextView classRoom = (TextView) lessonView.findViewById(R.id.classroom);
         TextView date = (TextView) lessonView.findViewById(R.id.time);
 
-        subject.setText(lesson.getSubject());
+        subject.setText(lesson.getDiscipline());
         course.setText(lesson.getCourse() + " course ");
-        group.setText(lesson.getSubgroup() + " group");
-        classRoom.setText(lesson.getClassRoom());
+        group.setText(lesson.getSubGroup() + " group");
+        classRoom.setText(lesson.getClassroom());
         date.setText(lesson.getTime());
 
         return lessonView;

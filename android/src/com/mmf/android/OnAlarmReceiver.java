@@ -18,7 +18,7 @@ public class OnAlarmReceiver extends BroadcastReceiver{
         Log.v(this.getClass().getName(), "Service catch alarm message at: " + new java.util.Date().toString());
 
 //        StudentOptionService optionService = new StudentOptionService();
-//        LessonService lessonService = new LessonService();
+//        ScheduleService lessonService = new ScheduleService();
 //        int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
 //        ArrayList<StudentOption> options = (ArrayList<StudentOption>) optionService.getDownloaded();
 //        for (StudentOption option: options){

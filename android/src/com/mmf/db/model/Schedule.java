@@ -1,7 +1,5 @@
 package com.mmf.db.model;
 
-import java.util.Date;
-
 /**
  * svetlana.voyteh
  * 13.02.13
@@ -12,7 +10,7 @@ public class Schedule implements Entity{
     private Long id;
     private String time;
     private int number;
-    private String supGroup;
+    private String subGroup;
     private int groupNumber;
     private int course;
     private int day;
@@ -47,12 +45,12 @@ public class Schedule implements Entity{
         this.number = number;
     }
 
-    public String getSupGroup() {
-        return supGroup;
+    public String getSubGroup() {
+        return subGroup;
     }
 
-    public void setSupGroup(String supGroup) {
-        this.supGroup = supGroup;
+    public void setSubGroup(String subGroup) {
+        this.subGroup = subGroup;
     }
 
     public int getGroupNumber() {

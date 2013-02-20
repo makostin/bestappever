@@ -2,6 +2,8 @@ package com.mmf;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.AsyncTask;
+import com.mmf.db.DBAdapter;
 import com.mmf.db.DatabaseConnector;
 
 
@@ -19,6 +21,10 @@ public class ScheduleApplication extends Application {
         super.onCreate();
         applicationContext = getApplicationContext();
         databaseConnector = new DatabaseConnector(applicationContext);
+
+        EntityRegistry.init(applicationContext);
+        new InitDBTask().execute();
+
     }
 
     public static DatabaseConnector getDatabaseConnector() {
@@ -27,5 +33,14 @@ public class ScheduleApplication extends Application {
 
     public static Context getCurrentApplicationContext() {
         return applicationContext;
+    }
+
+    private class InitDBTask extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object... objects) {
+            DBAdapter.getInstance().setDataBase();
+            return null;
+        }
     }
 }

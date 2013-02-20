@@ -6,14 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import com.mmf.R;
 import com.mmf.android.validator.EditTextValidator;
 import com.mmf.android.validator.checker.LengthChecker;
 import com.mmf.android.validator.checker.NotEmptyChecker;
-import com.mmf.service.BusinessLayerException;
-import com.mmf.service.StudentOptionService;
-import com.mmf.util.Logger;
 import com.mmf.util.StringUtils;
 
 import java.text.MessageFormat;
@@ -29,14 +25,14 @@ public class LoginActivity extends Activity{
     private EditTextValidator loginValidator;
     private EditTextValidator passwordValidator;
 
-    private StudentOptionService studentOptionService;
+//    private StudentOptionService studentOptionService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        studentOptionService = new StudentOptionService();
+//        studentOptionService = new StudentOptionService();
 
         loginEditText = (EditText)findViewById(R.id.login);
         passwordEditText = (EditText)findViewById(R.id.password);
@@ -59,16 +55,16 @@ public class LoginActivity extends Activity{
                 String password = passwordEditText.getText().toString();
 
                 if(validate()){
-                    try {
-                        studentOptionService.login(login, password);
+//                    try {
+//                        studentOptionService.login(login, password);
                         Intent intent = new Intent();
                         intent.putExtra("login", login);
                         setResult(RESULT_OK, intent);
                         finish();
-                    } catch (BusinessLayerException ble) {
-                        Logger.getInstance().error(ble);
-                        Toast.makeText(LoginActivity.this, StringUtils.getStringByResource(R.string.validate_messages_incorrect_login_or_password), Toast.LENGTH_SHORT).show();
-                    }
+//                    } catch (BusinessLayerException ble) {
+//                        Logger.getInstance().error(ble);
+//                        Toast.makeText(LoginActivity.this, StringUtils.getStringByResource(R.string.validate_messages_incorrect_login_or_password), Toast.LENGTH_SHORT).show();
+//                    }
                 }
             }
         });
