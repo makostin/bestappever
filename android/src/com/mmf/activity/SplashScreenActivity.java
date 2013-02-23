@@ -21,7 +21,7 @@ public class SplashScreenActivity extends Activity{
         setContentView(R.layout.splashscreen);
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, OptionActivity.class));
                 SplashScreenActivity.this.finish();
             }
         }, SPLASH_DISPLAY_TIME);

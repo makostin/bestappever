@@ -1,46 +1,49 @@
 package com.mmf.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.mmf.EntityRegistry;
 import com.mmf.R;
+import com.mmf.android.adapter.StudentLessonsAdapter;
 import com.mmf.android.listener.ActivitySwipeDetector;
+import com.mmf.db.model.Schedule;
+import com.mmf.prefs.CredentialsPrefs;
+import com.mmf.rest.DataLoader;
+import com.mmf.service.BusinessLayerException;
 import com.mmf.service.ScheduleService;
+import com.mmf.util.Logger;
 import com.mmf.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
 public class LessonActivity extends Activity implements SwipeInterface {
 
-    private static final int LOGIN = 1;
-    private static final String STUDENT = "Student";
-    private static final String LECTURER = "Lecturer";
 
     private ListView listView;
     private int currentDay;
-    private int course;
+    private String course;
     private String group;
-    private String lecturer;
-    private String department;
-    private String role;
-    private String day;
+    private String subGroup;
+    private String date;
 
     private TextView dayView;
     private SimpleDateFormat dateFormat;
     private Calendar calendar;
     
-    private ScheduleService lessonService;
-//    private StudentOptionService studentOptionService;
-//    private LecturerOptionService lecturerOptionService;
+    private ScheduleService service;
 
 
     /**
@@ -51,59 +54,36 @@ public class LessonActivity extends Activity implements SwipeInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_lessons);
 
-//        studentOptionService = new StudentOptionService();
-//        lecturerOptionService = new LecturerOptionService();
-        lessonService = new ScheduleService();
-
-        role = getIntent().getStringExtra("role"); 
+        service = new ScheduleService();
         init();
-        updateView();
+        new LoadData().execute();
     }
     
     private void init(){
         calendar = Calendar.getInstance();
 
-//        try {
-            if (STUDENT.equals(role)){
-//                lecturerOptionService.removeCurrent();
+        course = CredentialsPrefs.Course.get();
+        group = CredentialsPrefs.Group.get();
+        subGroup = CredentialsPrefs.Subgroup.get();
+        TextView courseGroupView = (TextView) findViewById(R.id.course_group);
+        courseGroupView.setVisibility(View.VISIBLE);
+        courseGroupView.setText("Course " + course + ", group " + group);
 
-                course = getIntent().getIntExtra("course", 0);
-                group = getIntent().getStringExtra("group");
-                TextView courseGroupView = (TextView) findViewById(R.id.course_group);
-                courseGroupView.setVisibility(View.VISIBLE);
-                courseGroupView.setText("Course " + course + ", group " + group);
+        findViewById(R.id.lecturer).setVisibility(View.INVISIBLE);
+//        updateLessonsForStudent();
 
-                findViewById(R.id.lecturer).setVisibility(View.INVISIBLE);
-                updateLessonsForStudent();
 
-            } if (LECTURER.equals(role)){
-//                studentOptionService.removeCurrent();
-
-                lecturer = getIntent().getStringExtra("lecturer");
-                department = getIntent().getStringExtra("department");
-                TextView lecturerView = (TextView) findViewById(R.id.lecturer);
-                lecturerView.setVisibility(View.VISIBLE);
-                lecturerView.setText(lecturer);
-
-                findViewById(R.id.course_group).setVisibility(View.INVISIBLE);
-                updateLessonsForLecturer();
-            }
-//        } catch (BusinessLayerException e) {
-//            e.printStackTrace();
-//        }
-
-        
         currentDay = calendar.get(Calendar.DAY_OF_WEEK);
         dateFormat = new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.US);
         if (currentDay == 1) {  // if currentDay == Sunday
             currentDay++;
             calendar.add(Calendar.DATE, 1); // +1 day to Monday
-            day = dateFormat.format(calendar.getTime());
+            date = dateFormat.format(calendar.getTime());
         } else {
-            day = dateFormat.format(new Date());
+            date = dateFormat.format(new Date());
         }
         dayView = (TextView) findViewById(R.id.day);
-        dayView.setText(day);
+        dayView.setText(date);
 
         listView = (ListView) findViewById(R.id.list);
         listView.setTextFilterEnabled(true);
@@ -114,10 +94,9 @@ public class LessonActivity extends Activity implements SwipeInterface {
         layout.setOnTouchListener(swipe);
     }
 
-    private void updateLessonsForStudent(){
+//    private void updateLessonsForStudent(){
 //        try {
 //            int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-//            studentOptionService.setCurrent(course, group);
 //
 //            if (studentOptionService.isLessonsUpdate(currentWeek)){
 //                lessonService.deleteCurrentLessons(course, group);
@@ -130,7 +109,7 @@ public class LessonActivity extends Activity implements SwipeInterface {
 //        } catch (BusinessLayerException ble){
 //            Logger.getInstance().error(ble);
 //        }
-    }
+//    }
 
     private void updateLessonsForLecturer(){
 //        try {
@@ -151,19 +130,9 @@ public class LessonActivity extends Activity implements SwipeInterface {
     }
 
     private void updateView() {
-//        try {
-//            if (STUDENT.equals(role)){
-//                List<Lesson> lessons = lessonService.getLessonsForDay(course, group, currentDay);
-//                StudentLessonsAdapter adapterStudent = new StudentLessonsAdapter(this, R.layout.list_student_lessons_item, lessons);
-//                listView.setAdapter(adapterStudent);
-//            } if (LECTURER.equals(role)){
-//                List<Lesson> lessons = lessonService.getLessonsForDay(lecturer, currentDay);
-//                LecturerLessonsAdapter lecturerLessonsAdapter = new LecturerLessonsAdapter(this, R.layout.list_lecturer_lessons_item, lessons);
-//                listView.setAdapter(lecturerLessonsAdapter);
-//            }
-//        } catch (BusinessLayerException ble){
-//            Logger.getInstance().error(ble);
-//        }
+        List<Schedule> lessons = service.getLessonsForDay(course, group, currentDay);
+        StudentLessonsAdapter adapterStudent = new StudentLessonsAdapter(this, R.layout.list_student_lessons_item, lessons);
+        listView.setAdapter(adapterStudent);
     }
 
     public void bottom2top(View v) {
@@ -179,8 +148,8 @@ public class LessonActivity extends Activity implements SwipeInterface {
         LessonActivity.this.updateView();
 
         calendar.add(Calendar.DATE, -1); // -days
-        day = dateFormat.format(calendar.getTime());
-        dayView.setText(day);
+        date = dateFormat.format(calendar.getTime());
+        dayView.setText(date);
     }
 
     public void right2left(View v) {
@@ -192,78 +161,103 @@ public class LessonActivity extends Activity implements SwipeInterface {
         LessonActivity.this.updateView();
 
         calendar.add(Calendar.DATE, 1); // +days
-        day = dateFormat.format(calendar.getTime());
-        dayView.setText(day);
+        date = dateFormat.format(calendar.getTime());
+        dayView.setText(date);
     }
 
     public void top2bottom(View v) {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        try {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.menu_home:
-                    intent = new Intent(LessonActivity.this, MainActivity.class);
-                    intent.putExtra("isOptionExist", true);
-                    intent.putExtra("role", role);
-                    LessonActivity.this.startActivity(intent);
-                    LessonActivity.this.finish();
-                    break;
-                case R.id.menu_login:
-                    intent = new Intent(LessonActivity.this, LoginActivity.class);
-                    if (StringUtils.getStringByResource(R.string.menu_login).equals(item.getTitle())) {
-                        LessonActivity.this.startActivityForResult(intent, LOGIN);
-                    } else {
-                        findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
-                        findViewById(R.id.login).setVisibility(View.INVISIBLE);
-//                        studentOptionService.logout();
-                    }
-                    break;
-            }
-//        } catch (BusinessLayerException ble){
-//            Logger.getInstance().error(ble);
-//        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) return;
-            if (resultCode == RESULT_OK) {
-                switch (requestCode) {
-                    case LOGIN:
-                        String login = data.getStringExtra("login");
-                        findViewById(R.id.welcome).setVisibility(View.VISIBLE);
-                        TextView loginTextView = ((TextView)findViewById(R.id.login));
-                        loginTextView.setVisibility(View.VISIBLE);
-                        loginTextView.setText(login);
-                        break;
-                }
-            }
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-//        MenuItem loginItem = menu.getItem(1);
-//        try {
-//            if (studentOptionService.isLogin()) {
-//                loginItem.setTitle(R.string.menu_logout);
-//            } else {
-//                loginItem.setTitle(R.string.menu_login);
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+////        try {
+//            Intent intent;
+//            switch (item.getItemId()) {
+//                case R.id.menu_home:
+//                    intent = new Intent(LessonActivity.this, OptionActivity.class);
+//                    intent.putExtra("isOptionExist", true);
+//                    intent.putExtra("role", role);
+//                    LessonActivity.this.startActivity(intent);
+//                    LessonActivity.this.finish();
+//                    break;
+//                case R.id.menu_login:
+//                    intent = new Intent(LessonActivity.this, LoginActivity.class);
+//                    if (StringUtils.getStringByResource(R.string.menu_login).equals(item.getTitle())) {
+//                        LessonActivity.this.startActivityForResult(intent, LOGIN);
+//                    } else {
+//                        findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
+//                        findViewById(R.id.login).setVisibility(View.INVISIBLE);
+////                        studentOptionService.logout();
+//                    }
+//                    break;
 //            }
-//        } catch (BusinessLayerException ble){
-//            Logger.getInstance().error(ble);
-//        }
-        return super.onPrepareOptionsMenu(menu);
+////        } catch (BusinessLayerException ble){
+////            Logger.getInstance().error(ble);
+////        }
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (data == null) return;
+//            if (resultCode == RESULT_OK) {
+//                switch (requestCode) {
+//                    case LOGIN:
+//                        String login = data.getStringExtra("login");
+//                        findViewById(R.id.welcome).setVisibility(View.VISIBLE);
+//                        TextView loginTextView = ((TextView)findViewById(R.id.login));
+//                        loginTextView.setVisibility(View.VISIBLE);
+//                        loginTextView.setText(login);
+//                        break;
+//                }
+//            }
+//    }
+//
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+////        MenuItem loginItem = menu.getItem(1);
+////        try {
+////            if (studentOptionService.isLogin()) {
+////                loginItem.setTitle(R.string.menu_logout);
+////            } else {
+////                loginItem.setTitle(R.string.menu_login);
+////            }
+////        } catch (BusinessLayerException ble){
+////            Logger.getInstance().error(ble);
+////        }
+//        return super.onPrepareOptionsMenu(menu);
+//    }
+    
+    private class LoadData extends AsyncTask{
+
+        private ProgressDialog dialog;
+        
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(LessonActivity.this);
+            dialog.setMessage("Loading data. Please. wait...");
+        }
+
+        @Override
+        protected Object doInBackground(Object... objects) {
+            DataLoader.getInstance().loadSchedule(course, group, subGroup);
+            return null;  
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            updateView();
+            if(dialog.isShowing()){
+                dialog.dismiss();
+            }
+        }
     }
 }

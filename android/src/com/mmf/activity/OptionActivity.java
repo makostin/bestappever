@@ -1,10 +1,12 @@
 package com.mmf.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.mmf.R;
+import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.service.BusinessLayerException;
 import com.mmf.util.Logger;
 
@@ -12,7 +14,7 @@ import com.mmf.util.Logger;
  * @author svetlana.voyteh
  * @date: 2/3/12
  */
-public class MainActivity extends Activity {
+public class OptionActivity extends Activity {
     
     private Spinner courseSpinner;
     private Spinner groupSpinner;
@@ -31,7 +33,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.option);
 
         try {
             initSpinners();
@@ -39,7 +41,10 @@ public class MainActivity extends Activity {
             Button button = (Button) findViewById(R.id.button);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-
+                    CredentialsPrefs.Course.put(courseSpinner.getSelectedItem().toString());
+                    CredentialsPrefs.Group.put(groupSpinner.getSelectedItem().toString());
+                    CredentialsPrefs.Subgroup.put(subgroupSpinner.getSelectedItem().toString());
+                    startActivity(new Intent(OptionActivity.this, LessonActivity.class));
                 }
             });
 

@@ -1,7 +1,6 @@
 package com.mmf.prefs;
 
 
-import android.content.Context;
 import com.mmf.util.PreferencesUtils;
 
 public class PreferenceBoolean extends Preference{
@@ -12,10 +11,10 @@ public class PreferenceBoolean extends Preference{
         _defVal = defVal;
     }
 
-    public boolean get( Context context ) {
-        return PreferencesUtils.getBoolean(context, _file, _key, _defVal);
+    public boolean get() {
+        return PreferencesUtils.getBoolean( _file, _key, _defVal);
     }
-    public void put( Context context, boolean value ) {
-        PreferencesUtils.put(context, _file, _key, value);
+    public void put( boolean value ) {
+        PreferencesUtils.put( _file, _key, value);
     }
 }

@@ -1,6 +1,5 @@
 package com.mmf.prefs;
 
-import android.content.Context;
 import com.mmf.util.PreferencesUtils;
 
 /**
@@ -15,10 +14,10 @@ public class PreferenceInt extends Preference {
         _defVal = defVal;
     }
 
-    public int get( Context context ) {
-        return PreferencesUtils.getInt(context, _file, _key, _defVal);
+    public int get() {
+        return PreferencesUtils.getInt(_file, _key, _defVal);
     }
-    public void put( Context context, int value ) {
-        PreferencesUtils.put( context, _file, _key, value );
+    public void put( int value ) {
+        PreferencesUtils.put( _file, _key, value );
     }
 }

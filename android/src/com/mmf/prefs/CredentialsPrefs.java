@@ -18,13 +18,13 @@ public class CredentialsPrefs {
     private static final String LECTURER_KEY = "lecturer_key";
 
     public static final PreferenceString Login = new PreferenceString( CREDENTIAL_PREFERENCES, LOGIN_KEY );
-    public static final PreferenceString Hash = new PreferenceString( CREDENTIAL_PREFERENCES, PASSWORD_KEY );
+    public static final PreferenceString Password = new PreferenceString( CREDENTIAL_PREFERENCES, PASSWORD_KEY );
     public static final PreferenceString Course = new PreferenceString( CREDENTIAL_PREFERENCES, COURSE_KEY );
     public static final PreferenceString Group = new PreferenceString( CREDENTIAL_PREFERENCES, GROUP_KEY );
     public static final PreferenceString Subgroup = new PreferenceString( CREDENTIAL_PREFERENCES, SUBGROUP_KEY );
     public static final PreferenceString Lecturer = new PreferenceString( CREDENTIAL_PREFERENCES, LECTURER_KEY );
 
-    public static void erase( Context context ) {
-        PreferencesUtils.clear(context, CREDENTIAL_PREFERENCES);
+    public static void erase() {
+        PreferencesUtils.clear(CREDENTIAL_PREFERENCES);
     }
 }

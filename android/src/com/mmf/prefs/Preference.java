@@ -14,10 +14,10 @@ public class Preference {
     }
 
     public void erase( Context context ) {
-        PreferencesUtils.remove(context, _file, _key);
+        PreferencesUtils.remove( _file, _key);
     }
 
-    public boolean exists( Context context ) {
-        return PreferencesUtils.exists( context, _file, _key );
+    public boolean exists() {
+        return PreferencesUtils.exists(  _file, _key );
     }
 }
