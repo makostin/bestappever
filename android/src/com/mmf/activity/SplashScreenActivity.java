@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import com.mmf.R;
+import com.mmf.rest.DataLoader;
+import com.mmf.rest.exceptions.ServiceLayerException;
 
 /**
  * @author svetlana.voyteh
@@ -21,8 +23,13 @@ public class SplashScreenActivity extends Activity{
         setContentView(R.layout.splashscreen);
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, OptionActivity.class));
-                SplashScreenActivity.this.finish();
+                try {
+                    DataLoader.getInstance().init();
+                    SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, OptionActivity.class));
+                    SplashScreenActivity.this.finish();
+                } catch (ServiceLayerException e) {
+                    e.printStackTrace();
+                }
             }
         }, SPLASH_DISPLAY_TIME);
     }

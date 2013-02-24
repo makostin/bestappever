@@ -8,7 +8,7 @@ import android.util.Log;
  */
 public class Logger {
 
-    public static final String APPLICATION_LOGGER_TAG = "Rezolventa";
+    public static final String APPLICATION_LOGGER_TAG = "Schedule";
 
     private static Logger ourInstance;
 

@@ -17,6 +17,8 @@ import com.mmf.android.listener.ActivitySwipeDetector;
 import com.mmf.db.model.Schedule;
 import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.rest.DataLoader;
+import com.mmf.rest.exceptions.ServiceLayerException;
+import com.mmf.rest.task.LoadDataTask;
 import com.mmf.service.BusinessLayerException;
 import com.mmf.service.ScheduleService;
 import com.mmf.util.Logger;
@@ -56,9 +58,36 @@ public class LessonActivity extends Activity implements SwipeInterface {
 
         service = new ScheduleService();
         init();
-        new LoadData().execute();
+        loadData();
     }
-    
+
+    private void loadData() {
+        new LoadDataTask(this){
+
+            @Override
+            protected Object doInBackground(Object... objects) {
+                try {
+                    DataLoader.getInstance().loadSchedule(course, group, subGroup);
+                } catch (ServiceLayerException e) {
+                    cancel(true);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onCancelled() {
+                Toast.makeText(LessonActivity.this, "There are problems with data loading.", Toast.LENGTH_LONG);
+                super.onCancelled();
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                updateView();
+                super.onPostExecute(o);
+            }
+        }.execute();
+    }
+
     private void init(){
         calendar = Calendar.getInstance();
 
@@ -70,7 +99,6 @@ public class LessonActivity extends Activity implements SwipeInterface {
         courseGroupView.setText("Course " + course + ", group " + group);
 
         findViewById(R.id.lecturer).setVisibility(View.INVISIBLE);
-//        updateLessonsForStudent();
 
 
         currentDay = calendar.get(Calendar.DAY_OF_WEEK);
@@ -92,41 +120,6 @@ public class LessonActivity extends Activity implements SwipeInterface {
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout_main);
         layout.setOnTouchListener(swipe);
-    }
-
-//    private void updateLessonsForStudent(){
-//        try {
-//            int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-//
-//            if (studentOptionService.isLessonsUpdate(currentWeek)){
-//                lessonService.deleteCurrentLessons(course, group);
-//                studentOptionService.setCurrentWeek(currentWeek);
-//            }
-//
-//            if (!lessonService.isLessonsExist(course, group)) {
-//                lessonService.insertLessons(course, group, currentWeek);
-//            }
-//        } catch (BusinessLayerException ble){
-//            Logger.getInstance().error(ble);
-//        }
-//    }
-
-    private void updateLessonsForLecturer(){
-//        try {
-//            int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-//            lecturerOptionService.setCurrent(department, lecturer);
-//
-//            if (lecturerOptionService.isLessonsUpdate(currentWeek)){
-//                lessonService.deleteCurrentLessons(lecturer);
-//                lecturerOptionService.setCurrentWeek(currentWeek);
-//            }
-//
-//            if (!lessonService.isLessonsExist(lecturer)) {
-//                lessonService.insertLessons(lecturer, currentWeek);
-//            }
-//        } catch (BusinessLayerException ble){
-//            Logger.getInstance().error(ble);
-//        }
     }
 
     private void updateView() {
@@ -235,29 +228,5 @@ public class LessonActivity extends Activity implements SwipeInterface {
 ////        }
 //        return super.onPrepareOptionsMenu(menu);
 //    }
-    
-    private class LoadData extends AsyncTask{
 
-        private ProgressDialog dialog;
-        
-        @Override
-        protected void onPreExecute() {
-            dialog = new ProgressDialog(LessonActivity.this);
-            dialog.setMessage("Loading data. Please. wait...");
-        }
-
-        @Override
-        protected Object doInBackground(Object... objects) {
-            DataLoader.getInstance().loadSchedule(course, group, subGroup);
-            return null;  
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            updateView();
-            if(dialog.isShowing()){
-                dialog.dismiss();
-            }
-        }
-    }
 }

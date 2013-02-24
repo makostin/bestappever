@@ -1,4 +1,4 @@
-package com.mmf.exceptions;
+package com.mmf.rest.exceptions;
 
 public class UnexpectedResponseCodeException extends RestException {
 	private static final long serialVersionUID = 3965086962933092663L;

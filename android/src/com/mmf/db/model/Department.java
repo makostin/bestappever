@@ -10,6 +10,13 @@ public class Department implements Entity{
     private Long id;
     private String name;
 
+    public Department(){
+    }
+
+    public Department(Long id){
+        this.id = id;
+    }
+
     @Override
     public void setId(Long id) {
         this.id = id;

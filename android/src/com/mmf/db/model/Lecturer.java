@@ -9,7 +9,7 @@ public class Lecturer implements Entity{
 
     private Long id;
     private Long systemId;
-    private Long departmentId;
+    private Department department;
     private String fullName;
 
     @Override
@@ -22,12 +22,12 @@ public class Lecturer implements Entity{
         return id;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public String getFullName() {

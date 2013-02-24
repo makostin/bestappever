@@ -1,4 +1,4 @@
-package com.mmf.exceptions;
+package com.mmf.rest.exceptions;
 
 public class UserSessionException extends Exception {
 

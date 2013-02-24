@@ -40,4 +40,10 @@ public class DepartmentDao extends AbstractEntityDao<Department>{
     protected void _entityTo(Department entity, ContentValues values) {
         put(values, NAME_COLUMN, entity.getName());
     }
+
+    public Department getByName(String departmentName) {
+        String whereClause = NAME_COLUMN + "= ?";
+        String[] whereArgs = new String[]{departmentName};
+        return getEntityQuery(whereClause, whereArgs);
+    }
 }

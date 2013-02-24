@@ -2,8 +2,13 @@ package com.mmf.db.dao.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import com.mmf.EntityRegistry;
+import com.mmf.db.DaoLayerException;
 import com.mmf.db.dao.AbstractEntityDao;
+import com.mmf.db.model.Department;
 import com.mmf.db.model.Lecturer;
+
+import java.util.List;
 
 /**
  * svetlana.voyteh
@@ -37,7 +42,7 @@ public class LecturerDao extends AbstractEntityDao<Lecturer>{
         Lecturer result = new Lecturer();
 
         result.setFullName(getString(cursor, FULLNAME_COLUMN));
-        result.setDepartmentId(getLong(cursor, ID_DEPARTMENT_COLUMN));
+        result.setDepartment(new Department(getLong(cursor, ID_DEPARTMENT_COLUMN)));
         result.setSystemId(getLong(cursor, SYSTEM_ID_COLUMN));
         return result;
     }
@@ -45,7 +50,17 @@ public class LecturerDao extends AbstractEntityDao<Lecturer>{
     @Override
     protected void _entityTo(Lecturer entity, ContentValues values) {
         put(values, FULLNAME_COLUMN, entity.getFullName());
-        put(values, ID_DEPARTMENT_COLUMN, entity.getDepartmentId());
+        put(values, ID_DEPARTMENT_COLUMN, entity.getDepartment().getId());
         put(values, SYSTEM_ID_COLUMN, entity.getSystemId());
+    }
+
+
+    public void saveLecturerList(List<Lecturer> lecturers) throws DaoLayerException {
+        for (Lecturer lecturer : lecturers){
+            String departmentName = lecturer.getDepartment().getName();
+            Department department = ((DepartmentDao)EntityRegistry.get().getEntityDao(Department.class)).getByName(departmentName);
+            lecturer.setDepartment(department);
+        }
+        saveData(lecturers);
     }
 }
