@@ -3,15 +3,17 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:security="http://www.springframework.org/schema/security"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-          http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="com"/>
+    <context:component-scan base-package="com.mmf.business,
+                                          com.mmf.db,
+                                          com.mmf.rest"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -25,23 +27,23 @@
 
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
-    <!--<import resource="classpath:META-INF/cxf/cxf.xml" />-->
-    <!--/<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />-->
-    <!--<context:property-placeholder/>-->
-    <!--<context:annotation-config/>-->
-    <!--<bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>-->
-    <!--<bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>-->
+    <!-- Spring security settings-->
+    <security:http pattern="/rest/**" create-session="never" auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/rest/**" access="hasAnyRole('EDITOR')" />
+        <security:http-basic />
+    </security:http>
 
-    <!--<jaxrs:server id="services" address="/">-->
-        <!--<jaxrs:serviceBeans>-->
-            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestDisciplineServiceImpl" />&ndash;&gt;-->
-            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestClassroomServiceImpl" />&ndash;&gt;-->
-            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestDepartmentServiceImpl" />&ndash;&gt;-->
-            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestUserServiceImpl" />&ndash;&gt;-->
-            <!--&lt;!&ndash;<bean class="com.mmf.rest.impl.RestLessonServiceImpl" />&ndash;&gt;-->
-        <!--</jaxrs:serviceBeans>-->
-        <!--<jaxrs:providers>-->
-            <!--<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>-->
-        <!--</jaxrs:providers>-->
-    <!--</jaxrs:server>-->
+    <security:global-method-security secured-annotations="enabled" />
+
+    <!--<security:http auto-config="true">-->
+        <!--<security:intercept-url pattern="/Login.html" />-->
+        <!--<security:intercept-url pattern="/**" />-->
+        <!--<security:form-login login-page="/Login.html"-->
+                             <!--default-target-url="/"-->
+                             <!--authentication-failure-url="/Login.html"/>-->
+    <!--</security:http>-->
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="remoteProvider" />
+    </security:authentication-manager>
 </beans>
