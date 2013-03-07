@@ -43,7 +43,14 @@
                              <!--authentication-failure-url="/Login.html"/>-->
     <!--</security:http>-->
 
+    <!--<security:authentication-manager alias="authenticationManager">-->
+        <!--<security:authentication-provider ref="remoteProvider" />-->
+    <!--</security:authentication-manager>-->
     <security:authentication-manager alias="authenticationManager">
-        <security:authentication-provider ref="remoteProvider" />
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="user" password="123" authorities="EDITOR" />
+            </security:user-service>
+        </security:authentication-provider>
     </security:authentication-manager>
 </beans>
