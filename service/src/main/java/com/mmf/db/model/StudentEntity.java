@@ -1,7 +1,6 @@
 package com.mmf.db.model;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * svetlana.voyteh
@@ -13,7 +12,7 @@ public class StudentEntity extends UserEntity{
     private static final long serialVersionUID = 7853939168145932279L;
 
     private GroupEntity group;
-    private Date dateOfEntrance;
+    private Integer yearOfEntrance;
     private Boolean isPraepostor;
 
     @ManyToOne
@@ -26,12 +25,12 @@ public class StudentEntity extends UserEntity{
         this.group = group;
     }
 
-    public Date getDateOfEntrance() {
-        return dateOfEntrance;
+    public Integer getYearOfEntrance() {
+        return yearOfEntrance;
     }
 
-    public void setDateOfEntrance(Date dateOfEntrance) {
-        this.dateOfEntrance = dateOfEntrance;
+    public void setYearOfEntrance(Integer yearOfEntrance) {
+        this.yearOfEntrance = yearOfEntrance;
     }
 
     public Boolean getPraepostor() {

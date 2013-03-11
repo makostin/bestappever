@@ -1,0 +1,1 @@
+INSERT INTO `studygroup` (`id`, `name`, `year`, `IdMainGroup`, `IdSpecialty`) VALUES	(1, '9', 2008, NULL, 1),	(2, '9a', 2008, 1, 1),	(3, '9b', 2008, 1, 1),	(4, '2', 2008, NULL, 2),	(5, '2b', 2008, 4, 2),	(6, '2a', 2008, 4, 2);
