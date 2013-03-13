@@ -28,8 +28,8 @@
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
     <!-- Spring security settings-->
-    <security:http pattern="/rest/**" create-session="never" auto-config="true" use-expressions="true">
-        <security:intercept-url pattern="/rest/**" access="hasAnyRole('EDITOR')" />
+    <security:http pattern="/rest/bsu/mmf/**" create-session="never" auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/rest/bsu/mmf/**" access="hasAnyRole('EDITOR')" />
         <security:http-basic />
     </security:http>
 

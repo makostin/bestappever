@@ -1,9 +1,13 @@
 package com.mmf.business.domain;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * svetlana.voyteh
  * 05.03.13
  */
+@XmlRootElement
 public class Lecturer implements DomainClass<Long>{
     private static final long serialVersionUID = 5064917072854196535L;
 
@@ -52,6 +56,7 @@ public class Lecturer implements DomainClass<Long>{
         this.patronymic = patronymic;
     }
 
+    @XmlTransient
     public String getLogin() {
         return login;
     }
@@ -60,6 +65,7 @@ public class Lecturer implements DomainClass<Long>{
         this.login = login;
     }
 
+    @XmlTransient
     public String getPassword() {
         return password;
     }
@@ -68,6 +74,7 @@ public class Lecturer implements DomainClass<Long>{
         this.password = password;
     }
 
+    @XmlTransient
     public String getPasswordSalt() {
         return passwordSalt;
     }
@@ -76,6 +83,7 @@ public class Lecturer implements DomainClass<Long>{
         this.passwordSalt = passwordSalt;
     }
 
+    @XmlTransient
     public String getPasswordFormat() {
         return passwordFormat;
     }
@@ -92,6 +100,7 @@ public class Lecturer implements DomainClass<Long>{
         isAdmin = admin;
     }
 
+    @XmlTransient
     public Department getDepartment() {
         return department;
     }

@@ -1,8 +1,8 @@
 package com.mmf.rest;
 
 import com.mmf.business.BusinessServiceException;
-import com.mmf.business.SpecialtyService;
-import com.mmf.business.domain.Specialty;
+import com.mmf.business.DepartmentService;
+import com.mmf.business.domain.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,24 +15,25 @@ import java.util.List;
 
 /**
  * svetlana.voyteh
- * 06.03.13
+ * 12.03.13
  */
 @Service
-@Path("specialty")
-public class SpecialtyResource {
+@Path("department")
+public class DepartmentResource {
 
     @Autowired
-    private SpecialtyService specialtyService;
+    private DepartmentService departmentService;
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSpecialities(){
+    public Response getDepartments(){
         try {
-            List<Specialty> specialtyList = specialtyService.list();
-            return Response.ok(specialtyList).header("Content-Encoding", "utf-8").build();
+            List<Department> departmentList = departmentService.list();
+            return Response.ok(departmentList).header("Content-Encoding", "utf-8").build();
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         }
     }
+
 }

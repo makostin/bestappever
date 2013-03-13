@@ -41,7 +41,12 @@ public class LecturerServiceImpl extends AbstractCrudService<Long, Lecturer, Lec
                 if (department != null){
                     DepartmentEntity departmentEntity = departmentDao.getEntityInstance(department.getId());
                     DepartmentHelper.convertToEntity(department, departmentEntity);
+
+                    if (entity != null){
+                        entity.setDepartment(departmentEntity);
+                    }
                 }
+
             } catch (DataAccessException e) {
                 throw new BusinessServiceException("Conversion to lecturer entity error.", e);
             }

@@ -1,0 +1,1 @@
+INSERT INTO `student` (`yearOfEntrance`, `praepostor`, `id`, `IdGroup`) VALUES	(2008, NULL, 1, 2),	(2008, NULL, 3, 3);
