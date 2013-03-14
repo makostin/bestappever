@@ -88,25 +88,4 @@ public class GroupServiceImpl extends AbstractCrudService<Long, Group, GroupEnti
         return group;
     }
 
-    @Override
-    @Transactional(rollbackFor = BusinessServiceException.class)
-    public List<SpecialtyInfo> getSpecialtyInfos() {
-        List<SpecialtyInfo> specialtyInfos = new ArrayList<SpecialtyInfo>();
-        List<GroupEntity> mainGroups = groupDao.getMainGroups();
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        for(GroupEntity entity : mainGroups){
-            String specialtyName = entity.getSpecialty().getName();
-            if (map.containsKey(specialtyName)){
-                specialtyInfos.get(map.get(specialtyName)).getGroupNumbers().add(entity.getName());
-            } else {
-                SpecialtyInfo info = new SpecialtyInfo();
-                info.setId(entity.getSpecialty().getId());
-                info.setName(specialtyName);
-                info.getGroupNumbers().add(entity.getName());
-                specialtyInfos.add(info);
-                map.put(specialtyName, specialtyInfos.size()-1);
-            }
-        }
-        return specialtyInfos;
-    }
 }

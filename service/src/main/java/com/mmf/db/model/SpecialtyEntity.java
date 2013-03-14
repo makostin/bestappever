@@ -1,6 +1,8 @@
 package com.mmf.db.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: Svetlana.Voyteh
@@ -14,6 +16,7 @@ public class SpecialtyEntity implements EntityClass<Long> {
     private Long id;
     private String name;
     private String description;
+    private Set<GroupEntity> groups = new HashSet<GroupEntity>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,5 +44,14 @@ public class SpecialtyEntity implements EntityClass<Long> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(mappedBy = "specialty", fetch = FetchType.LAZY)
+    public Set<GroupEntity> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<GroupEntity> groups) {
+        this.groups = groups;
     }
 }

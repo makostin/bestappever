@@ -1,5 +1,8 @@
 package com.mmf.business.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * svetlana.voyteh
  * 05.03.13
@@ -11,6 +14,7 @@ public class Specialty implements DomainClass<Long>{
     private Long id;
     private String name;
     private String description;
+    private Set<Group> groups = new HashSet<Group>();
 
     @Override
     public Long getId() {
@@ -36,5 +40,13 @@ public class Specialty implements DomainClass<Long>{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
     }
 }

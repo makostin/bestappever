@@ -10,6 +10,4 @@ import java.util.List;
  * 12.03.13
  */
 public interface GroupService extends CrudService<Long, Group>{
-
-    List<SpecialtyInfo> getSpecialtyInfos();
 }

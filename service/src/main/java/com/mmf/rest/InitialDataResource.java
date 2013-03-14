@@ -3,6 +3,7 @@ package com.mmf.rest;
 import com.mmf.business.BusinessServiceException;
 import com.mmf.business.DepartmentService;
 import com.mmf.business.GroupService;
+import com.mmf.business.SpecialtyService;
 import com.mmf.business.domain.Department;
 import com.mmf.business.domain.SpecialtyInfo;
 import com.mmf.rest.response.InitialDataResponse;
@@ -33,15 +34,15 @@ public class InitialDataResource {
     private DepartmentService departmentService;
 
     @Autowired
-    private GroupService groupService;
+    private SpecialtyService specialtyService;
     
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getDepartments(){
+    public Response getInitialData(){
         try {
             List<Department> departmentList = departmentService.list();
-            List<SpecialtyInfo> specialties = groupService.getSpecialtyInfos();
+            List<SpecialtyInfo> specialties = specialtyService.getSpecialtyInfos();
 
             InitialDataResponse initialData = new InitialDataResponse();
             initialData.setCourseAmount(COURSE_AMOUNT);
