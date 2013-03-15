@@ -27,6 +27,7 @@ public class SpecialtyDao extends AbstractEntityDao<Specialty>{
         addColumnV1(NUMBER_COLUMN, "text not null");
     }
 
+
     private void addColumnV1(String name, String def) {
         addColumn(name, def, DATABASE_VERSION_1);
     }

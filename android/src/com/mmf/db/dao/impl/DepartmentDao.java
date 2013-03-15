@@ -21,7 +21,13 @@ public class DepartmentDao extends AbstractEntityDao<Department>{
     }
 
     private void init() {
+        addColumnV1(COLUMN_ID, "long primary key");
         addColumnV1(NAME_COLUMN, "text not null");
+    }
+
+    @Override
+    protected void init(String tableName, int sinceDbVer) {
+        createTable(tableName, sinceDbVer);
     }
 
     private void addColumnV1(String name, String def) {
@@ -38,6 +44,7 @@ public class DepartmentDao extends AbstractEntityDao<Department>{
 
     @Override
     protected void _entityTo(Department entity, ContentValues values) {
+        put(values, COLUMN_ID, entity.getId());
         put(values, NAME_COLUMN, entity.getName());
     }
 

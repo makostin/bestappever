@@ -1,5 +1,7 @@
 package com.mmf.business.domain;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,6 +9,7 @@ import java.util.Set;
  * svetlana.voyteh
  * 05.03.13
  */
+@XmlRootElement
 public class Department implements DomainClass<Long>{
     private static final long serialVersionUID = 935713329842117590L;
 
@@ -33,6 +36,7 @@ public class Department implements DomainClass<Long>{
         this.name = name;
     }
 
+    @XmlTransient
     public String getDescription() {
         return description;
     }

@@ -10,6 +10,8 @@ import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.service.BusinessLayerException;
 import com.mmf.util.Logger;
 
+import java.util.List;
+
 /**
  * @author svetlana.voyteh
  * @date: 2/3/12
@@ -23,7 +25,7 @@ public class OptionActivity extends Activity {
     private Spinner departmentSpinner;
     private TabHost tabHost;
 
-    private ArrayAdapter<CharSequence> courseAdapter;
+    private ArrayAdapter<Integer> courseAdapter;
     private ArrayAdapter<CharSequence> groupAdapter;
     private ArrayAdapter<CharSequence> subgroupAdapter;
     private ArrayAdapter<CharSequence> lecturerAdapter;
@@ -71,7 +73,8 @@ public class OptionActivity extends Activity {
     private void initSpinners() throws BusinessLayerException {
 
         courseSpinner = (Spinner) findViewById(R.id.course_spinner);
-        courseAdapter = ArrayAdapter.createFromResource(this, R.array.course_array, android.R.layout.simple_spinner_item);
+        courseAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, getCourseData());
+//        courseAdapter = ArrayAdapter.createFromResource(this, R.array.course_array, android.R.layout.simple_spinner_item);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         courseSpinner.setAdapter(courseAdapter);
 
@@ -88,5 +91,11 @@ public class OptionActivity extends Activity {
         departmentSpinner = (Spinner) findViewById(R.id.department_spinner);
         lecturerSpinner = (Spinner) findViewById(R.id.lecturer_spinner);
     }
+
+    private List<Integer> getCourseData() {
+
+        return null;
+    }
+
 
 }

@@ -1,10 +1,13 @@
 package com.mmf.rest.transport;
 
 
-import com.mmf.db.model.Department;
-import com.mmf.db.model.Lecturer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.mmf.db.model.Schedule;
-import com.mmf.db.model.Specialty;
+import com.mmf.rest.deserializer.InitialDataDeserializer;
+import com.mmf.rest.domain.InitialData;
+import com.mmf.rest.exceptions.RestException;
 import com.mmf.rest.exceptions.UnexpectedResponseCodeException;
 import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.rest.transport.http.DataProvider;
@@ -16,7 +19,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RestRequester {
@@ -33,7 +39,7 @@ public class RestRequester {
 	private static final String GET_CAPTCHA = "GET_CAPTCHA";
 	private static final String CHECK_REQUIRED = "CHECK_REQUIRED";
 	private static final String RESET_LOGIN_COUNT = "RESET_LOGIN_COUNT";
-	private static final String REST_API = "rest/api/2.0.alpha1/";
+	private static final String REST_API = "rest/bsu/mmf/";
 	private static final String REST_API_GET_ROLES = "secure/popups/UserProjectRoles.jspa";
 	private static final String REST_API_GET_WORKLOGS = "secure/popups/Worklogs.jspa";
 	private static final String REST_API_GET_CUSTOMER_ACTIVITIES = "secure/popups/CustomerActivity.jspa";
@@ -44,7 +50,8 @@ public class RestRequester {
 
 	private static final String TAG = "RestRequester";
 
-	public static final String SERVER_HTTP_DEV = "https://jira.hiqo-solutions.us:8443/";
+	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
+//	public static final String SERVER_HTTP_DEV = "http://127.0.0.1:8080/";
 
 	// public static final String SERVER_HTTP_DEV =
 	// "http://jira45.hiqo-solutions.com:8080/";
@@ -155,18 +162,31 @@ public class RestRequester {
         return null;
     }
 
-    public static List<Specialty> getSpecialities() {
-        // todo
-        return null;
+    public static InitialData getInitialData() throws InvalidCredentialsException, RestException {
+        InitialData data = new InitialData();
+		InputStreamReader inputStreamReader = null;
+		try {
+			inputStreamReader = getReader(REST_API + "initialData");
+			if (inputStreamReader != null) {
+				GsonBuilder gsonBuilder = new GsonBuilder();
+				gsonBuilder.registerTypeAdapter(List.class, new InitialDataDeserializer());
+				Gson gson = gsonBuilder.create();
+				Type listType = new TypeToken<List<InitialData>>() {}.getType();
+                data = gson.fromJson(inputStreamReader, listType);
+			}
+			return data;
+		} catch (IOException e) {
+            Logger.getInstance().error(e);
+			throw new RestException(e);
+		} finally {
+			if (inputStreamReader != null) {
+				try {
+					inputStreamReader.close();
+				} catch (IOException e) {
+					Logger.getInstance().error(e);
+				}
+			}
+		}
     }
 
-    public static List<Department> getDepartments() {
-        // todo
-        return null;
-    }
-
-    public static List<Lecturer> getLecturers() {
-        // todo
-        return null;
-    }
 }

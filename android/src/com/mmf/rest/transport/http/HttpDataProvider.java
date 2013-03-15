@@ -46,49 +46,49 @@ public class HttpDataProvider implements DataProvider {
 		}
 	}
 
-	public RestResponse get(String login, String password) throws IOException, InvalidCredentialsException {
-		HttpURLConnection connection = null;
-		try {
-			connection = openConnection(login, password, -1, "get");
-			int responseCode = connection.getResponseCode();
-			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-				throw new InvalidCredentialsException("You unauthorized to use service");
-			}
-			return new RestResponse(responseCode, connection.getResponseMessage());
-		} finally {
-			closeConnection(connection);
-		}
-	}
+//	public RestResponse get(String login, String password) throws IOException, InvalidCredentialsException {
+//		HttpURLConnection connection = null;
+//		try {
+//			connection = openConnection(login, password, -1, "get");
+//			int responseCode = connection.getResponseCode();
+//			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+//				throw new InvalidCredentialsException("You unauthorized to use service");
+//			}
+//			return new RestResponse(responseCode, connection.getResponseMessage());
+//		} finally {
+//			closeConnection(connection);
+//		}
+//	}
 
-	public RestResponse put(String login, String password, String requestData) throws IOException, InvalidCredentialsException {
-		HttpURLConnection connection = null;
-		try {
-			byte[] dataBytes = requestData.getBytes("utf-8");
-			connection = openConnection(login, password, dataBytes.length, "put");
-			writeData(connection, dataBytes);
-			int responseCode = connection.getResponseCode();
-			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-				throw new InvalidCredentialsException("You unauthorized to use service");
-			}
-			return new RestResponse(responseCode, connection.getResponseMessage());
-		} finally {
-			closeConnection(connection);
-		}
-	}
+//	public RestResponse put(String login, String password, String requestData) throws IOException, InvalidCredentialsException {
+//		HttpURLConnection connection = null;
+//		try {
+//			byte[] dataBytes = requestData.getBytes("utf-8");
+//			connection = openConnection(login, password, dataBytes.length, "put");
+//			writeData(connection, dataBytes);
+//			int responseCode = connection.getResponseCode();
+//			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+//				throw new InvalidCredentialsException("You unauthorized to use service");
+//			}
+//			return new RestResponse(responseCode, connection.getResponseMessage());
+//		} finally {
+//			closeConnection(connection);
+//		}
+//	}
 
-	public RestResponse delete(String login, String password) throws IOException, InvalidCredentialsException {
-		HttpURLConnection connection = null;
-		try {
-			connection = openConnection(login, password, -1, "delete");
-			int responseCode = connection.getResponseCode();
-			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-				throw new InvalidCredentialsException("You unauthorized to use service");
-			}
-			return new RestResponse(responseCode, connection.getResponseMessage());
-		} finally {
-			closeConnection(connection);
-		}
-	}
+//	public RestResponse delete(String login, String password) throws IOException, InvalidCredentialsException {
+//		HttpURLConnection connection = null;
+//		try {
+//			connection = openConnection(login, password, -1, "delete");
+//			int responseCode = connection.getResponseCode();
+//			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+//				throw new InvalidCredentialsException("You unauthorized to use service");
+//			}
+//			return new RestResponse(responseCode, connection.getResponseMessage());
+//		} finally {
+//			closeConnection(connection);
+//		}
+//	}
 
 	@Override
 	public void post(String login, String password, String requestData, OutputStream outputWriter) throws IOException, UnexpectedResponseCodeException, InvalidCredentialsException {
@@ -137,11 +137,6 @@ public class HttpDataProvider implements DataProvider {
 	}
 
 	private HttpURLConnection openConnection(String login, String password,	int contentLength, String requestMethod) throws IOException {
-
-		// Proxy proxy = new Proxy(Proxy.Type.HTTP, new
-		// InetSocketAddress("192.168.1.153", 8888));
-		// HttpURLConnection connection = (HttpURLConnection)
-		// connectionURL.openConnection(proxy);
 		HttpURLConnection connection = (HttpURLConnection) connectionURL.openConnection();
 		connection.setUseCaches(false);
 		connection.setDefaultUseCaches(false);
@@ -173,9 +168,8 @@ public class HttpDataProvider implements DataProvider {
 		connection.setRequestProperty("Host", connectionURL.getHost());
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty("Accept-Encoding", "utf-8");
-//		connection.setRequestProperty(AUTH_HEADER, getAuthPropertyValue(login, password));
+		connection.setRequestProperty(AUTH_HEADER, getAuthPropertyValue(login, password));
 
-//		usingSSL(connection);
 		return connection;
 	}
 
@@ -213,45 +207,6 @@ public class HttpDataProvider implements DataProvider {
 			if (output != null) {
 				output.close();
 			}
-		}
-	}
-
-	private void usingSSL(HttpURLConnection connection) {
-		if ("https".equals(connection.getURL().getProtocol())) {
-			try {
-				TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-					public X509Certificate[] getAcceptedIssuers() {
-						return new java.security.cert.X509Certificate[] {};
-					}
-
-					public void checkClientTrusted(X509Certificate[] chain,
-							String authType) throws CertificateException {
-					}
-
-					public void checkServerTrusted(X509Certificate[] chain,
-							String authType) throws CertificateException {
-					}
-				} };
-				try {
-					SSLContext sc = SSLContext.getInstance("TLS");
-					sc.init(null, trustAllCerts, new java.security.SecureRandom());
-					((HttpsURLConnection) connection).setSSLSocketFactory(sc.getSocketFactory());
-					((HttpsURLConnection) connection).setHostnameVerifier(new HostnameVerifier() {
-                        @Override
-                        public boolean verify(String hostname,
-                                              SSLSession session) {
-                            return true;
-                        }
-                    });
-				} catch (KeyManagementException e) {
-					e.printStackTrace();
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
-				}
-			} catch (Exception e) {
-				Logger.getInstance().warn(e);
-			}
-
 		}
 	}
 

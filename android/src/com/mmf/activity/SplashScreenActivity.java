@@ -7,6 +7,8 @@ import android.os.Handler;
 import com.mmf.R;
 import com.mmf.rest.DataLoader;
 import com.mmf.rest.exceptions.ServiceLayerException;
+import com.mmf.util.Logger;
+import org.apache.http.auth.InvalidCredentialsException;
 
 /**
  * @author svetlana.voyteh
@@ -28,7 +30,9 @@ public class SplashScreenActivity extends Activity{
                     SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, OptionActivity.class));
                     SplashScreenActivity.this.finish();
                 } catch (ServiceLayerException e) {
-                    e.printStackTrace();
+                    Logger.getInstance().error(e);
+                } catch (InvalidCredentialsException e) {
+                    Logger.getInstance().error(e);
                 }
             }
         }, SPLASH_DISPLAY_TIME);

@@ -7,8 +7,11 @@ import com.mmf.db.dao.impl.LecturerDao;
 import com.mmf.db.dao.impl.ScheduleDao;
 import com.mmf.db.dao.impl.SpecialtyDao;
 import com.mmf.db.model.*;
+import com.mmf.prefs.CredentialsPrefs;
+import com.mmf.rest.domain.InitialData;
 import com.mmf.rest.transport.RestRequester;
 import com.mmf.rest.exceptions.ServiceLayerException;
+import org.apache.http.auth.InvalidCredentialsException;
 
 import java.util.List;
 
@@ -37,11 +40,13 @@ public class DataLoader {
         }
     }
 
-    public void init() throws ServiceLayerException  {
+    public void init() throws ServiceLayerException, InvalidCredentialsException {
         try {
-            List<Specialty> specialties = RestRequester.getSpecialities();
-            List<Department> departments = RestRequester.getDepartments();
-            List<Lecturer> lecturers = RestRequester.getLecturers();
+            InitialData initialData = RestRequester.getInitialData();
+
+            List<Specialty> specialties = initialData.getSpecialties() ;
+            List<Department> departments = initialData.getDepartments() ;
+            List<Lecturer> lecturers = initialData.getLecturers() ;
 
             SpecialtyDao specialtyDao = (SpecialtyDao) EntityRegistry.get().getEntityDao(Specialty.class);
             specialtyDao.saveData(specialties);
@@ -50,7 +55,7 @@ public class DataLoader {
             departmentDao.saveData(departments);
 
             LecturerDao lecturerDao = (LecturerDao) EntityRegistry.get().getEntityDao(Lecturer.class);
-            lecturerDao.saveLecturerList(lecturers);
+            lecturerDao.saveData(lecturers);
         } catch (DaoLayerException e) {
             throw new ServiceLayerException(e);
         }

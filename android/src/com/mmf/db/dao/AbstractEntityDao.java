@@ -26,9 +26,8 @@ public abstract class AbstractEntityDao<T extends Entity> extends BaseDAO<T> imp
 		init(tableName, sinceDbVer);
 	}
 
-	private void init(String tableName, int sinceDbVer) {
-		table = new Table(tableName, sinceDbVer);
-
+    protected void init(String tableName, int sinceDbVer) {
+        createTable(tableName, sinceDbVer);
 		addColumn(COLUMN_ID, "integer primary key autoincrement", sinceDbVer);
 	}
 
@@ -39,6 +38,10 @@ public abstract class AbstractEntityDao<T extends Entity> extends BaseDAO<T> imp
 	public Table getTable() {
 		return table;
 	}
+
+    public void createTable(String tableName, int sinceDbVer) {
+        table = new Table(tableName, sinceDbVer);
+    }
 
     public String[] getColumns() {
         return table.getColumnsNames();
@@ -147,8 +150,8 @@ public abstract class AbstractEntityDao<T extends Entity> extends BaseDAO<T> imp
 		return entity;
 	}
 	
-	private void entityTo(T ticket, ContentValues values) {
-	    _entityTo(ticket, values);
+	private void entityTo(T entity, ContentValues values) {
+	    _entityTo(entity, values);
 	}
 
 	private T entityFrom(Cursor cursor) {
