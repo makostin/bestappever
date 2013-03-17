@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import com.mmf.db.DBAdapter;
 import com.mmf.db.DatabaseConnector;
+import com.mmf.util.EntityRegistry;
 
 
 /**

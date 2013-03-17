@@ -15,7 +15,7 @@ import java.util.List;
  * 
  */
 public abstract class BaseDAO<T extends Serializable> {
-	public static final long INVALID_ID = -1;
+//	public static final long INVALID_ID = -1;
 	
     protected DBAdapter dbAdapter;
 

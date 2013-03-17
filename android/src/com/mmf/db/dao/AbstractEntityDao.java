@@ -93,9 +93,9 @@ public abstract class AbstractEntityDao<T extends Entity> extends BaseDAO<T> imp
 		ContentValues values = new ContentValues();
 		entityTo(entity, values);
 
-		long id = entity.getId();
+		Long id = entity.getId();
 
-		if (id == INVALID_ID) {
+		if (id == null) {
 			id = insertEntity(values);
 		} else {
 			updateEntity(id, values);

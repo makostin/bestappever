@@ -1,6 +1,6 @@
 package com.mmf.service;
 
-import com.mmf.EntityRegistry;
+import com.mmf.util.EntityRegistry;
 import com.mmf.db.dao.impl.ScheduleDao;
 import com.mmf.db.model.Schedule;
 
@@ -18,7 +18,7 @@ public class ScheduleService {
     }
 
 
-    public List<Schedule> getLessonsForDay(String course, String group, int currentDay) {
+    public List<Schedule> getLessonsForDay(int course, int group, int currentDay) {
         //todo
         return null;
     }

@@ -1,28 +1,19 @@
 package com.mmf.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-import com.mmf.EntityRegistry;
 import com.mmf.R;
 import com.mmf.android.adapter.StudentLessonsAdapter;
 import com.mmf.android.listener.ActivitySwipeDetector;
 import com.mmf.db.model.Schedule;
 import com.mmf.prefs.CredentialsPrefs;
+import com.mmf.prefs.OptionPrefs;
 import com.mmf.rest.DataLoader;
 import com.mmf.rest.exceptions.ServiceLayerException;
 import com.mmf.rest.task.LoadDataTask;
-import com.mmf.service.BusinessLayerException;
 import com.mmf.service.ScheduleService;
-import com.mmf.util.Logger;
-import com.mmf.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,8 +27,8 @@ public class LessonActivity extends Activity implements SwipeInterface {
 
     private ListView listView;
     private int currentDay;
-    private String course;
-    private String group;
+    private int course;
+    private int group;
     private String subGroup;
     private String date;
 
@@ -91,9 +82,9 @@ public class LessonActivity extends Activity implements SwipeInterface {
     private void init(){
         calendar = Calendar.getInstance();
 
-        course = CredentialsPrefs.Course.get();
-        group = CredentialsPrefs.Group.get();
-        subGroup = CredentialsPrefs.Subgroup.get();
+        course = OptionPrefs.Course.get();
+        group = OptionPrefs.Group.get();
+        subGroup = OptionPrefs.Subgroup.get();
         TextView courseGroupView = (TextView) findViewById(R.id.course_group);
         courseGroupView.setVisibility(View.VISIBLE);
         courseGroupView.setText("Course " + course + ", group " + group);

@@ -2,13 +2,9 @@ package com.mmf.db.dao.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import com.mmf.EntityRegistry;
-import com.mmf.db.DaoLayerException;
 import com.mmf.db.dao.AbstractEntityDao;
 import com.mmf.db.model.Department;
 import com.mmf.db.model.Lecturer;
-
-import java.util.List;
 
 /**
  * svetlana.voyteh

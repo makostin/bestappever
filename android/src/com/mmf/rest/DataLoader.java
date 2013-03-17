@@ -1,13 +1,13 @@
 package com.mmf.rest;
 
-import com.mmf.EntityRegistry;
+import com.mmf.prefs.OptionPrefs;
+import com.mmf.util.EntityRegistry;
 import com.mmf.db.DaoLayerException;
 import com.mmf.db.dao.impl.DepartmentDao;
 import com.mmf.db.dao.impl.LecturerDao;
 import com.mmf.db.dao.impl.ScheduleDao;
 import com.mmf.db.dao.impl.SpecialtyDao;
 import com.mmf.db.model.*;
-import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.rest.domain.InitialData;
 import com.mmf.rest.transport.RestRequester;
 import com.mmf.rest.exceptions.ServiceLayerException;
@@ -30,7 +30,7 @@ public class DataLoader {
         return instance;
     }
     
-    public void loadSchedule(String course, String group, String subGroup) throws ServiceLayerException {
+    public void loadSchedule(int course, int group, String subGroup) throws ServiceLayerException {
         try {
             List<Schedule> lessons = RestRequester.gesSchedule(course, group, subGroup);
             ScheduleDao dao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
@@ -43,6 +43,9 @@ public class DataLoader {
     public void init() throws ServiceLayerException, InvalidCredentialsException {
         try {
             InitialData initialData = RestRequester.getInitialData();
+            OptionPrefs.CourseAmount.put(initialData.getCourseAmount());
+            OptionPrefs.GroupAmount.put(initialData.getGroupAmount());
+            OptionPrefs.SubgroupAmount.put(getSubGroups(initialData.getSubGroups()));
 
             List<Specialty> specialties = initialData.getSpecialties() ;
             List<Department> departments = initialData.getDepartments() ;
@@ -59,5 +62,16 @@ public class DataLoader {
         } catch (DaoLayerException e) {
             throw new ServiceLayerException(e);
         }
+    }
+
+    private String getSubGroups(List<String> subGroups) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String string : subGroups){
+            if (stringBuilder.length() != 0){
+                stringBuilder.append(",");
+            }
+            stringBuilder.append(string);
+        }
+        return stringBuilder.toString();
     }
 }

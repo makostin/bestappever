@@ -1,4 +1,4 @@
-package com.mmf;
+package com.mmf.util;
 
 import android.content.Context;
 import com.mmf.db.dao.impl.*;

@@ -4,11 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import com.mmf.EntityRegistry;
+import com.mmf.util.EntityRegistry;
 import com.mmf.db.dao.AbstractEntityDao;
 import com.mmf.db.dao.utils.Column;
 import com.mmf.db.dao.utils.Table;
-import com.mmf.util.Logger;
 
 import java.util.List;
 

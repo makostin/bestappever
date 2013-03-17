@@ -50,7 +50,8 @@ public class RestRequester {
 
 	private static final String TAG = "RestRequester";
 
-	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
+	public static final String SERVER_HTTP_DEV = "http://192.168.0.2:8080/";
+//	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
 //	public static final String SERVER_HTTP_DEV = "http://127.0.0.1:8080/";
 
 	// public static final String SERVER_HTTP_DEV =
@@ -143,7 +144,7 @@ public class RestRequester {
 		try {
 			DataProvider internetDataProvider = getDataProvider(getServerAddress() + apiUrl);
 			outputStream = new ByteArrayOutputStream(BYTE_ARRAY_SIZE);
-			internetDataProvider.get(CredentialsPrefs.Login.get(),	CredentialsPrefs.Password.get(), outputStream);
+			internetDataProvider.get(CredentialsPrefs.LoginDefault.get(), CredentialsPrefs.PasswordDefault.get(), outputStream);
 			inputStreamReader = new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()));
 			return inputStreamReader;
 		} finally {
@@ -157,7 +158,7 @@ public class RestRequester {
 		}
 	}
 
-    public static List<Schedule> gesSchedule(String course, String group, String subGroup) {
+    public static List<Schedule> gesSchedule(int course, int group, String subGroup) {
         // todo
         return null;
     }
