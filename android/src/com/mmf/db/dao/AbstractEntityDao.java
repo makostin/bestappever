@@ -81,6 +81,13 @@ public abstract class AbstractEntityDao<T extends Entity> extends BaseDAO<T> imp
         return entity;
     }
 
+    public List<T> getEntityListQuery(String whereClause, String[] whereArgs){
+        Cursor cursor = super.findQueryWithWhere(table.getName(), table.getColumnsNames(), whereClause, whereArgs);
+        List<T> list = loadEntityList(cursor);
+        cursor.close();
+        return list;
+    }
+
 	public void saveData(List<T> entityList) throws DaoLayerException {
 		if ((entityList != null) && (!entityList.isEmpty())) {
 			for (T entity : entityList) {
@@ -98,16 +105,27 @@ public abstract class AbstractEntityDao<T extends Entity> extends BaseDAO<T> imp
 		if (id == null) {
 			id = insertEntity(values);
 		} else {
-			updateEntity(id, values);
+			boolean result = updateEntity(id, values);
+            if(!result){
+                id = insertEntity(values);
+            }
 		}
 		return id;
 	}
 
-	public Long insertData(T entity) throws DaoLayerException {
-		ContentValues values = new ContentValues();
-		entityTo(entity, values);
-		return insertEntity(values);
-	}
+//    public void insertData(List<T> entityList) throws DaoLayerException {
+//        if ((entityList != null) && (!entityList.isEmpty())) {
+//            for (T entity : entityList) {
+//                insertData(entity);
+//            }
+//        }
+//    }
+//
+//	public Long insertData(T entity) throws DaoLayerException {
+//		ContentValues values = new ContentValues();
+//		entityTo(entity, values);
+//		return insertEntity(values);
+//	}
 
 	public void overwriteAll(List<T> entityList) throws DaoLayerException {
 		super.delete( getTableName() );

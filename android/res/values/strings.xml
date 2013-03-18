@@ -4,6 +4,7 @@
     <string name="user_prompt">User:</string>
     <string name="course_prompt">Course:</string>
     <string name="group_prompt">Group:</string>
+    <string name="specialty">Specialty:</string>
     <string name="subgroup_prompt">Subgroup:</string>
     <string name="department_prompt">Department:</string>
     <string name="lecturer_prompt">Lecturer:</string>

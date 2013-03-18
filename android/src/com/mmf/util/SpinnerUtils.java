@@ -2,13 +2,17 @@ package com.mmf.util;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
+import com.mmf.R;
 import com.mmf.activity.OptionActivity;
 import com.mmf.db.dao.impl.DepartmentDao;
 import com.mmf.db.dao.impl.LecturerDao;
 import com.mmf.db.model.Department;
+import com.mmf.db.model.Entity;
 import com.mmf.db.model.Lecturer;
 import com.mmf.prefs.OptionPrefs;
+import com.mmf.adapter.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -52,8 +56,8 @@ public class SpinnerUtils {
         DepartmentDao departmentDao = (DepartmentDao) EntityRegistry.get().getEntityDao(Department.class);
         List<Department> departments = departmentDao.selectAll();
         ArrayAdapter<Department> departmentAdapter = new ArrayAdapter<Department>(context, android.R.layout.simple_spinner_item);
-        for (Department department : departments){
-            departmentAdapter.add(department);
+        for (Iterator<Department> it = departments.iterator() ; it.hasNext() ;){
+            departmentAdapter.add(it.next());
         }
         departmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return departmentAdapter;
@@ -63,8 +67,19 @@ public class SpinnerUtils {
         LecturerDao lecturerDao = (LecturerDao) EntityRegistry.get().getEntityDao(Lecturer.class);
         List<Lecturer> lecturers = lecturerDao.selectAll();
         ArrayAdapter<Lecturer> lecturerAdapter = new ArrayAdapter<Lecturer>(context, android.R.layout.simple_spinner_item);
-        for (Lecturer lecturer : lecturers){
-            lecturerAdapter.add(lecturer);
+        for (Iterator<Lecturer> it = lecturers.iterator() ; it.hasNext() ;){
+            lecturerAdapter.add(it.next());
+        }
+        lecturerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return lecturerAdapter;
+    }
+
+    public static ArrayAdapter<Lecturer> getLecturerAdapter(Context context, Long idDepartment) {
+        LecturerDao lecturerDao = (LecturerDao) EntityRegistry.get().getEntityDao(Lecturer.class);
+        List<Lecturer> lecturers = lecturerDao.getLecturerByDepartment(idDepartment);
+        ArrayAdapter<Lecturer> lecturerAdapter = new ArrayAdapter<Lecturer>(context, android.R.layout.simple_spinner_item);
+        for (Iterator<Lecturer> it = lecturers.iterator() ; it.hasNext() ;){
+            lecturerAdapter.add(it.next());
         }
         lecturerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return lecturerAdapter;

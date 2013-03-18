@@ -37,4 +37,8 @@ public class Lecturer implements Entity{
         this.fullName = fullName;
     }
 
+    @Override
+    public String toString() {
+        return fullName;
+    }
 }

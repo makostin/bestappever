@@ -6,6 +6,8 @@ import com.mmf.db.dao.AbstractEntityDao;
 import com.mmf.db.model.Department;
 import com.mmf.db.model.Lecturer;
 
+import java.util.List;
+
 /**
  * svetlana.voyteh
  * 13.02.13
@@ -53,4 +55,9 @@ public class LecturerDao extends AbstractEntityDao<Lecturer>{
         put(values, ID_DEPARTMENT_COLUMN, entity.getDepartment().getId());
     }
 
+    public List<Lecturer> getLecturerByDepartment(Long idDepartment) {
+        String whereClause = ID_DEPARTMENT_COLUMN + "= ?";
+        String[] whereArgs = new String[]{String.valueOf(idDepartment)};
+        return getEntityListQuery(whereClause, whereArgs);
+    }
 }

@@ -1,4 +1,4 @@
-package com.mmf.android.adapter;
+package com.mmf.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,13 +14,13 @@ import java.util.List;
 
 /**
  * @author svetlana.voyteh
- * @date 1/19/12
+ * @date: 4/6/12
  */
-public class StudentLessonsAdapter extends ArrayAdapter<Schedule> {
+public class LecturerLessonsAdapter extends ArrayAdapter<Schedule> {
 
     int resource;
-    
-    public StudentLessonsAdapter(Context context, int textViewResourceId, List<Schedule> objects) {
+
+    public LecturerLessonsAdapter(Context context, int textViewResourceId, List<Schedule> objects) {
         super(context, textViewResourceId, objects);
         this.resource = textViewResourceId;
     }
@@ -40,12 +40,14 @@ public class StudentLessonsAdapter extends ArrayAdapter<Schedule> {
         }
 
         TextView subject = (TextView) lessonView.findViewById(R.id.subject);
-        TextView lecturer = (TextView) lessonView.findViewById(R.id.lecturer);
+        TextView course = (TextView) lessonView.findViewById(R.id.course);
+        TextView group = (TextView) lessonView.findViewById(R.id.group);
         TextView classRoom = (TextView) lessonView.findViewById(R.id.classroom);
         TextView date = (TextView) lessonView.findViewById(R.id.time);
 
         subject.setText(lesson.getDiscipline());
-        lecturer.setText(String.valueOf(lesson.getLecturerId()));
+        course.setText(lesson.getCourse() + " course ");
+        group.setText(lesson.getSubGroup() + " group");
         classRoom.setText(lesson.getClassroom());
         date.setText(lesson.getTime());
 

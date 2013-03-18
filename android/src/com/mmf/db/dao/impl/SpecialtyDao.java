@@ -46,4 +46,10 @@ public class SpecialtyDao extends AbstractEntityDao<Specialty>{
         put(values, NAME_COLUMN, entity.getName());
         put(values, NUMBER_COLUMN, entity.getNumber());
     }
+
+    public Specialty getSpecialtyByGroupNumber(int group) {
+        String whereClause = NUMBER_COLUMN + "= ?";
+        String[] whereArgs = new String[]{String.valueOf(group)};
+        return getEntityQuery(whereClause, whereArgs);
+    }
 }

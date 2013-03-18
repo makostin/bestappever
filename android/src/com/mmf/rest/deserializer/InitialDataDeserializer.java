@@ -33,7 +33,7 @@ public class InitialDataDeserializer implements JsonDeserializer<InitialData> {
             JsonObject departmentObject = departmentJson.getAsJsonObject();
             Department department = new Department();
             department.setId(departmentObject.get("id").getAsLong());
-            department.setName(departmentObject.get("name").toString());
+            department.setName(departmentObject.get("name").getAsString());
             initialData.getDepartments().add(department);
 
             for (JsonElement lecturerJson : departmentObject.get("lecturers").getAsJsonArray()){
@@ -41,7 +41,10 @@ public class InitialDataDeserializer implements JsonDeserializer<InitialData> {
                 Lecturer lecturer = new Lecturer();
                 lecturer.setId(lecturerObject.get("id").getAsLong());
                 StringBuilder fullName = new StringBuilder(lecturerObject.get("surname").getAsString());
-                fullName.append(" ").append(lecturerObject.get("name")).append(" ").append(lecturerObject.get("patronymic"));
+                fullName.append(" ").append(lecturerObject.get("name").getAsString());
+                if (!lecturerObject.get("patronymic").isJsonNull()){
+                    fullName.append(" ").append(lecturerObject.get("patronymic").getAsString());
+                }
                 lecturer.setFullName(fullName.toString().trim());
                 lecturer.setDepartment(department);
                 initialData.getLecturers().add(lecturer);

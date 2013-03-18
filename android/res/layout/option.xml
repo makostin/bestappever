@@ -55,9 +55,15 @@
                                 android:prompt="@string/group_prompt"
                                 />
                         <TextView
+                                android:id="@+id/specialty"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dip"
+                                />
+                        <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dip"
                                 android:text="@string/subgroup_prompt"
                                 />
                         <Spinner

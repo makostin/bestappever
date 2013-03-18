@@ -2,17 +2,23 @@ package com.mmf.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.mmf.R;
+import com.mmf.db.dao.impl.LecturerDao;
+import com.mmf.db.dao.impl.SpecialtyDao;
 import com.mmf.db.model.Department;
 import com.mmf.db.model.Lecturer;
+import com.mmf.db.model.Specialty;
 import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.service.BusinessLayerException;
+import com.mmf.util.EntityRegistry;
 import com.mmf.util.Logger;
 import com.mmf.util.SpinnerUtils;
+import com.mmf.util.StringUtils;
 
 import java.util.List;
 
@@ -78,23 +84,71 @@ public class OptionActivity extends Activity {
 
         courseSpinner = (Spinner) findViewById(R.id.course_spinner);
         courseAdapter = SpinnerUtils.getCourseAdapter(this);
-//        courseAdapter = ArrayAdapter.createFromResource(this, R.array.course_array, android.R.layout.simple_spinner_item);
-//        courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         courseSpinner.setAdapter(courseAdapter);
 
         groupSpinner = (Spinner) findViewById(R.id.group_spinner);
+        groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Integer selected = (Integer) adapterView.getSelectedItem();
+                new AsyncTask<Integer, Object, Specialty>(){
+
+                    @Override
+                    protected Specialty doInBackground(Integer... param) {
+                        SpecialtyDao dao = (SpecialtyDao) EntityRegistry.get().getEntityDao(Specialty.class);
+                        return dao.getSpecialtyByGroupNumber(param[0]);
+                    }
+
+                    @Override
+                    protected void onPostExecute(Specialty specialty) {
+                        TextView specialtyView = (TextView)findViewById(R.id.specialty);
+                        if (specialty != null){
+                            specialtyView.setVisibility(View.VISIBLE);
+                            specialtyView.setText(getString(R.string.specialty) + " " + specialty.getName());
+                        } else {
+                            specialtyView.setText("");
+                            specialtyView.setVisibility(View.GONE);
+                        }
+                    }
+                }.execute(selected);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
         groupAdapter = SpinnerUtils.getGroupAdapter(this);
-//        groupAdapter = ArrayAdapter.createFromResource(this, R.array.group_array, android.R.layout.simple_spinner_item);
-//        groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         groupSpinner.setAdapter(groupAdapter);
 
         subgroupSpinner = (Spinner) findViewById(R.id.subgroup_spinner);
         subgroupAdapter = SpinnerUtils.getSubGroupAdapter(this);
-//        subgroupAdapter = ArrayAdapter.createFromResource(this, R.array.subgroup_array, android.R.layout.simple_spinner_item);
-//        subgroupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         subgroupSpinner.setAdapter(subgroupAdapter);
 
         departmentSpinner = (Spinner) findViewById(R.id.department_spinner);
+        departmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Department selected = (Department) adapterView.getSelectedItem();
+                new AsyncTask<Long, Object, ArrayAdapter<Lecturer>>(){
+                    @Override
+                    protected ArrayAdapter<Lecturer> doInBackground(Long... param) {
+                        return SpinnerUtils.getLecturerAdapter(OptionActivity.this, param[0]);
+                    }
+
+                    @Override
+                    protected void onPostExecute(ArrayAdapter<Lecturer> adapter) {
+                        lecturerAdapter = adapter;
+                        lecturerSpinner.setAdapter(lecturerAdapter);
+                    }
+                }.execute(selected.getId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
         departmentAdapter = SpinnerUtils.getDepartmentAdapter(this);
         departmentSpinner.setAdapter(departmentAdapter);
 
