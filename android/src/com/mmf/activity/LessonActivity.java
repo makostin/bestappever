@@ -56,6 +56,7 @@ public class LessonActivity extends Activity implements SwipeInterface {
 
         service = new ScheduleService();
         init();
+        // todo: if don't have internet connection then get schedule by filter id
         loadData();
     }
 
@@ -66,8 +67,8 @@ public class LessonActivity extends Activity implements SwipeInterface {
             protected Object doInBackground(Object... objects) {
                 try {
                     FilterDao filterDao = (FilterDao) EntityRegistry.get().getEntityDao(Filter.class);
-                    filterDao.updateFilter(course, group, subGroup);
-                    DataLoader.getInstance().loadSchedule(course, group, subGroup);
+                    long idFilter = filterDao.updateFilter(course, group, subGroup);
+                    DataLoader.getInstance().loadSchedule(course, group, subGroup, idFilter);
                 } catch (ServiceLayerException e) {
                     cancel(true);
                     Logger.getInstance().error(e);
@@ -100,7 +101,7 @@ public class LessonActivity extends Activity implements SwipeInterface {
         subGroup = OptionPrefs.Subgroup.get();
         TextView courseGroupView = (TextView) findViewById(R.id.course_group);
         courseGroupView.setVisibility(View.VISIBLE);
-        courseGroupView.setText("Course " + course + ", group " + group);
+        courseGroupView.setText("Course " + course + ", group " + group + subGroup);
 
         findViewById(R.id.lecturer).setVisibility(View.INVISIBLE);
 
@@ -127,7 +128,7 @@ public class LessonActivity extends Activity implements SwipeInterface {
     }
 
     private void updateView() {
-        List<Schedule> lessons = service.getLessonsForDay(course, group, currentDay);
+        List<Schedule> lessons = service.getLessonsForDay(course, group, subGroup, currentDay);
         StudentLessonsAdapter adapterStudent = new StudentLessonsAdapter(this, R.layout.list_student_lessons_item, lessons);
         listView.setAdapter(adapterStudent);
     }

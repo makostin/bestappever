@@ -1,1 +1,15 @@
-INSERT INTO `schedule` (`id`, `dayOfWeek`, `everyNWeek`, `IdClassroom`, `IdDisciplineTime`, `IdStudy`) VALUES	(1, 1, 1, 3, 1, 2),	(2, 2, 1, 6, 2, 3),	(3, 3, 1, 6, 3, 3),	(4, 4, 1, 1, 4, 4);
+INSERT INTO `schedule` (`id`, `dayOfWeek`, `everyNWeek`, `week`, `IdClassroom`, `IdDisciplineTime`, `IdStudy`) VALUES	
+(1, 2, 1, 0, 1, 2, 1),	
+(2, 2, 1, 0, 1, 3, 2),	
+(3, 3, 1, 0, 6, 3, 3),	
+(4, 3, 1, 0, 1, 4, 4),
+(5, 4, 1, 0, 1, 1, 5),
+(6, 4, 1, 0, 1, 3, 6),
+(7, 5, 1, 0, 2, 2, 7),
+(8, 5, 1, 0, 4, 5, 8),
+(9, 6, 1, 0, 10, 3, 9),
+(10, 6, 1, 0, 4, 4, 10),
+(11, 7, 1, 0, 1, 1, 11),
+(12, 7, 1, 0, 1, 2, 12),
+(13, 3, 1, 0, 11, 2, 13),
+(14, 4, 1, 0, 10, 4, 14);

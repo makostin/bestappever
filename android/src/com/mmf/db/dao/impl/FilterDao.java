@@ -18,7 +18,7 @@ public class FilterDao extends AbstractEntityDao<Filter>{
     public static final String TABLE_NAME = "filter";
 
     public static final String COURSE_COLUMN = "course";
-    public static final String GROUP_COLUMN = "group";
+    public static final String GROUP_COLUMN = "groupNumber";
     public static final String SUBGROUP_COLUMN = "subGroup";
     public static final String LECTURER_COLUMN = "idLecturer";
 
@@ -65,17 +65,22 @@ public class FilterDao extends AbstractEntityDao<Filter>{
         return getEntityQuery(whereClause.toString(), whereArgs);
     }
 
-    public void updateFilter(int course, int group, String subGroup) throws ServiceLayerException {
+    public Long updateFilter(int course, int group, String subGroup) throws ServiceLayerException {
         try {
             Filter filter = getFilter(course, group, subGroup);
             if (filter != null){
                 delete(filter.getId());
                 ScheduleDao scheduleDao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
                 scheduleDao.deleteScheduleByFilter(filter.getId());
+                // todo: setId(null)!!!
+                filter.setId(null);
+            } else {
+                filter = new Filter();
+                filter.setCourse(course);
+                filter.setGroupNumber(group);
+                filter.setSubGroup(subGroup);
             }
-            // todo: setId(null)!!!
-            filter.setId(null);
-            saveData(filter);
+            return saveData(filter);
         } catch (DaoLayerException e) {
             throw new ServiceLayerException(e);
         }

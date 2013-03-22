@@ -66,7 +66,6 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
             scheduleResponse.setClassroom(schedule.getClassroom());
             scheduleResponse.setTime(schedule.getDisciplineTime());
             scheduleResponse.setDayOfWeek(schedule.getDayOfWeek());
-            scheduleResponse.setEveryNWeek(schedule.getEveryNWeek());
             responseList.add(scheduleResponse);
         }
         return responseList;  

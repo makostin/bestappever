@@ -31,9 +31,15 @@ public class DataLoader {
         return instance;
     }
     
-    public void loadSchedule(int course, int group, String subGroup) throws ServiceLayerException, InvalidCredentialsException {
+    public void loadSchedule(int course, int group, String subGroup, long idFilter) throws ServiceLayerException, InvalidCredentialsException {
         try {
             List<Schedule> lessons = RestRequester.gesSchedule(course, group, subGroup);
+            for(Schedule schedule : lessons){
+                schedule.setCourse(course);
+                schedule.setGroupNumber(group);
+                schedule.setSubGroup(subGroup);
+                schedule.setFilterId(idFilter);
+            }
             ScheduleDao dao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
             dao.saveData(lessons);
         } catch (DaoLayerException e) {

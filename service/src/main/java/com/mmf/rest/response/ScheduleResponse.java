@@ -17,7 +17,6 @@ public class ScheduleResponse {
     private DisciplineTime time;
     private int dayOfWeek;
     private int week;
-    private int everyNWeek;
 
     public Classroom getClassroom() {
         return classroom;
@@ -67,11 +66,4 @@ public class ScheduleResponse {
         this.week = week;
     }
 
-    public int getEveryNWeek() {
-        return everyNWeek;
-    }
-
-    public void setEveryNWeek(int everyNWeek) {
-        this.everyNWeek = everyNWeek;
-    }
 }

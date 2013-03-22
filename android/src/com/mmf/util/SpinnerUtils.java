@@ -2,15 +2,11 @@ package com.mmf.util;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
-import com.mmf.R;
-import com.mmf.activity.OptionActivity;
-import com.mmf.db.dao.impl.DepartmentDao;
-import com.mmf.db.dao.impl.LecturerDao;
 import com.mmf.db.model.Department;
-import com.mmf.db.model.Entity;
 import com.mmf.db.model.Lecturer;
 import com.mmf.prefs.OptionPrefs;
-import com.mmf.adapter.*;
+import com.mmf.service.DepartmentService;
+import com.mmf.service.LecturerService;
 
 import java.util.Iterator;
 import java.util.List;
@@ -53,8 +49,7 @@ public class SpinnerUtils {
     }
 
     public static ArrayAdapter<Department> getDepartmentAdapter(Context context) {
-        DepartmentDao departmentDao = (DepartmentDao) EntityRegistry.get().getEntityDao(Department.class);
-        List<Department> departments = departmentDao.selectAll();
+        List<Department> departments = new DepartmentService().list();
         ArrayAdapter<Department> departmentAdapter = new ArrayAdapter<Department>(context, android.R.layout.simple_spinner_item);
         for (Iterator<Department> it = departments.iterator() ; it.hasNext() ;){
             departmentAdapter.add(it.next());
@@ -64,8 +59,7 @@ public class SpinnerUtils {
     }
 
     public static ArrayAdapter<Lecturer> getLecturerAdapter(Context context) {
-        LecturerDao lecturerDao = (LecturerDao) EntityRegistry.get().getEntityDao(Lecturer.class);
-        List<Lecturer> lecturers = lecturerDao.selectAll();
+        List<Lecturer> lecturers = new LecturerService().list();
         ArrayAdapter<Lecturer> lecturerAdapter = new ArrayAdapter<Lecturer>(context, android.R.layout.simple_spinner_item);
         for (Iterator<Lecturer> it = lecturers.iterator() ; it.hasNext() ;){
             lecturerAdapter.add(it.next());
@@ -75,8 +69,7 @@ public class SpinnerUtils {
     }
 
     public static ArrayAdapter<Lecturer> getLecturerAdapter(Context context, Long idDepartment) {
-        LecturerDao lecturerDao = (LecturerDao) EntityRegistry.get().getEntityDao(Lecturer.class);
-        List<Lecturer> lecturers = lecturerDao.getLecturerByDepartment(idDepartment);
+        List<Lecturer> lecturers = new LecturerService().getLecturerByDepartment(idDepartment);
         ArrayAdapter<Lecturer> lecturerAdapter = new ArrayAdapter<Lecturer>(context, android.R.layout.simple_spinner_item);
         for (Iterator<Lecturer> it = lecturers.iterator() ; it.hasNext() ;){
             lecturerAdapter.add(it.next());

@@ -6,6 +6,8 @@ import com.mmf.db.dao.AbstractEntityDao;
 import com.mmf.db.model.Schedule;
 import com.mmf.util.Logger;
 
+import java.util.List;
+
 /**
  * svetlana.voyteh
  * 13.02.13
@@ -87,5 +89,15 @@ public class ScheduleDao extends AbstractEntityDao<Schedule>{
         String[] whereArgs = new String[]{String.valueOf(filterId)};
         int rows = deleteEntityQuery(whereClause, whereArgs);
         Logger.getInstance().debug("Amount of deleted rows: " + rows);
+    }
+
+    public List<Schedule> getLessonsForDay(int course, int group, String subGroup, int currentDay, int week) {
+        StringBuilder whereClause = new StringBuilder(COURSE_COLUMN).append(" = ? AND ");
+        whereClause.append(GROUP_NUMBER_COLUMN).append(" = ? AND ");
+        whereClause.append(SUBGROUP_COLUMN).append(" = ? AND ");
+        whereClause.append(DAY_COLUMN).append(" = ? AND ");
+        whereClause.append("(").append(WEEK_COLUMN).append(" = ? OR ").append(WEEK_COLUMN).append(" = 0)");
+        String[] whereArgs = new String[]{String.valueOf(course), String.valueOf(group), subGroup, String.valueOf(currentDay), String.valueOf(week)};
+        return getEntityListQuery(whereClause.toString(), whereArgs);
     }
 }

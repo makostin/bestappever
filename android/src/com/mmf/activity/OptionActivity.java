@@ -7,20 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.mmf.R;
-import com.mmf.db.dao.impl.LecturerDao;
-import com.mmf.db.dao.impl.SpecialtyDao;
 import com.mmf.db.model.Department;
 import com.mmf.db.model.Lecturer;
 import com.mmf.db.model.Specialty;
-import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.service.BusinessLayerException;
-import com.mmf.util.EntityRegistry;
+import com.mmf.service.SpecialtyService;
 import com.mmf.util.Logger;
 import com.mmf.util.SpinnerUtils;
-import com.mmf.util.StringUtils;
 
-import java.util.List;
 
 /**
  * @author svetlana.voyteh
@@ -96,8 +91,8 @@ public class OptionActivity extends Activity {
 
                     @Override
                     protected Specialty doInBackground(Integer... param) {
-                        SpecialtyDao dao = (SpecialtyDao) EntityRegistry.get().getEntityDao(Specialty.class);
-                        return dao.getSpecialtyByGroupNumber(param[0]);
+                        SpecialtyService service = new SpecialtyService();
+                        return service.getSpecialtyByGroupNumber(param[0]);
                     }
 
                     @Override

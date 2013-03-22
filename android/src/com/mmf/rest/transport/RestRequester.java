@@ -51,8 +51,8 @@ public class RestRequester {
 
 	private static final String TAG = "RestRequester";
 
-	public static final String SERVER_HTTP_DEV = "http://192.168.0.2:8080/";
-//	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
+//	public static final String SERVER_HTTP_DEV = "http://192.168.0.2:8080/";
+	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
 //	public static final String SERVER_HTTP_DEV = "http://127.0.0.1:8080/";
 
 	private static String getServerAddress() {
@@ -168,7 +168,7 @@ public class RestRequester {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(List.class, new ScheduleDeserializer());
                 Gson gson = gsonBuilder.create();
-                Type listType = new TypeToken<List<InitialData>>() {}.getType();
+                Type listType = new TypeToken<List<Schedule>>() {}.getType();
                 scheduleList = gson.fromJson(inputStreamReader, listType);
             }
             return scheduleList;
