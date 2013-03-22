@@ -17,7 +17,7 @@ public class LecturerHelper {
      */
     public static void convertToEntity(Lecturer domain, LecturerEntity entity) {
         if (entity != null) {
-            entity.setAdmin(domain.isAdmin());
+            entity.setAdmin(domain.getAdmin());
             entity.setLogin(domain.getLogin());
             entity.setName(domain.getName());
             entity.setPassword(domain.getPassword());

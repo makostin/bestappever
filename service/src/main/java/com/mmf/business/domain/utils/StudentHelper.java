@@ -18,7 +18,8 @@ public class StudentHelper {
      */
     public static void convertToEntity(Student domain, StudentEntity entity) {
         if (entity != null) {
-            // todo
+            entity.setPraepostor(domain.getPraepostor());
+            entity.setYearOfEntrance(domain.getYearOfEntrance());
         }
     }
 
@@ -29,7 +30,9 @@ public class StudentHelper {
      * @return Student
      */
     public static Student convertToDomain(StudentEntity entity) {
-        // todo
-        return null;
+        Student student = new Student();
+        student.setPraepostor(entity.getPraepostor());
+        student.setYearOfEntrance(entity.getYearOfEntrance());
+        return student;
     }
 }

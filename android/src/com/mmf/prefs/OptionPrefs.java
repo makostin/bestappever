@@ -23,7 +23,7 @@ public class OptionPrefs {
     public static final PreferenceInt GroupAmount = new PreferenceInt(OPTION_PREFERENCES, GROUP_AMOUNT_KEY, -1 );
     public static final PreferenceString Subgroup = new PreferenceString(OPTION_PREFERENCES, SUBGROUP_KEY );
     public static final PreferenceString SubgroupAmount = new PreferenceString(OPTION_PREFERENCES, SUBGROUP_AMOUNT_KEY );
-    public static final PreferenceString Lecturer = new PreferenceString(OPTION_PREFERENCES, LECTURER_KEY );
+    public static final PreferenceLong Lecturer = new PreferenceLong(OPTION_PREFERENCES, LECTURER_KEY, -1 );
 
 
 }

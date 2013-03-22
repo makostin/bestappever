@@ -1,0 +1,1 @@
+INSERT INTO `disciplinetype` (`id`, `type`) VALUES	(1, 'lecture'),	(2, 'practice');

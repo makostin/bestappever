@@ -1,6 +1,7 @@
 package com.mmf.rest;
 
 import com.mmf.prefs.OptionPrefs;
+import com.mmf.prefs.SettingsPrefs;
 import com.mmf.util.EntityRegistry;
 import com.mmf.db.DaoLayerException;
 import com.mmf.db.dao.impl.DepartmentDao;
@@ -30,7 +31,7 @@ public class DataLoader {
         return instance;
     }
     
-    public void loadSchedule(int course, int group, String subGroup) throws ServiceLayerException {
+    public void loadSchedule(int course, int group, String subGroup) throws ServiceLayerException, InvalidCredentialsException {
         try {
             List<Schedule> lessons = RestRequester.gesSchedule(course, group, subGroup);
             ScheduleDao dao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
@@ -46,6 +47,11 @@ public class DataLoader {
             OptionPrefs.CourseAmount.put(initialData.getCourseAmount());
             OptionPrefs.GroupAmount.put(initialData.getGroupAmount());
             OptionPrefs.SubgroupAmount.put(getSubGroups(initialData.getSubGroups()));
+
+            SettingsPrefs.FirstSemesterStart.put(initialData.getFirstSemesterStart());
+            SettingsPrefs.FirstSemesterEnd.put(initialData.getFirstSemesterEnd());
+            SettingsPrefs.SecondSemesterStart.put(initialData.getSecondSemesterStart());
+            SettingsPrefs.SecondSemesterEnd.put(initialData.getSecondSemesterEnd());
 
             List<Specialty> specialties = initialData.getSpecialties() ;
             List<Department> departments = initialData.getDepartments() ;

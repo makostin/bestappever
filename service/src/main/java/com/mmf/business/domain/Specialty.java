@@ -16,6 +16,12 @@ public class Specialty implements DomainClass<Long>{
     private String description;
     private Set<Group> groups = new HashSet<Group>();
 
+    public Specialty(){}
+
+    public Specialty(Long id) {
+        this.id = id;
+    }
+
     @Override
     public Long getId() {
         return id;

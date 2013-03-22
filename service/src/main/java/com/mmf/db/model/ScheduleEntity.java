@@ -18,6 +18,7 @@ public class ScheduleEntity implements EntityClass<Long>{
     private StudyEntity study;
     private Integer dayOfWeek;
     private Integer everyNWeek;
+    private Integer week;
     private Set<NoteEntity> notes = new HashSet<NoteEntity>();
 
     @Id
@@ -76,6 +77,14 @@ public class ScheduleEntity implements EntityClass<Long>{
 
     public void setEveryNWeek(Integer everyNWeek) {
         this.everyNWeek = everyNWeek;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 
     @OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY)

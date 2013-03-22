@@ -15,6 +15,10 @@ public class InitialData {
 
     private Integer courseAmount;
     private Integer groupAmount;
+    private String firstSemesterStart;
+    private String firstSemesterEnd;
+    private String secondSemesterStart;
+    private String secondSemesterEnd;
     private List<String> subGroups = new ArrayList<String>();
     private List<Department> departments = new ArrayList<Department>();
     private List<Specialty> specialties = new ArrayList<Specialty>();
@@ -66,5 +70,37 @@ public class InitialData {
 
     public void setLecturers(List<Lecturer> lecturers) {
         this.lecturers = lecturers;
+    }
+
+    public String getFirstSemesterStart() {
+        return firstSemesterStart;
+    }
+
+    public void setFirstSemesterStart(String firstSemesterStart) {
+        this.firstSemesterStart = firstSemesterStart;
+    }
+
+    public String getFirstSemesterEnd() {
+        return firstSemesterEnd;
+    }
+
+    public void setFirstSemesterEnd(String firstSemesterEnd) {
+        this.firstSemesterEnd = firstSemesterEnd;
+    }
+
+    public String getSecondSemesterStart() {
+        return secondSemesterStart;
+    }
+
+    public void setSecondSemesterStart(String secondSemesterStart) {
+        this.secondSemesterStart = secondSemesterStart;
+    }
+
+    public String getSecondSemesterEnd() {
+        return secondSemesterEnd;
+    }
+
+    public void setSecondSemesterEnd(String secondSemesterEnd) {
+        this.secondSemesterEnd = secondSemesterEnd;
     }
 }

@@ -28,6 +28,11 @@ public class InitialDataDeserializer implements JsonDeserializer<InitialData> {
             initialData.getSubGroups().add(element.getAsString());
         }
 
+        initialData.setFirstSemesterStart(data.get("firstSemesterStart").getAsString());
+        initialData.setFirstSemesterEnd(data.get("firstSemesterEnd").getAsString());
+        initialData.setSecondSemesterStart(data.get("secondSemesterStart").getAsString());
+        initialData.setSecondSemesterEnd(data.get("secondSemesterEnd").getAsString());
+
         array = data.getAsJsonArray("departments");
         for (JsonElement departmentJson : array){
             JsonObject departmentObject = departmentJson.getAsJsonObject();

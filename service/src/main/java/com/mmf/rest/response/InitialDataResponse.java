@@ -13,6 +13,10 @@ public class InitialDataResponse {
     
     private Integer courseAmount;
     private Integer groupAmount;
+    private String firstSemesterStart;
+    private String firstSemesterEnd;
+    private String secondSemesterStart;
+    private String secondSemesterEnd;
     private List<String> subGroups;
     private List<Department> departments;
     private List<SpecialtyInfo> specialties;
@@ -57,5 +61,37 @@ public class InitialDataResponse {
 
     public void setSpecialties(List<SpecialtyInfo> specialties) {
         this.specialties = specialties;
+    }
+
+    public String getFirstSemesterStart() {
+        return firstSemesterStart;
+    }
+
+    public void setFirstSemesterStart(String firstSemesterStart) {
+        this.firstSemesterStart = firstSemesterStart;
+    }
+
+    public String getFirstSemesterEnd() {
+        return firstSemesterEnd;
+    }
+
+    public void setFirstSemesterEnd(String firstSemesterEnd) {
+        this.firstSemesterEnd = firstSemesterEnd;
+    }
+
+    public String getSecondSemesterStart() {
+        return secondSemesterStart;
+    }
+
+    public void setSecondSemesterStart(String secondSemesterStart) {
+        this.secondSemesterStart = secondSemesterStart;
+    }
+
+    public String getSecondSemesterEnd() {
+        return secondSemesterEnd;
+    }
+
+    public void setSecondSemesterEnd(String secondSemesterEnd) {
+        this.secondSemesterEnd = secondSemesterEnd;
     }
 }

@@ -17,6 +17,12 @@ public class Group implements DomainClass<Long> {
     private Group mainGroup;
     private Set<Student> students = new HashSet<Student>();
 
+    public Group(){}
+
+    public Group(Long id) {
+        this.id = id;
+    }
+
     @Override
     public Long getId() {
         return id;

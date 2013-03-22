@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mmf.db.model.Schedule;
 import com.mmf.rest.deserializer.InitialDataDeserializer;
+import com.mmf.rest.deserializer.ScheduleDeserializer;
 import com.mmf.rest.domain.InitialData;
 import com.mmf.rest.exceptions.RestException;
 import com.mmf.rest.exceptions.UnexpectedResponseCodeException;
@@ -53,12 +54,6 @@ public class RestRequester {
 	public static final String SERVER_HTTP_DEV = "http://192.168.0.2:8080/";
 //	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
 //	public static final String SERVER_HTTP_DEV = "http://127.0.0.1:8080/";
-
-	// public static final String SERVER_HTTP_DEV =
-	// "http://jira45.hiqo-solutions.com:8080/";
-
-	// public static final String SERVER_HTTP_DEV =
-	// "http://192.168.1.188:8080/";
 
 	private static String getServerAddress() {
 		return SERVER_HTTP_DEV;
@@ -158,9 +153,37 @@ public class RestRequester {
 		}
 	}
 
-    public static List<Schedule> gesSchedule(int course, int group, String subGroup) {
-        // todo
-        return null;
+    public static List<Schedule> gesSchedule(int course, int group, String subGroup) throws RestException, InvalidCredentialsException {
+        List<Schedule> scheduleList = new ArrayList<Schedule>();
+        InputStreamReader inputStreamReader = null;
+        try{
+            StringBuilder params = new StringBuilder("?course=");
+            params.append(course);
+            params.append("&group=");
+            params.append(group);
+            params.append("&subGroup=");
+            params.append(subGroup);
+            inputStreamReader = getReader(REST_API + "schedule" + params.toString());
+            if(inputStreamReader != null){
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(List.class, new ScheduleDeserializer());
+                Gson gson = gsonBuilder.create();
+                Type listType = new TypeToken<List<InitialData>>() {}.getType();
+                scheduleList = gson.fromJson(inputStreamReader, listType);
+            }
+            return scheduleList;
+        } catch (IOException e){
+            Logger.getInstance().error(e);
+            throw new RestException(e);
+        } finally {
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException e) {
+                    Logger.getInstance().error(e);
+                }
+            }
+        }
     }
 
     public static InitialData getInitialData() throws InvalidCredentialsException, RestException {

@@ -59,6 +59,10 @@ public abstract class AbstractEntityDao<T extends Entity> extends BaseDAO<T> imp
 		return rows == 1;
 	}
 
+    public int deleteEntityQuery(String whereClause, String[] whereArgs) {
+        return super.deleteQuery(table.getName(), whereClause, whereArgs);
+    }
+
 	public void deleteList(List<T> listForDelete) {
 		if ((listForDelete != null) && (!listForDelete.isEmpty())) {
 			for (T entity : listForDelete) {

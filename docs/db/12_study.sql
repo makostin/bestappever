@@ -1,0 +1,1 @@
+INSERT INTO `study` (`id`, `IdCurriculum`, `IdGroup`, `IdLecturer`) VALUES	(1, 1, 2, 6),	(2, 2, 1, 13),	(3, 3, 3, 10),	(4, 7, 1, 6);

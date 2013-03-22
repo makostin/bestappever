@@ -3,16 +3,24 @@ package com.mmf.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.mmf.R;
 import com.mmf.adapter.StudentLessonsAdapter;
 import com.mmf.android.listener.ActivitySwipeDetector;
+import com.mmf.db.dao.impl.FilterDao;
+import com.mmf.db.model.Filter;
 import com.mmf.db.model.Schedule;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.rest.DataLoader;
 import com.mmf.rest.exceptions.ServiceLayerException;
 import com.mmf.rest.task.LoadDataTask;
 import com.mmf.service.ScheduleService;
+import com.mmf.util.EntityRegistry;
+import com.mmf.util.Logger;
+import org.apache.http.auth.InvalidCredentialsException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,9 +65,15 @@ public class LessonActivity extends Activity implements SwipeInterface {
             @Override
             protected Object doInBackground(Object... objects) {
                 try {
+                    FilterDao filterDao = (FilterDao) EntityRegistry.get().getEntityDao(Filter.class);
+                    filterDao.updateFilter(course, group, subGroup);
                     DataLoader.getInstance().loadSchedule(course, group, subGroup);
                 } catch (ServiceLayerException e) {
                     cancel(true);
+                    Logger.getInstance().error(e);
+                } catch (InvalidCredentialsException e) {
+                    cancel(true);
+                    Logger.getInstance().error(e);
                 }
                 return null;
             }

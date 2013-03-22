@@ -19,6 +19,7 @@ public class EntityRegistry {
         register( Schedule.class, new ScheduleDao());
         register( Specialty.class, new SpecialtyDao());
         register( Note.class, new NoteDao());
+        register( Filter.class, new FilterDao());
 	}
 	
 	static public void init( Context context ) {

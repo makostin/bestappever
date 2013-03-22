@@ -1,0 +1,1 @@
+INSERT INTO `curriculum` (`id`, `exam`, `hours`, `semester`, `setoff`, `IdDiscipline`, `IdSpecialty`) VALUES	(1, true, 120, 1, false, 8, 1),	(2, false, 90, 1, true, 9, 4),	(3, true, 100, 1, true, 9, 4),	(4, true, 90, 1, true, 9, 4),	(5, true, 90, 2, true, 9, 4),	(6, false, 60, 2, true, 9, 4),	(7, false, 90, 1, true, 9, 4);

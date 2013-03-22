@@ -16,9 +16,10 @@ public class Schedule implements Entity{
     private int day;
     private int classroom;
     private String discipline;
-    private Long date;
+    private int week;
     private Long lecturerId;
-    
+    private Long filterId;
+
     @Override
     public void setId(Long id) {
         this.id = id;
@@ -85,12 +86,12 @@ public class Schedule implements Entity{
         this.discipline = discipline;
     }
 
-    public Long getDate() {
-        return date;
+    public int getWeek() {
+        return week;
     }
 
-    public void setDate(Long date) {
-        this.date = date;
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     public Long getLecturerId() {
@@ -107,5 +108,13 @@ public class Schedule implements Entity{
 
     public void setCourse(int course) {
         this.course = course;
+    }
+
+    public Long getFilterId() {
+        return filterId;
+    }
+
+    public void setFilterId(Long filterId) {
+        this.filterId = filterId;
     }
 }
