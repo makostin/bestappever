@@ -1,5 +1,7 @@
 package com.mmf.service;
 
+import com.mmf.db.dao.impl.LecturerDao;
+import com.mmf.db.model.Lecturer;
 import com.mmf.util.EntityRegistry;
 import com.mmf.db.dao.impl.ScheduleDao;
 import com.mmf.db.model.Schedule;
@@ -14,6 +16,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleDao scheduleDao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
+    private final LecturerDao lecturerDao = (LecturerDao) EntityRegistry.get().getEntityDao(Lecturer.class);
 
 
     public List<Schedule> getLessonsForDay(int course, int group, String subGroup, int currentDay) {
@@ -21,6 +24,12 @@ public class ScheduleService {
         if (week == 0){
             week = 2;
         }
-        return scheduleDao.getLessonsForDay(course, group, subGroup, currentDay, week);
+
+        List<Schedule> scheduleList = scheduleDao.getLessonsForDay(course, group, subGroup, currentDay, week);
+        for (Schedule schedule : scheduleList){
+            long lecturerId = schedule.getLecturer().getId();
+            schedule.setLecturer(lecturerDao.get(lecturerId));
+        }
+        return scheduleList;
     }
 }

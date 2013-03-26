@@ -2,6 +2,8 @@ package com.mmf.rest;
 
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.prefs.SettingsPrefs;
+import com.mmf.rest.exceptions.RestException;
+import com.mmf.service.BusinessLayerException;
 import com.mmf.util.EntityRegistry;
 import com.mmf.db.DaoLayerException;
 import com.mmf.db.dao.impl.DepartmentDao;
@@ -72,6 +74,8 @@ public class DataLoader {
             LecturerDao lecturerDao = (LecturerDao) EntityRegistry.get().getEntityDao(Lecturer.class);
             lecturerDao.saveData(lecturers);
         } catch (DaoLayerException e) {
+            throw new ServiceLayerException(e);
+        } catch (RestException e){
             throw new ServiceLayerException(e);
         }
     }

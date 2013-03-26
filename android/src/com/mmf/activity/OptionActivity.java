@@ -12,6 +12,8 @@ import com.mmf.db.model.Lecturer;
 import com.mmf.db.model.Specialty;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.service.BusinessLayerException;
+import com.mmf.service.DepartmentService;
+import com.mmf.service.LecturerService;
 import com.mmf.service.SpecialtyService;
 import com.mmf.util.Logger;
 import com.mmf.util.SpinnerUtils;
@@ -35,12 +37,17 @@ public class OptionActivity extends Activity {
     private ArrayAdapter<String> subgroupAdapter;
     private ArrayAdapter<Lecturer> lecturerAdapter;
     private ArrayAdapter<Department> departmentAdapter;
+    
+    private DepartmentService departmentService;
+    private LecturerService lecturerService;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.option);
+        departmentService = new DepartmentService();
+        lecturerService = new LecturerService();
 
         try {
             initSpinners();
@@ -52,12 +59,13 @@ public class OptionActivity extends Activity {
                     OptionPrefs.Group.put(Integer.parseInt(groupSpinner.getSelectedItem().toString()));
                     OptionPrefs.Subgroup.put(subgroupSpinner.getSelectedItem().toString());
                     OptionPrefs.Lecturer.put(((Lecturer)lecturerSpinner.getSelectedItem()).getId());
+                    OptionPrefs.Department.put(((Department)departmentSpinner.getSelectedItem()).getId());
                     startActivity(new Intent(OptionActivity.this, LessonActivity.class));
                 }
             });
 
 
-            TabHost tabHost=(TabHost)findViewById(android.R.id.tabhost);
+            tabHost=(TabHost)findViewById(android.R.id.tabhost);
             tabHost.setup();
 
             TabHost.TabSpec studentSpec = tabHost.newTabSpec("Student");
@@ -81,6 +89,7 @@ public class OptionActivity extends Activity {
         courseSpinner = (Spinner) findViewById(R.id.course_spinner);
         courseAdapter = SpinnerUtils.getCourseAdapter(this);
         courseSpinner.setAdapter(courseAdapter);
+        courseSpinner.setSelection(courseAdapter.getPosition(OptionPrefs.Course.get()));
 
         groupSpinner = (Spinner) findViewById(R.id.group_spinner);
         groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -116,10 +125,12 @@ public class OptionActivity extends Activity {
         });
         groupAdapter = SpinnerUtils.getGroupAdapter(this);
         groupSpinner.setAdapter(groupAdapter);
+        groupSpinner.setSelection(groupAdapter.getPosition(OptionPrefs.Group.get()));
 
         subgroupSpinner = (Spinner) findViewById(R.id.subgroup_spinner);
         subgroupAdapter = SpinnerUtils.getSubGroupAdapter(this);
         subgroupSpinner.setAdapter(subgroupAdapter);
+        subgroupSpinner.setSelection(subgroupAdapter.getPosition(OptionPrefs.Subgroup.get()));
 
         departmentSpinner = (Spinner) findViewById(R.id.department_spinner);
         departmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -147,10 +158,18 @@ public class OptionActivity extends Activity {
         });
         departmentAdapter = SpinnerUtils.getDepartmentAdapter(this);
         departmentSpinner.setAdapter(departmentAdapter);
+        Department department = departmentService.getDepartment(OptionPrefs.Department.get());
+        if (department != null){
+            departmentSpinner.setSelection(departmentAdapter.getPosition(department));
+        }
 
         lecturerSpinner = (Spinner) findViewById(R.id.lecturer_spinner);
         lecturerAdapter = SpinnerUtils.getLecturerAdapter(this);
         lecturerSpinner.setAdapter(lecturerAdapter);
+        Lecturer lecturer = lecturerService.getLecturer(OptionPrefs.Lecturer.get());
+        if (lecturer != null){
+            lecturerSpinner.setSelection(lecturerAdapter.getPosition(lecturer));
+        }
     }
 
 

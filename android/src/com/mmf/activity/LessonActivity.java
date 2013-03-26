@@ -1,7 +1,7 @@
 package com.mmf.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -10,15 +10,19 @@ import android.widget.Toast;
 import com.mmf.R;
 import com.mmf.adapter.StudentLessonsAdapter;
 import com.mmf.android.listener.ActivitySwipeDetector;
-import com.mmf.db.dao.impl.FilterDao;
 import com.mmf.db.model.Filter;
+import com.mmf.db.model.Lecturer;
 import com.mmf.db.model.Schedule;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.rest.DataLoader;
 import com.mmf.rest.exceptions.ServiceLayerException;
 import com.mmf.rest.task.LoadDataTask;
+import com.mmf.service.BusinessLayerException;
+import com.mmf.service.FilterService;
+import com.mmf.service.LecturerService;
 import com.mmf.service.ScheduleService;
-import com.mmf.util.EntityRegistry;
+import com.mmf.util.DialogFragmentUtil;
+import com.mmf.util.InternetConnectionUtil;
 import com.mmf.util.Logger;
 import org.apache.http.auth.InvalidCredentialsException;
 
@@ -29,21 +33,27 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class LessonActivity extends Activity implements SwipeInterface {
+public class LessonActivity extends FragmentActivity implements SwipeInterface {
 
 
     private ListView listView;
     private int currentDay;
-    private int course;
-    private int group;
-    private String subGroup;
+//    private int course;
+//    private int group;
+//    private String subGroup;
+//    private Lecturer lecturer;
     private String date;
+
+    private String studentHeader;
+    private String lecturerHeader;
 
     private TextView dayView;
     private SimpleDateFormat dateFormat;
     private Calendar calendar;
     
     private ScheduleService service;
+    private FilterService filterService;
+    private LecturerService lecturerService;
 
 
     /**
@@ -55,8 +65,9 @@ public class LessonActivity extends Activity implements SwipeInterface {
         setContentView(R.layout.list_lessons);
 
         service = new ScheduleService();
+        filterService = new FilterService();
+        lecturerService = new LecturerService();
         init();
-        // todo: if don't have internet connection then get schedule by filter id
         loadData();
     }
 
@@ -66,13 +77,23 @@ public class LessonActivity extends Activity implements SwipeInterface {
             @Override
             protected Object doInBackground(Object... objects) {
                 try {
-                    FilterDao filterDao = (FilterDao) EntityRegistry.get().getEntityDao(Filter.class);
-                    long idFilter = filterDao.updateFilter(course, group, subGroup);
-                    DataLoader.getInstance().loadSchedule(course, group, subGroup, idFilter);
-                } catch (ServiceLayerException e) {
+                    // if don't have internet connection then get schedule by filter id
+                    if(InternetConnectionUtil.hasInternetConnection(LessonActivity.this)){
+                        long idFilter = filterService.updateFilter(course, group, subGroup);
+                        DataLoader.getInstance().loadSchedule(course, group, subGroup, idFilter);
+                    } else {
+                        Filter filter = filterService.getFilter(course, group, subGroup);  
+                        if (filter == null){
+                            DialogFragmentUtil.showConnectionErrorDialog(LessonActivity.this);
+                        }
+                    }
+                } catch (BusinessLayerException e) {
                     cancel(true);
                     Logger.getInstance().error(e);
                 } catch (InvalidCredentialsException e) {
+                    cancel(true);
+                    Logger.getInstance().error(e);
+                } catch (ServiceLayerException e) {
                     cancel(true);
                     Logger.getInstance().error(e);
                 }
@@ -96,15 +117,13 @@ public class LessonActivity extends Activity implements SwipeInterface {
     private void init(){
         calendar = Calendar.getInstance();
 
-        course = OptionPrefs.Course.get();
-        group = OptionPrefs.Group.get();
-        subGroup = OptionPrefs.Subgroup.get();
-        TextView courseGroupView = (TextView) findViewById(R.id.course_group);
-        courseGroupView.setVisibility(View.VISIBLE);
-        courseGroupView.setText("Course " + course + ", group " + group + subGroup);
+        int course = OptionPrefs.Course.get();
+        int group = OptionPrefs.Group.get();
+        String subGroup = OptionPrefs.Subgroup.get();
+        Lecturer lecturer = lecturerService.getLecturer(OptionPrefs.Lecturer.get());
 
-        findViewById(R.id.lecturer).setVisibility(View.INVISIBLE);
-
+        studentHeader = "Course " + course + ", group " + group + subGroup;
+        lecturerHeader = lecturer.getFullName();
 
         currentDay = calendar.get(Calendar.DAY_OF_WEEK);
         dateFormat = new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.US);
@@ -145,7 +164,7 @@ public class LessonActivity extends Activity implements SwipeInterface {
         currentDay--;
         LessonActivity.this.updateView();
 
-        calendar.add(Calendar.DATE, -1); // -days
+        calendar.add(Calendar.DATE, -1); // -day
         date = dateFormat.format(calendar.getTime());
         dayView.setText(date);
     }
@@ -158,7 +177,7 @@ public class LessonActivity extends Activity implements SwipeInterface {
         currentDay++;
         LessonActivity.this.updateView();
 
-        calendar.add(Calendar.DATE, 1); // +days
+        calendar.add(Calendar.DATE, 1); // +day
         date = dateFormat.format(calendar.getTime());
         dayView.setText(date);
     }

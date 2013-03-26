@@ -17,4 +17,8 @@ public class DepartmentService {
     public List<Department> list(){
         return departmentDao.selectAll();
     }
+
+    public Department getDepartment(long id) {
+        return departmentDao.get(id);
+    }
 }

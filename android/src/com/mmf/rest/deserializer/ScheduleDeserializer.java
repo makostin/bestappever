@@ -1,6 +1,7 @@
 package com.mmf.rest.deserializer;
 
 import com.google.gson.*;
+import com.mmf.db.model.Lecturer;
 import com.mmf.db.model.Schedule;
 
 import java.lang.reflect.Type;
@@ -25,7 +26,7 @@ public class ScheduleDeserializer implements JsonDeserializer<List<Schedule>> {
             schedule.setWeek(object.get("week").getAsInt());
             schedule.setClassroom(object.getAsJsonObject("classroom").get("number").getAsInt());
             schedule.setDiscipline(object.getAsJsonObject("discipline").get("name").getAsString());
-            schedule.setLecturerId(object.getAsJsonObject("lecturer").get("id").getAsLong());
+            schedule.setLecturer(new Lecturer(object.getAsJsonObject("lecturer").get("id").getAsLong()));
 
             JsonObject timeObject = object.getAsJsonObject("time");
             schedule.setNumber(timeObject.get("number").getAsInt());

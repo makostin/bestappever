@@ -11,6 +11,12 @@ public class Lecturer implements Entity{
     private Department department;
     private String fullName;
 
+    public Lecturer(){}
+
+    public Lecturer(long id) {
+        this.id = id;
+    }
+
     @Override
     public void setId(Long id) {
         this.id = id;

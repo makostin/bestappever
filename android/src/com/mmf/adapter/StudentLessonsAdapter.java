@@ -42,12 +42,12 @@ public class StudentLessonsAdapter extends ArrayAdapter<Schedule> {
         TextView subject = (TextView) lessonView.findViewById(R.id.subject);
         TextView lecturer = (TextView) lessonView.findViewById(R.id.lecturer);
         TextView classRoom = (TextView) lessonView.findViewById(R.id.classroom);
-        TextView date = (TextView) lessonView.findViewById(R.id.time);
+        TextView time = (TextView) lessonView.findViewById(R.id.time);
 
         subject.setText(lesson.getDiscipline());
-        lecturer.setText(String.valueOf(lesson.getLecturerId()));
-        classRoom.setText(lesson.getClassroom());
-        date.setText(lesson.getTime());
+        lecturer.setText(lesson.getLecturer().getFullName());
+        classRoom.setText(String.valueOf(lesson.getClassroom()));
+        time.setText(lesson.getTime());
 
         return lessonView;
     }

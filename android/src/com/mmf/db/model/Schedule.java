@@ -17,7 +17,7 @@ public class Schedule implements Entity{
     private int classroom;
     private String discipline;
     private int week;
-    private Long lecturerId;
+    private Lecturer lecturer;
     private Long filterId;
 
     @Override
@@ -94,12 +94,12 @@ public class Schedule implements Entity{
         this.week = week;
     }
 
-    public Long getLecturerId() {
-        return lecturerId;
+    public Lecturer getLecturer() {
+        return lecturer;
     }
 
-    public void setLecturerId(Long lecturerId) {
-        this.lecturerId = lecturerId;
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
     }
 
     public int getCourse() {

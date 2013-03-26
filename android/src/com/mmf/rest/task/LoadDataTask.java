@@ -3,6 +3,8 @@ package com.mmf.rest.task;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
+import com.mmf.util.DialogFragmentUtil;
 
 /**
  * User: svetlana.voyteh
@@ -10,25 +12,21 @@ import android.os.AsyncTask;
  */
 public abstract class LoadDataTask extends AsyncTask{
 
-    private ProgressDialog dialog;
-    private Context context;
+    private FragmentActivity activity;
 
-    public LoadDataTask(Context context){
-        this.context = context;
+    public LoadDataTask(FragmentActivity activity){
+        this.activity = activity;
 
     }
 
     @Override
     protected void onPreExecute() {
-        dialog = new ProgressDialog(context);
-        dialog.setMessage("Loading data. Please. wait...");
+        DialogFragmentUtil.showProgressDialogFragment(activity);
     }
 
 
     @Override
     protected void onPostExecute(Object o) {
-        if(dialog.isShowing()){
-            dialog.dismiss();
-        }
+        DialogFragmentUtil.dismissProgressDialogFragment(activity);
     }
 }

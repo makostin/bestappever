@@ -3,6 +3,7 @@ package com.mmf.db.dao.impl;
 import android.content.ContentValues;
 import android.database.Cursor;
 import com.mmf.db.dao.AbstractEntityDao;
+import com.mmf.db.model.Lecturer;
 import com.mmf.db.model.Schedule;
 import com.mmf.util.Logger;
 
@@ -64,7 +65,7 @@ public class ScheduleDao extends AbstractEntityDao<Schedule>{
         result.setGroupNumber(getInt(cursor, GROUP_NUMBER_COLUMN));
         result.setNumber(getInt(cursor, NUMBER_COLUMN));
         result.setSubGroup(getString(cursor, SUBGROUP_COLUMN));
-        result.setLecturerId(getLong(cursor, LECTURER_COLUMN));
+        result.setLecturer(new Lecturer(getLong(cursor, LECTURER_COLUMN)));
         result.setFilterId(getLong(cursor, FILTER_COLUMN));
         return result;
     }
@@ -80,7 +81,7 @@ public class ScheduleDao extends AbstractEntityDao<Schedule>{
         put(values, GROUP_NUMBER_COLUMN, entity.getGroupNumber());
         put(values, NUMBER_COLUMN, entity.getNumber());
         put(values, SUBGROUP_COLUMN, entity.getSubGroup());
-        put(values, LECTURER_COLUMN, entity.getLecturerId());
+        put(values, LECTURER_COLUMN, entity.getLecturer().getId());
         put(values, FILTER_COLUMN, entity.getFilterId());
     }
 

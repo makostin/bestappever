@@ -133,7 +133,7 @@ public class RestRequester {
 //	}
 
 
-	private static InputStreamReader getReader(String apiUrl) throws InvalidCredentialsException, IOException, UnexpectedResponseCodeException {
+	private static InputStreamReader getReader(String apiUrl) throws InvalidCredentialsException, RestException {
 		ByteArrayOutputStream outputStream = null;
 		InputStreamReader inputStreamReader = null;
 		try {
@@ -142,7 +142,13 @@ public class RestRequester {
 			internetDataProvider.get(CredentialsPrefs.LoginDefault.get(), CredentialsPrefs.PasswordDefault.get(), outputStream);
 			inputStreamReader = new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()));
 			return inputStreamReader;
-		} finally {
+		} catch (UnexpectedResponseCodeException e) {
+            Logger.getInstance().error(e);
+            throw new RestException(e);
+        } catch (MalformedURLException e) {
+            Logger.getInstance().error(e);
+            throw new RestException(e);
+        } finally {
 			if (outputStream != null) {
 				try {
 					outputStream.close();
@@ -172,9 +178,6 @@ public class RestRequester {
                 scheduleList = gson.fromJson(inputStreamReader, listType);
             }
             return scheduleList;
-        } catch (IOException e){
-            Logger.getInstance().error(e);
-            throw new RestException(e);
         } finally {
             if (inputStreamReader != null) {
                 try {
@@ -199,9 +202,6 @@ public class RestRequester {
                 data = gson.fromJson(inputStreamReader, listType);
 			}
 			return data;
-		} catch (IOException e) {
-            Logger.getInstance().error(e);
-			throw new RestException(e);
 		} finally {
 			if (inputStreamReader != null) {
 				try {

@@ -21,4 +21,8 @@ public class LecturerService {
     public List<Lecturer> getLecturerByDepartment(Long departmentId){
         return lecturerDao.getLecturerByDepartment(departmentId);
     }
+
+    public Lecturer getLecturer(long id) {
+        return lecturerDao.get(id);
+    }
 }

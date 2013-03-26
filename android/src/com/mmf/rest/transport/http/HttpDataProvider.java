@@ -2,6 +2,7 @@ package com.mmf.rest.transport.http;
 
 import android.os.Build;
 import android.util.Base64;
+import com.mmf.rest.exceptions.RestException;
 import com.mmf.rest.exceptions.UnexpectedResponseCodeException;
 import com.mmf.rest.transport.RestResponse;
 import com.mmf.util.Logger;
@@ -29,7 +30,7 @@ public class HttpDataProvider implements DataProvider {
 	}
 
 	@Override
-	public void get(String login, String password, OutputStream outputWriter) throws IOException, UnexpectedResponseCodeException, InvalidCredentialsException {
+	public void get(String login, String password, OutputStream outputWriter) throws RestException, InvalidCredentialsException {
 		HttpURLConnection connection = null;
 		try {
 			connection = openConnection(login, password, -1, "get");
@@ -41,6 +42,9 @@ public class HttpDataProvider implements DataProvider {
 				throw new UnexpectedResponseCodeException(responseCode);
 			}
 			readData(connection, outputWriter);
+        } catch (IOException e){
+            Logger.getInstance().error(e);
+            throw new RestException(e);
 		} finally {
 			closeConnection(connection);
 		}
