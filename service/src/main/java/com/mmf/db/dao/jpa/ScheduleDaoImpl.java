@@ -1,6 +1,5 @@
 package com.mmf.db.dao.jpa;
 
-import com.mmf.business.domain.Schedule;
 import com.mmf.db.dao.ScheduleDao;
 import com.mmf.db.model.CurriculumEntity;
 import com.mmf.db.model.GroupEntity;
@@ -69,7 +68,7 @@ public class ScheduleDaoImpl extends GenericJpaDao<Long, ScheduleEntity> impleme
                         )
                 );
 
-        select.where(criteriaBuilder.in(rootSchedule.get("study")).value(selectStudy));
+        select.where(criteriaBuilder.in(rootSchedule.get("study")).value(selectStudy)).orderBy(criteriaBuilder.asc(rootSchedule.get("dayOfWeek")));
 
         TypedQuery<ScheduleEntity> query = entityManager.createQuery(select);
 

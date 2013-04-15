@@ -2,18 +2,21 @@ package com.mmf.business.impl;
 
 import com.mmf.business.BusinessServiceException;
 import com.mmf.business.ScheduleService;
-import com.mmf.business.domain.Curriculum;
 import com.mmf.business.domain.Schedule;
 import com.mmf.business.domain.utils.*;
 import com.mmf.db.dao.ScheduleDao;
 import com.mmf.db.model.ScheduleEntity;
+import com.mmf.rest.response.DisciplineResponse;
 import com.mmf.rest.response.ScheduleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Named;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * User: svetlana.voyteh
@@ -56,18 +59,47 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
     public List<ScheduleResponse> getSchedule(int semester, int yearOfEntrance, String groupName, String subGroupName) throws BusinessServiceException {
         List<ScheduleEntity> scheduleList = scheduleDao.getSchedule(semester, yearOfEntrance, groupName, subGroupName);
         List<ScheduleResponse> responseList = new ArrayList<ScheduleResponse>();
+        ScheduleResponse scheduleResponse = new ScheduleResponse();
+        int day = scheduleList.get(0).getDayOfWeek();
+        int size = scheduleList.size();
         for(ScheduleEntity entity : scheduleList){
-            ScheduleResponse scheduleResponse = new ScheduleResponse();
+            size--;
             Schedule schedule = convertToDomain(entity);
-            Curriculum curriculum = CurriculumHelper.convertToDomain(entity.getStudy().getCurriculum());
-            scheduleResponse.setDiscipline(curriculum.getDiscipline());
-            scheduleResponse.setLecturer(schedule.getStudy().getLecturer());
-            scheduleResponse.setWeek(schedule.getWeek());
-            scheduleResponse.setClassroom(schedule.getClassroom());
-            scheduleResponse.setTime(schedule.getDisciplineTime());
-            scheduleResponse.setDayOfWeek(schedule.getDayOfWeek());
-            responseList.add(scheduleResponse);
+
+            DisciplineResponse disciplineResponse = new DisciplineResponse();
+            disciplineResponse.setName(entity.getStudy().getCurriculum().getDiscipline().getName());
+            disciplineResponse.setLecturer(schedule.getStudy().getLecturer());
+            disciplineResponse.setClassroom(schedule.getClassroom().getNumber());
+            disciplineResponse.setTime(schedule.getDisciplineTime());
+            disciplineResponse.setWeek(schedule.getWeek());
+
+            if (day != schedule.getDayOfWeek()) {
+                scheduleResponse.setDay(day);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.DAY_OF_WEEK, day);
+                String dayTitle = new SimpleDateFormat("EEEE", new Locale("ru", "RU")).format(calendar.getTime());
+                scheduleResponse.setDayTitle(dayTitle.substring(0, 1).toUpperCase() + dayTitle.substring(1));
+                responseList.add(scheduleResponse);
+
+                scheduleResponse = new ScheduleResponse();
+                scheduleResponse.getDisciplines().add(disciplineResponse);
+                day = schedule.getDayOfWeek();
+            } else if  (size == 0){
+                scheduleResponse.getDisciplines().add(disciplineResponse);
+                scheduleResponse.setDay(day);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.DAY_OF_WEEK, day);
+                String dayTitle = new SimpleDateFormat("EEEE", new Locale("ru", "RU")).format(calendar.getTime());
+                scheduleResponse.setDayTitle(dayTitle.substring(0, 1).toUpperCase() + dayTitle.substring(1));
+
+                responseList.add(scheduleResponse);
+            } else {
+                scheduleResponse.getDisciplines().add(disciplineResponse);
+            }
         }
         return responseList;  
     }
+
 }

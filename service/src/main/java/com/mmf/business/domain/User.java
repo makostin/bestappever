@@ -97,6 +97,7 @@ public class User implements DomainClass<Long>{
         this.patronymic = patronymic;
     }
 
+    @XmlTransient
     public Boolean getAdmin() {
         return isAdmin;
     }
