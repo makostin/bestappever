@@ -58,8 +58,8 @@ public class OptionActivity extends Activity {
                     OptionPrefs.Course.put(Integer.parseInt(courseSpinner.getSelectedItem().toString()));
                     OptionPrefs.Group.put(Integer.parseInt(groupSpinner.getSelectedItem().toString()));
                     OptionPrefs.Subgroup.put(subgroupSpinner.getSelectedItem().toString());
-                    OptionPrefs.Lecturer.put(((Lecturer)lecturerSpinner.getSelectedItem()).getId());
-                    OptionPrefs.Department.put(((Department)departmentSpinner.getSelectedItem()).getId());
+//                    OptionPrefs.Lecturer.put(((Lecturer)lecturerSpinner.getSelectedItem()).getId());
+//                    OptionPrefs.Department.put(((Department)departmentSpinner.getSelectedItem()).getId());
                     startActivity(new Intent(OptionActivity.this, LessonActivity.class));
                 }
             });

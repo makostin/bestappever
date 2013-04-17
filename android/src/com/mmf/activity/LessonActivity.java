@@ -38,10 +38,10 @@ public class LessonActivity extends FragmentActivity implements SwipeInterface {
 
     private ListView listView;
     private int currentDay;
-//    private int course;
-//    private int group;
-//    private String subGroup;
-//    private Lecturer lecturer;
+    private int course;
+    private int group;
+    private String subGroup;
+    private Lecturer lecturer;
     private String date;
 
     private String studentHeader;
@@ -82,7 +82,7 @@ public class LessonActivity extends FragmentActivity implements SwipeInterface {
                         long idFilter = filterService.updateFilter(course, group, subGroup);
                         DataLoader.getInstance().loadSchedule(course, group, subGroup, idFilter);
                     } else {
-                        Filter filter = filterService.getFilter(course, group, subGroup);  
+                        Filter filter = filterService.getFilter(course, group, subGroup);
                         if (filter == null){
                             DialogFragmentUtil.showConnectionErrorDialog(LessonActivity.this);
                         }
@@ -117,13 +117,14 @@ public class LessonActivity extends FragmentActivity implements SwipeInterface {
     private void init(){
         calendar = Calendar.getInstance();
 
-        int course = OptionPrefs.Course.get();
-        int group = OptionPrefs.Group.get();
-        String subGroup = OptionPrefs.Subgroup.get();
-        Lecturer lecturer = lecturerService.getLecturer(OptionPrefs.Lecturer.get());
+        course = OptionPrefs.Course.get();
+        group = OptionPrefs.Group.get();
+        subGroup = OptionPrefs.Subgroup.get();
+        lecturer = lecturerService.getLecturer(OptionPrefs.Lecturer.get());
 
         studentHeader = "Course " + course + ", group " + group + subGroup;
-        lecturerHeader = lecturer.getFullName();
+        ((TextView) findViewById(R.id.header)).setText(studentHeader);
+//        lecturerHeader = lecturer.getFullName();
 
         currentDay = calendar.get(Calendar.DAY_OF_WEEK);
         dateFormat = new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.US);

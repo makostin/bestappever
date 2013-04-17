@@ -20,20 +20,23 @@ public class ScheduleDeserializer implements JsonDeserializer<List<Schedule>> {
         List<Schedule> scheduleList = new ArrayList<Schedule>();
         for(JsonElement element : elements){
             JsonObject object = element.getAsJsonObject();
-            Schedule schedule = new Schedule();
 
-            schedule.setDay(object.get("dayOfWeek").getAsInt());
-            schedule.setWeek(object.get("week").getAsInt());
-            schedule.setClassroom(object.getAsJsonObject("classroom").get("number").getAsInt());
-            schedule.setDiscipline(object.getAsJsonObject("discipline").get("name").getAsString());
-            schedule.setLecturer(new Lecturer(object.getAsJsonObject("lecturer").get("id").getAsLong()));
+            for(JsonElement disciplineElement : object.getAsJsonArray("disciplines")){
+                Schedule schedule = new Schedule();
+                schedule.setDay(object.get("day").getAsInt());
 
-            JsonObject timeObject = object.getAsJsonObject("time");
-            schedule.setNumber(timeObject.get("number").getAsInt());
-            schedule.setTime(timeObject.get("startTime").getAsString());
+                JsonObject disciplineObject = disciplineElement.getAsJsonObject();
+                schedule.setWeek(disciplineObject.get("week").getAsInt());
+                schedule.setClassroom(disciplineObject.get("classroom").getAsInt());
+                schedule.setDiscipline(disciplineObject.get("name").getAsString());
+                schedule.setLecturer(new Lecturer(disciplineObject.getAsJsonObject("lecturer").get("id").getAsLong()));
 
-            scheduleList.add(schedule);
+                JsonObject timeObject = disciplineObject.getAsJsonObject("time");
+                schedule.setNumber(timeObject.get("number").getAsInt());
+                schedule.setTime(timeObject.get("startTime").getAsString());
 
+                scheduleList.add(schedule);
+            }
         }
         return scheduleList;
     }

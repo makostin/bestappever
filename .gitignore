@@ -6,3 +6,7 @@
 /service/target
 /service/service.iml
 /android/gen
+/library/.idea
+/library/gen
+/library/test
+/library/Library.iml

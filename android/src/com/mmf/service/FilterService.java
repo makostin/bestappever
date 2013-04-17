@@ -17,19 +17,19 @@ public class FilterService {
 
     private final FilterDao filterDao = (FilterDao) EntityRegistry.get().getEntityDao(Filter.class);
 
-    private int course;
-    private int group;
-    private String subGroup;
-    private Long lecturer;
+//    private int course;
+//    private int group;
+//    private String subGroup;
+//    private Long lecturer;
 
     public FilterService(){
-        this.course = OptionPrefs.Course.get();
-        this.group = OptionPrefs.Group.get();
-        this.subGroup = OptionPrefs.Subgroup.get();
-        this.lecturer = OptionPrefs.Lecturer.get();
+//        this.course = OptionPrefs.Course.get();
+//        this.group = OptionPrefs.Group.get();
+//        this.subGroup = OptionPrefs.Subgroup.get();
+//        this.lecturer = OptionPrefs.Lecturer.get();
     }
 
-    public long updateFilter() throws BusinessLayerException {
+    public long updateFilter(int course, int group, String subGroup) throws BusinessLayerException {
         try {
             Filter filter = filterDao.getFilter(course, group, subGroup);
             if (filter != null){
@@ -50,7 +50,7 @@ public class FilterService {
         }
     }
 
-    public Filter getFilter() {
+    public Filter getFilter(int course, int group, String subGroup) {
         return filterDao.getFilter(course, group, subGroup);
     }
 }

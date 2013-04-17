@@ -74,32 +74,29 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
             disciplineResponse.setWeek(schedule.getWeek());
 
             if (day != schedule.getDayOfWeek()) {
-                scheduleResponse.setDay(day);
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.DAY_OF_WEEK, day);
-                String dayTitle = new SimpleDateFormat("EEEE", new Locale("ru", "RU")).format(calendar.getTime());
-                scheduleResponse.setDayTitle(dayTitle.substring(0, 1).toUpperCase() + dayTitle.substring(1));
+                setDay(scheduleResponse, day);
                 responseList.add(scheduleResponse);
-
                 scheduleResponse = new ScheduleResponse();
                 scheduleResponse.getDisciplines().add(disciplineResponse);
                 day = schedule.getDayOfWeek();
             } else if  (size == 0){
+                setDay(scheduleResponse, day);
                 scheduleResponse.getDisciplines().add(disciplineResponse);
-                scheduleResponse.setDay(day);
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.DAY_OF_WEEK, day);
-                String dayTitle = new SimpleDateFormat("EEEE", new Locale("ru", "RU")).format(calendar.getTime());
-                scheduleResponse.setDayTitle(dayTitle.substring(0, 1).toUpperCase() + dayTitle.substring(1));
-
                 responseList.add(scheduleResponse);
             } else {
                 scheduleResponse.getDisciplines().add(disciplineResponse);
             }
         }
         return responseList;  
+    }
+
+    private void setDay(ScheduleResponse response, int day){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, day);
+        String dayTitle = new SimpleDateFormat("EEEE", new Locale("ru", "RU")).format(calendar.getTime());
+
+        response.setDay(day);
+        response.setDayTitle(dayTitle.substring(0, 1).toUpperCase() + dayTitle.substring(1));
     }
 
 }
