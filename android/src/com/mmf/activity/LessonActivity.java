@@ -1,7 +1,6 @@
 package com.mmf.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class LessonActivity extends FragmentActivity implements SwipeInterface {
+public class LessonActivity extends BaseActivity implements SwipeInterface {
 
 
     private ListView listView;
@@ -102,14 +101,15 @@ public class LessonActivity extends FragmentActivity implements SwipeInterface {
 
             @Override
             protected void onCancelled() {
-                Toast.makeText(LessonActivity.this, "There are problems with data loading.", Toast.LENGTH_LONG);
                 super.onCancelled();
+                Toast.makeText(LessonActivity.this, "There are problems with data loading.", Toast.LENGTH_LONG).show();
+                LessonActivity.this.finish();
             }
 
             @Override
             protected void onPostExecute(Object o) {
-                updateView();
                 super.onPostExecute(o);
+                updateView();
             }
         }.execute();
     }
@@ -186,6 +186,7 @@ public class LessonActivity extends FragmentActivity implements SwipeInterface {
     public void top2bottom(View v) {
 
     }
+
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

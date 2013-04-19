@@ -1,6 +1,5 @@
 package com.mmf.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,20 +16,20 @@ import com.mmf.service.LecturerService;
 import com.mmf.service.SpecialtyService;
 import com.mmf.util.Logger;
 import com.mmf.util.SpinnerUtils;
+import com.mmf.view.ToggleButton;
 
 
 /**
  * @author svetlana.voyteh
  * @date: 2/3/12
  */
-public class OptionActivity extends Activity {
+public class OptionActivity extends BaseActivity {
     
     private Spinner courseSpinner;
     private Spinner groupSpinner;
     private Spinner subgroupSpinner;
     private Spinner lecturerSpinner;
     private Spinner departmentSpinner;
-    private TabHost tabHost;
 
     private ArrayAdapter<Integer> courseAdapter;
     private ArrayAdapter<Integer> groupAdapter;
@@ -52,7 +51,7 @@ public class OptionActivity extends Activity {
         try {
             initSpinners();
 
-            Button button = (Button) findViewById(R.id.button);
+            Button button = (Button) findViewById(R.id.apply_button);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     OptionPrefs.Course.put(Integer.parseInt(courseSpinner.getSelectedItem().toString()));
@@ -64,20 +63,9 @@ public class OptionActivity extends Activity {
                 }
             });
 
+            ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggle_button);
+            toggleButton.setViews(findViewById(R.id.layout_student), findViewById(R.id.layout_lecturer));
 
-            tabHost=(TabHost)findViewById(android.R.id.tabhost);
-            tabHost.setup();
-
-            TabHost.TabSpec studentSpec = tabHost.newTabSpec("Student");
-            studentSpec.setContent(R.id.studentTab);
-            studentSpec.setIndicator("Student");
-
-            TabHost.TabSpec lecturerSpec = tabHost.newTabSpec("Lecturer");
-            lecturerSpec.setIndicator("Lecturer");
-            lecturerSpec.setContent(R.id.lecturerTab);
-
-            tabHost.addTab(studentSpec);
-            tabHost.addTab(lecturerSpec);
 
         } catch (BusinessLayerException ble) {
             Logger.getInstance().error(ble);

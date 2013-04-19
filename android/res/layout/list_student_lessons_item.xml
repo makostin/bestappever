@@ -14,6 +14,7 @@
                   android:paddingLeft="20dip"
                   android:textSize="60sp"
                   android:textStyle="bold"
+                  android:textColor="#0b386a"
                   android:text="time"/>
 
         <RelativeLayout android:layout_width="wrap_content"
@@ -32,6 +33,7 @@
                       android:layout_alignParentRight="true"
                       android:paddingTop="10dip"
                       android:textSize="18sp"
+                      android:textColor="#0b386a"
                       android:text="classroom"/>
 
             <TextView android:id="@+id/subject"
@@ -42,6 +44,7 @@
                       android:paddingTop="35dip"
                       android:textSize="18sp"
                       android:textStyle="bold"
+                      android:textColor="#0b386a"
                       android:text="subject"/>
 
             <TextView android:id="@+id/lecturer"
@@ -50,6 +53,7 @@
                       android:layout_alignParentRight="true"
                       android:layout_below="@id/subject"
                       android:textSize="18sp"
+                      android:textColor="#0b386a"
                       android:text="lecturer"/>
 
         </RelativeLayout>

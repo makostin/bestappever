@@ -1,8 +1,8 @@
 package com.mmf.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import com.mmf.R;
 import com.mmf.prefs.SettingsPrefs;
@@ -13,14 +13,12 @@ import com.mmf.util.InternetConnectionUtil;
 import com.mmf.util.Logger;
 import org.apache.http.auth.InvalidCredentialsException;
 
+
 /**
  * @author svetlana.voyteh
  * @date: 2/12/12
  */
 public class SplashScreenActivity extends FragmentActivity{
-
-    public static final int SPLASH_DISPLAY_TIME = 1000;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,24 +29,7 @@ public class SplashScreenActivity extends FragmentActivity{
     
     private void initData(){
         if(InternetConnectionUtil.hasInternetConnection(this)){
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    try {
-                        DataLoader.getInstance().init();
-                        SettingsPrefs.IsDataLoaded.put(true);
-                    } catch (ServiceLayerException e) {
-                        Logger.getInstance().error(e);
-                        DialogFragmentUtil.showErrorDialog(SplashScreenActivity.this, "Internet Connection Error", "Connection refused. There are problems with the server.");
-                        return;
-                    } catch (InvalidCredentialsException e) {
-                        Logger.getInstance().error(e);
-                        DialogFragmentUtil.showErrorDialog(SplashScreenActivity.this, "Authorization Error", "Invalid credentials.");
-                        return;
-                    }
-                    SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, OptionActivity.class));
-                    SplashScreenActivity.this.finish();
-                }
-            }, SPLASH_DISPLAY_TIME);
+            new InitDataTask().execute();
         } else if (SettingsPrefs.IsDataLoaded.get()){
             startActivity(new Intent(SplashScreenActivity.this, OptionActivity.class));
             finish();
@@ -57,5 +38,42 @@ public class SplashScreenActivity extends FragmentActivity{
         }
     }
 
+
+    private class InitDataTask extends AsyncTask<Object, Object, Boolean> {
+
+        private String title;
+        private String message;
+
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            try {
+                DataLoader.getInstance().init();
+                SettingsPrefs.IsDataLoaded.put(true);
+                return true;
+            } catch (ServiceLayerException e) {
+                Logger.getInstance().error(e);
+                title = "Internet Connection Error";
+                message = "Connection refused. There are problems with the server.";
+            } catch (InvalidCredentialsException e) {
+                Logger.getInstance().error(e);
+                title = "Authorization Error";
+                message = "Invalid credentials.";
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result){
+                SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, OptionActivity.class));
+                SplashScreenActivity.this.finish();
+            } else if (SettingsPrefs.IsDataLoaded.get()){
+                startActivity(new Intent(SplashScreenActivity.this, OptionActivity.class));
+                finish();
+            }else {
+                DialogFragmentUtil.showErrorDialog(SplashScreenActivity.this, title, message);
+            }
+        }
+    }
 
 }

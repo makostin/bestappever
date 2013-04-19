@@ -8,8 +8,8 @@
     <string name="subgroup_prompt">Subgroup:</string>
     <string name="department_prompt">Department:</string>
     <string name="lecturer_prompt">Lecturer:</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_login">Login</string>
+    <string name="menu_options">Options</string>
+    <string name="menu_week">Week</string>
     <string name="menu_logout">Logout</string>
     <string name="login">Login:</string>
     <string name="password">Password:</string>
