@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface ScheduleService extends CrudService<Long, Schedule>{
     List<ScheduleResponse> getSchedule(int semester, int yearOfEntrance, String groupName, String subGroupName) throws BusinessServiceException;
+
+    List<ScheduleResponse> getSchedule(long lecturerId);
 }

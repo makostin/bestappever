@@ -34,6 +34,7 @@ public class ScheduleResource {
     private DisciplineService disciplineService;
 
     @GET
+    @Path("/student")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSchedule(@QueryParam("course") int course, @QueryParam("group") int group, @QueryParam("subGroup") @DefaultValue("") String subGroup){
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -50,6 +51,23 @@ public class ScheduleResource {
         String subGroupName = String.valueOf(group) + subGroup;
         try {
             List<ScheduleResponse> scheduleList = scheduleService.getSchedule(semester, yearOfEntrance, String.valueOf(group), subGroupName);
+            for(ScheduleResponse response : scheduleList){
+                for(DisciplineResponse disciplineResponse : response.getDisciplines()){
+                    disciplineResponse.setLecturer(lecturerService.get(disciplineResponse.getLecturer().getId()));
+                }
+            }
+            return Response.ok(scheduleList).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        }
+    }
+
+    @GET
+    @Path("/lecturer")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSchedule(@QueryParam("lecturerId") long lecturerId){
+        try {
+            List<ScheduleResponse> scheduleList = scheduleService.getSchedule(lecturerId);
             for(ScheduleResponse response : scheduleList){
                 for(DisciplineResponse disciplineResponse : response.getDisciplines()){
                     disciplineResponse.setLecturer(lecturerService.get(disciplineResponse.getLecturer().getId()));

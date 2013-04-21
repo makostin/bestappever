@@ -12,7 +12,7 @@ import java.util.List;
  * User: svetlana.voyteh
  * Date: 19.03.13
  */
-public class ScheduleDeserializer implements JsonDeserializer<List<Schedule>> {
+public class StudentScheduleDeserializer implements JsonDeserializer<List<Schedule>> {
 
     @Override
     public List<Schedule> deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {

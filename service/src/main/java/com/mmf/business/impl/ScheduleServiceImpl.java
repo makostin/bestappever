@@ -90,6 +90,12 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
         return responseList;  
     }
 
+    @Override
+    @Transactional(rollbackFor = BusinessServiceException.class)
+    public List<ScheduleResponse> getSchedule(long lecturerId) {
+        return null;
+    }
+
     private void setDay(ScheduleResponse response, int day){
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, day);

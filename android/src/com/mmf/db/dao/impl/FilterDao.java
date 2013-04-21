@@ -65,4 +65,10 @@ public class FilterDao extends AbstractEntityDao<Filter>{
         return getEntityQuery(whereClause.toString(), whereArgs);
     }
 
+    public Filter getFilter(long lecturerId) {
+        String whereClause = LECTURER_COLUMN + " = ?";
+        String[] whereArgs = new String[]{String.valueOf(lecturerId)};
+        return getEntityQuery(whereClause, whereArgs);
+    }
+
 }

@@ -8,12 +8,14 @@ import android.widget.*;
 import com.mmf.R;
 import com.mmf.db.model.Department;
 import com.mmf.db.model.Lecturer;
+import com.mmf.db.model.ScheduleType;
 import com.mmf.db.model.Specialty;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.service.BusinessLayerException;
 import com.mmf.service.DepartmentService;
 import com.mmf.service.LecturerService;
 import com.mmf.service.SpecialtyService;
+import com.mmf.util.IntentUtil;
 import com.mmf.util.Logger;
 import com.mmf.util.SpinnerUtils;
 import com.mmf.view.ToggleButton;
@@ -30,6 +32,7 @@ public class OptionActivity extends BaseActivity {
     private Spinner subgroupSpinner;
     private Spinner lecturerSpinner;
     private Spinner departmentSpinner;
+    private ToggleButton toggleButton;
 
     private ArrayAdapter<Integer> courseAdapter;
     private ArrayAdapter<Integer> groupAdapter;
@@ -54,21 +57,38 @@ public class OptionActivity extends BaseActivity {
             Button button = (Button) findViewById(R.id.apply_button);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    OptionPrefs.Course.put(Integer.parseInt(courseSpinner.getSelectedItem().toString()));
-                    OptionPrefs.Group.put(Integer.parseInt(groupSpinner.getSelectedItem().toString()));
-                    OptionPrefs.Subgroup.put(subgroupSpinner.getSelectedItem().toString());
-//                    OptionPrefs.Lecturer.put(((Lecturer)lecturerSpinner.getSelectedItem()).getId());
-//                    OptionPrefs.Department.put(((Department)departmentSpinner.getSelectedItem()).getId());
-                    startActivity(new Intent(OptionActivity.this, LessonActivity.class));
+                    saveOptions();
+                    Intent intent = new Intent(OptionActivity.this, LessonActivity.class);
+                    if (toggleButton.getSelectedView() == ScheduleType.STUDENT.getId()){
+                        intent.putExtra(IntentUtil.SCHEDULE_TYPE_EXTRA, ScheduleType.STUDENT);
+                    } else {
+                        intent.putExtra(IntentUtil.SCHEDULE_TYPE_EXTRA, ScheduleType.LECTURER);
+                    }
+                    startActivity(intent);
                 }
             });
 
-            ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggle_button);
+            toggleButton = (ToggleButton) findViewById(R.id.toggle_button);
             toggleButton.setViews(findViewById(R.id.layout_student), findViewById(R.id.layout_lecturer));
 
 
         } catch (BusinessLayerException ble) {
             Logger.getInstance().error(ble);
+        }
+    }
+
+    private void saveOptions() {
+        OptionPrefs.Course.put(Integer.parseInt(courseSpinner.getSelectedItem().toString()));
+        OptionPrefs.Group.put(Integer.parseInt(groupSpinner.getSelectedItem().toString()));
+        OptionPrefs.Subgroup.put(subgroupSpinner.getSelectedItem().toString());
+        Lecturer lecturer = (Lecturer)lecturerSpinner.getSelectedItem();
+        if (lecturer != null){
+            OptionPrefs.Lecturer.put(lecturer.getId());
+        }
+
+        Department department = (Department) departmentSpinner.getSelectedItem();
+        if (department != null){
+            OptionPrefs.Department.put(department.getId());
         }
     }
 

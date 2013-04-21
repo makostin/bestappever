@@ -1,15 +1,12 @@
 package com.mmf.rest;
 
+import com.mmf.db.dao.impl.*;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.prefs.SettingsPrefs;
 import com.mmf.rest.exceptions.RestException;
 import com.mmf.service.BusinessLayerException;
 import com.mmf.util.EntityRegistry;
 import com.mmf.db.DaoLayerException;
-import com.mmf.db.dao.impl.DepartmentDao;
-import com.mmf.db.dao.impl.LecturerDao;
-import com.mmf.db.dao.impl.ScheduleDao;
-import com.mmf.db.dao.impl.SpecialtyDao;
 import com.mmf.db.model.*;
 import com.mmf.rest.domain.InitialData;
 import com.mmf.rest.transport.RestRequester;
@@ -33,17 +30,56 @@ public class DataLoader {
         return instance;
     }
     
-    public void loadSchedule(int course, int group, String subGroup, long idFilter) throws ServiceLayerException, InvalidCredentialsException {
+    public void loadSchedule(int course, int group, String subGroup) throws ServiceLayerException, InvalidCredentialsException {
         try {
             List<Schedule> lessons = RestRequester.gesSchedule(course, group, subGroup);
+            ScheduleDao scheduleDao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
+            FilterDao filterDao = (FilterDao) EntityRegistry.get().getEntityDao(Filter.class);
+
+            Filter filter = filterDao.getFilter(course, group, subGroup);
+            if (filter != null){
+                filterDao.delete(filter.getId());
+                scheduleDao.deleteScheduleByFilter(filter.getId());
+            }
+            filter = new Filter();
+            filter.setCourse(course);
+            filter.setGroupNumber(group);
+            filter.setSubGroup(subGroup);
+            long idFilter = filterDao.saveData(filter);
+
             for(Schedule schedule : lessons){
                 schedule.setCourse(course);
                 schedule.setGroupNumber(group);
                 schedule.setSubGroup(subGroup);
                 schedule.setFilterId(idFilter);
             }
-            ScheduleDao dao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
-            dao.saveData(lessons);
+            scheduleDao.saveData(lessons);
+        } catch (DaoLayerException e) {
+            throw new ServiceLayerException(e);
+        }
+    }
+
+
+    public void loadSchedule(Lecturer lecturer) throws InvalidCredentialsException, ServiceLayerException {
+        try {
+            List<Schedule> lessons = RestRequester.gesSchedule(lecturer.getId());
+            ScheduleDao scheduleDao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
+            FilterDao filterDao = (FilterDao) EntityRegistry.get().getEntityDao(Filter.class);
+
+            Filter filter = filterDao.getFilter(lecturer.getId());
+            if (filter != null){
+                filterDao.delete(filter.getId());
+                scheduleDao.deleteScheduleByFilter(filter.getId());
+            }
+            filter = new Filter();
+            filter.setLecturerId(lecturer.getId());
+            long idFilter = filterDao.saveData(filter);
+
+            for(Schedule schedule : lessons){
+                schedule.setLecturer(lecturer);
+                schedule.setFilterId(idFilter);
+            }
+            scheduleDao.saveData(lessons);
         } catch (DaoLayerException e) {
             throw new ServiceLayerException(e);
         }
@@ -90,4 +126,5 @@ public class DataLoader {
         }
         return stringBuilder.toString();
     }
+
 }

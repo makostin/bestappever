@@ -1,12 +1,14 @@
 package com.mmf.rest.transport;
 
 
+import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mmf.db.model.Schedule;
 import com.mmf.rest.deserializer.InitialDataDeserializer;
-import com.mmf.rest.deserializer.ScheduleDeserializer;
+import com.mmf.rest.deserializer.LecturerScheduleDeserializer;
+import com.mmf.rest.deserializer.StudentScheduleDeserializer;
 import com.mmf.rest.domain.InitialData;
 import com.mmf.rest.exceptions.RestException;
 import com.mmf.rest.exceptions.UnexpectedResponseCodeException;
@@ -14,7 +16,16 @@ import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.rest.transport.http.DataProvider;
 import com.mmf.rest.transport.http.HttpDataProvider;
 import com.mmf.util.Logger;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.InvalidCredentialsException;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,7 +34,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class RestRequester {
@@ -51,8 +61,8 @@ public class RestRequester {
 
 	private static final String TAG = "RestRequester";
 
-//	public static final String SERVER_HTTP_DEV = "http://192.168.0.2:8080/";
-	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
+	public static final String SERVER_HTTP_DEV = "http://192.168.0.2:8080/";
+//	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
 //	public static final String SERVER_HTTP_DEV = "http://127.0.0.1:8080/";
 
 	private static String getServerAddress() {
@@ -133,31 +143,65 @@ public class RestRequester {
 //	}
 
 
-	private static InputStreamReader getReader(String apiUrl) throws InvalidCredentialsException, RestException {
-		ByteArrayOutputStream outputStream = null;
-		InputStreamReader inputStreamReader = null;
-		try {
-			DataProvider internetDataProvider = getDataProvider(getServerAddress() + apiUrl);
-			outputStream = new ByteArrayOutputStream(BYTE_ARRAY_SIZE);
-			internetDataProvider.get(CredentialsPrefs.LoginDefault.get(), CredentialsPrefs.PasswordDefault.get(), outputStream);
-			inputStreamReader = new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()));
-			return inputStreamReader;
-		} catch (UnexpectedResponseCodeException e) {
-            Logger.getInstance().error(e);
-            throw new RestException(e);
+//	private static InputStreamReader getReader(String apiUrl) throws InvalidCredentialsException, RestException {
+//		ByteArrayOutputStream outputStream = null;
+//		InputStreamReader inputStreamReader = null;
+//		try {
+//			DataProvider internetDataProvider = getDataProvider(getServerAddress() + apiUrl);
+//			outputStream = new ByteArrayOutputStream(BYTE_ARRAY_SIZE);
+//			internetDataProvider.get(CredentialsPrefs.LoginDefault.get(), CredentialsPrefs.PasswordDefault.get(), outputStream);
+//			inputStreamReader = new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()));
+//			return inputStreamReader;
+//		} catch (UnexpectedResponseCodeException e) {
+//            Logger.getInstance().error(e);
+//            throw new RestException(e);
+//        } catch (MalformedURLException e) {
+//            Logger.getInstance().error(e);
+//            throw new RestException(e);
+//        } finally {
+//			if (outputStream != null) {
+//				try {
+//					outputStream.close();
+//				} catch (IOException e) {
+//					Logger.getInstance().error(e);
+//				}
+//			}
+//		}
+//	}
+
+    private static InputStreamReader getReader(String apiUrl) throws InvalidCredentialsException, RestException {
+        InputStreamReader inputStreamReader = null;
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpGet request = new HttpGet(SERVER_HTTP_DEV + apiUrl);
+            request.setHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(CredentialsPrefs.LoginDefault.get(), CredentialsPrefs.PasswordDefault.get()), request));
+            request.setHeader("Content-type", "application/json");
+            request.setHeader("Accept-Encoding", "utf-8");
+            HttpResponse response = httpClient.execute(request);
+            int responseCode = response.getStatusLine().getStatusCode();
+            if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
+                throw new InvalidCredentialsException("You unauthorized to use service");
+            }
+            if (responseCode != HttpStatus.SC_OK) {
+                throw new UnexpectedResponseCodeException(responseCode);
+            }
+            HttpEntity entity = response.getEntity();
+            inputStreamReader = new InputStreamReader(entity.getContent());
+            return inputStreamReader;
         } catch (MalformedURLException e) {
-            Logger.getInstance().error(e);
+            Log.e(TAG, e.getMessage());
             throw new RestException(e);
-        } finally {
-			if (outputStream != null) {
-				try {
-					outputStream.close();
-				} catch (IOException e) {
-					Logger.getInstance().error(e);
-				}
-			}
-		}
-	}
+        } catch (ClientProtocolException e) {
+            Log.e(TAG, e.getMessage());
+            throw new RestException(e);
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+            throw new RestException(e);
+        } catch (AuthenticationException e) {
+            Log.e(TAG, e.getMessage());
+            throw new RestException(e);
+        }
+    }
 
     public static List<Schedule> gesSchedule(int course, int group, String subGroup) throws RestException, InvalidCredentialsException {
         List<Schedule> scheduleList = new ArrayList<Schedule>();
@@ -169,10 +213,36 @@ public class RestRequester {
             params.append(group);
             params.append("&subGroup=");
             params.append(subGroup);
-            inputStreamReader = getReader(REST_API + "schedule" + params.toString());
+            inputStreamReader = getReader(REST_API + "schedule/student" + params.toString());
             if(inputStreamReader != null){
                 GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(List.class, new ScheduleDeserializer());
+                gsonBuilder.registerTypeAdapter(List.class, new StudentScheduleDeserializer());
+                Gson gson = gsonBuilder.create();
+                Type listType = new TypeToken<List<Schedule>>() {}.getType();
+                scheduleList = gson.fromJson(inputStreamReader, listType);
+            }
+            return scheduleList;
+        } finally {
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException e) {
+                    Logger.getInstance().error(e);
+                }
+            }
+        }
+    }
+
+    public static List<Schedule> gesSchedule(long lecturerId) throws RestException, InvalidCredentialsException {
+        List<Schedule> scheduleList = new ArrayList<Schedule>();
+        InputStreamReader inputStreamReader = null;
+        try{
+            StringBuilder params = new StringBuilder("?lecturerId=");
+            params.append(lecturerId);
+            inputStreamReader = getReader(REST_API + "schedule/lecturer" + params.toString());
+            if(inputStreamReader != null){
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(List.class, new LecturerScheduleDeserializer());
                 Gson gson = gsonBuilder.create();
                 Type listType = new TypeToken<List<Schedule>>() {}.getType();
                 scheduleList = gson.fromJson(inputStreamReader, listType);

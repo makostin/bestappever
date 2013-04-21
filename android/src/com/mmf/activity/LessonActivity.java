@@ -12,6 +12,7 @@ import com.mmf.android.listener.ActivitySwipeDetector;
 import com.mmf.db.model.Filter;
 import com.mmf.db.model.Lecturer;
 import com.mmf.db.model.Schedule;
+import com.mmf.db.model.ScheduleType;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.rest.DataLoader;
 import com.mmf.rest.exceptions.ServiceLayerException;
@@ -21,6 +22,7 @@ import com.mmf.service.FilterService;
 import com.mmf.service.LecturerService;
 import com.mmf.service.ScheduleService;
 import com.mmf.util.DialogFragmentUtil;
+import com.mmf.util.IntentUtil;
 import com.mmf.util.InternetConnectionUtil;
 import com.mmf.util.Logger;
 import org.apache.http.auth.InvalidCredentialsException;
@@ -42,9 +44,7 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
     private String subGroup;
     private Lecturer lecturer;
     private String date;
-
-    private String studentHeader;
-    private String lecturerHeader;
+    private ScheduleType scheduleType;
 
     private TextView dayView;
     private SimpleDateFormat dateFormat;
@@ -62,6 +62,7 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_lessons);
+        scheduleType = (ScheduleType) getIntent().getSerializableExtra(IntentUtil.SCHEDULE_TYPE_EXTRA);
 
         service = new ScheduleService();
         filterService = new FilterService();
@@ -78,17 +79,22 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
                 try {
                     // if don't have internet connection then get schedule by filter id
                     if(InternetConnectionUtil.hasInternetConnection(LessonActivity.this)){
-                        long idFilter = filterService.updateFilter(course, group, subGroup);
-                        DataLoader.getInstance().loadSchedule(course, group, subGroup, idFilter);
+                        if (ScheduleType.STUDENT.equals(scheduleType)){
+                            DataLoader.getInstance().loadSchedule(course, group, subGroup);
+                        } else {
+                            DataLoader.getInstance().loadSchedule(lecturer);
+                        }
                     } else {
-                        Filter filter = filterService.getFilter(course, group, subGroup);
+                        Filter filter = null;
+                        if (ScheduleType.STUDENT.equals(scheduleType)){
+                            filter = filterService.getFilter(course, group, subGroup);
+                        } else {
+                            filter = filterService.getFilter(lecturer);
+                        }
                         if (filter == null){
                             DialogFragmentUtil.showConnectionErrorDialog(LessonActivity.this);
                         }
                     }
-                } catch (BusinessLayerException e) {
-                    cancel(true);
-                    Logger.getInstance().error(e);
                 } catch (InvalidCredentialsException e) {
                     cancel(true);
                     Logger.getInstance().error(e);
@@ -122,9 +128,13 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
         subGroup = OptionPrefs.Subgroup.get();
         lecturer = lecturerService.getLecturer(OptionPrefs.Lecturer.get());
 
-        studentHeader = "Course " + course + ", group " + group + subGroup;
-        ((TextView) findViewById(R.id.header)).setText(studentHeader);
-//        lecturerHeader = lecturer.getFullName();
+        String header = "";
+        if (ScheduleType.STUDENT.equals(scheduleType)){
+            header = "Course " + course + ", group " + group + subGroup;
+        } else {
+            header = lecturer.getFullName();
+        }
+        ((TextView) findViewById(R.id.header)).setText(header);
 
         currentDay = calendar.get(Calendar.DAY_OF_WEEK);
         dateFormat = new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.US);

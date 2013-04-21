@@ -4,6 +4,7 @@ import com.mmf.db.DaoLayerException;
 import com.mmf.db.dao.impl.FilterDao;
 import com.mmf.db.dao.impl.ScheduleDao;
 import com.mmf.db.model.Filter;
+import com.mmf.db.model.Lecturer;
 import com.mmf.db.model.Schedule;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.util.EntityRegistry;
@@ -52,5 +53,9 @@ public class FilterService {
 
     public Filter getFilter(int course, int group, String subGroup) {
         return filterDao.getFilter(course, group, subGroup);
+    }
+
+    public Filter getFilter(Lecturer lecturer) {
+        return filterDao.getFilter(lecturer.getId());
     }
 }

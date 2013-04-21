@@ -8,14 +8,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.mmf.R;
-import com.mmf.util.EntityRegistry;
 
 public class ToggleButton extends RelativeLayout {
 
-    private ImageView imageStudent;
-    private ImageView imageLecturer;
-    private View studentView;
-    private View lecturerView;
+    private ImageView image1;
+    private ImageView image2;
+    private View view1;
+    private View view2;
 
 	public ToggleButton(Context context) {
 		this(context, null);
@@ -41,9 +40,9 @@ public class ToggleButton extends RelativeLayout {
         button1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageStudent.setVisibility(VISIBLE);
-                imageLecturer.setVisibility(INVISIBLE);
-                changeViews(studentView, lecturerView);
+                image1.setVisibility(VISIBLE);
+                image2.setVisibility(INVISIBLE);
+                changeViews(view1, view2);
             }
         });
 
@@ -51,19 +50,23 @@ public class ToggleButton extends RelativeLayout {
         button2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageStudent.setVisibility(INVISIBLE);
-                imageLecturer.setVisibility(VISIBLE);
-                changeViews(lecturerView, studentView);
+                image1.setVisibility(INVISIBLE);
+                image2.setVisibility(VISIBLE);
+                changeViews(view2, view1);
             }
         });
 
-        imageStudent = (ImageView) findViewById(R.id.image_student);
-        imageLecturer = (ImageView) findViewById(R.id.image_lecturer);
+        image1 = (ImageView) findViewById(R.id.image_student);
+        image2 = (ImageView) findViewById(R.id.image_lecturer);
 	}
 	
     public void setViews(View idView1, View idView2){
-        this.studentView = idView1;
-        this.lecturerView = idView2;
+        this.view1 = idView1;
+        this.view2 = idView2;
+    }
+
+    public int getSelectedView(){
+        return image1.isShown() ? 1 : 2;
     }
 
     private void changeViews(View visible, View invisible){
