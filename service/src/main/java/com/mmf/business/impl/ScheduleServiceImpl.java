@@ -92,7 +92,8 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
 
     @Override
     @Transactional(rollbackFor = BusinessServiceException.class)
-    public List<ScheduleResponse> getSchedule(long lecturerId) {
+    public List<ScheduleResponse> getSchedule(long lecturerId, int semester) {
+        List<ScheduleEntity> scheduleList = scheduleDao.getSchedule(semester, lecturerId);
         return null;
     }
 

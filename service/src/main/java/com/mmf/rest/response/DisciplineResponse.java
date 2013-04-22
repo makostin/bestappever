@@ -17,6 +17,9 @@ public class DisciplineResponse {
     private DisciplineTime time;
     private List<Note> notes = new ArrayList<Note>();
     private int week;
+    private int course;
+    private int group;
+    private String subGroup;
 
 
     public Lecturer getLecturer() {
@@ -65,5 +68,29 @@ public class DisciplineResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getCourse() {
+        return course;
+    }
+
+    public void setCourse(int course) {
+        this.course = course;
+    }
+
+    public int getGroup() {
+        return group;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
+    }
+
+    public String getSubGroup() {
+        return subGroup;
+    }
+
+    public void setSubGroup(String subGroup) {
+        this.subGroup = subGroup;
     }
 }

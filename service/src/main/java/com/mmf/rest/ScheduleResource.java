@@ -54,6 +54,9 @@ public class ScheduleResource {
             for(ScheduleResponse response : scheduleList){
                 for(DisciplineResponse disciplineResponse : response.getDisciplines()){
                     disciplineResponse.setLecturer(lecturerService.get(disciplineResponse.getLecturer().getId()));
+                    disciplineResponse.setCourse(course);
+                    disciplineResponse.setGroup(group);
+                    disciplineResponse.setSubGroup(subGroup);
                 }
             }
             return Response.ok(scheduleList).header("Content-Encoding", "utf-8").build();
@@ -67,7 +70,14 @@ public class ScheduleResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSchedule(@QueryParam("lecturerId") long lecturerId){
         try {
-            List<ScheduleResponse> scheduleList = scheduleService.getSchedule(lecturerId);
+            int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+            int semester;
+            if (currentMonth < Calendar.JULY){
+                semester = 0;
+            } else {
+                semester = 1;
+            }
+            List<ScheduleResponse> scheduleList = scheduleService.getSchedule(lecturerId, semester);
             for(ScheduleResponse response : scheduleList){
                 for(DisciplineResponse disciplineResponse : response.getDisciplines()){
                     disciplineResponse.setLecturer(lecturerService.get(disciplineResponse.getLecturer().getId()));

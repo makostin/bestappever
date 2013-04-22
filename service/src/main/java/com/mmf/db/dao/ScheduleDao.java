@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface ScheduleDao extends GenericDao<Long, ScheduleEntity>{
     List<ScheduleEntity> getSchedule(int semester, int yearOfEntrance, String groupName, String subGroupName);
+
+    List<ScheduleEntity> getSchedule(int semester, long lecturerId);
 }
