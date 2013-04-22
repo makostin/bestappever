@@ -5,6 +5,7 @@ import com.mmf.business.ScheduleService;
 import com.mmf.business.domain.Schedule;
 import com.mmf.business.domain.utils.*;
 import com.mmf.db.dao.ScheduleDao;
+import com.mmf.db.model.GroupEntity;
 import com.mmf.db.model.ScheduleEntity;
 import com.mmf.rest.response.DisciplineResponse;
 import com.mmf.rest.response.ScheduleResponse;
@@ -59,6 +60,10 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
     public List<ScheduleResponse> getSchedule(int semester, int yearOfEntrance, String groupName, String subGroupName) throws BusinessServiceException {
         List<ScheduleEntity> scheduleList = scheduleDao.getSchedule(semester, yearOfEntrance, groupName, subGroupName);
         List<ScheduleResponse> responseList = new ArrayList<ScheduleResponse>();
+        if(scheduleList.isEmpty()){
+            return responseList;
+        }
+
         ScheduleResponse scheduleResponse = new ScheduleResponse();
         int day = scheduleList.get(0).getDayOfWeek();
         int size = scheduleList.size();
@@ -92,9 +97,53 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
 
     @Override
     @Transactional(rollbackFor = BusinessServiceException.class)
-    public List<ScheduleResponse> getSchedule(long lecturerId, int semester) {
+    public List<ScheduleResponse> getSchedule(long lecturerId, int semester) throws BusinessServiceException {
         List<ScheduleEntity> scheduleList = scheduleDao.getSchedule(semester, lecturerId);
-        return null;
+        List<ScheduleResponse> responseList = new ArrayList<ScheduleResponse>();
+        ScheduleResponse scheduleResponse = new ScheduleResponse();
+        int day = scheduleList.get(0).getDayOfWeek();
+        int size = scheduleList.size();
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        for(ScheduleEntity entity : scheduleList){
+            size--;
+            Schedule schedule = convertToDomain(entity);
+
+            DisciplineResponse disciplineResponse = new DisciplineResponse();
+            disciplineResponse.setName(entity.getStudy().getCurriculum().getDiscipline().getName());
+            GroupEntity groupEntity = entity.getStudy().getGroup();
+            if (groupEntity.getName().length() > 1){
+                disciplineResponse.setSubGroup(groupEntity.getName().substring(groupEntity.getName().length()-1));
+                disciplineResponse.setGroup(Integer.parseInt(groupEntity.getName().substring(0, groupEntity.getName().length()-1)));
+            } else {
+                disciplineResponse.setGroup(Integer.parseInt(groupEntity.getName()));
+            }
+
+            if (currentMonth < Calendar.JULY){
+                disciplineResponse.setCourse(currentYear - groupEntity.getYear());
+            } else {
+                disciplineResponse.setCourse(currentYear - groupEntity.getYear()+1);
+            }
+            disciplineResponse.setLecturer(schedule.getStudy().getLecturer());
+            disciplineResponse.setClassroom(schedule.getClassroom().getNumber());
+            disciplineResponse.setTime(schedule.getDisciplineTime());
+            disciplineResponse.setWeek(schedule.getWeek());
+
+            if (day != schedule.getDayOfWeek()) {
+                setDay(scheduleResponse, day);
+                responseList.add(scheduleResponse);
+                scheduleResponse = new ScheduleResponse();
+                scheduleResponse.getDisciplines().add(disciplineResponse);
+                day = schedule.getDayOfWeek();
+            } else if  (size == 0){
+                setDay(scheduleResponse, day);
+                scheduleResponse.getDisciplines().add(disciplineResponse);
+                responseList.add(scheduleResponse);
+            } else {
+                scheduleResponse.getDisciplines().add(disciplineResponse);
+            }
+        }
+        return responseList;
     }
 
     private void setDay(ScheduleResponse response, int day){

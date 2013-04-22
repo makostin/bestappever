@@ -9,10 +9,7 @@ import com.mmf.db.model.StudyEntity;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 /**
@@ -88,30 +85,15 @@ public class ScheduleDaoImpl extends GenericJpaDao<Long, ScheduleEntity> impleme
         Root<StudyEntity> rootStudy = studySubQuery.from(StudyEntity.class);
         Subquery<StudyEntity> selectStudy = studySubQuery.select(rootStudy);
 
-        Subquery<GroupEntity> groupSubQuery = criteriaQuery.subquery(GroupEntity.class);
-        Root<GroupEntity> rootGroup = groupSubQuery.from(GroupEntity.class);
-        groupSubQuery.select(rootGroup);
-        groupSubQuery.
-                where(criteriaBuilder.and
-                        (
-                                criteriaBuilder.equal(rootGroup.get("year"), yearOfEntrance),
-                                criteriaBuilder.or
-                                        (
-                                                criteriaBuilder.equal(rootGroup.get("name"), groupName),
-                                                criteriaBuilder.equal(rootGroup.get("name"), subGroupName)
-                                        )
-                        )
-                );
-
         Subquery<CurriculumEntity> curriculumSubQuery = criteriaQuery.subquery(CurriculumEntity.class);
         Root<CurriculumEntity> rootCurriculum = curriculumSubQuery.from(CurriculumEntity.class);
         curriculumSubQuery.select(rootCurriculum);
-        curriculumSubQuery.where(criteriaBuilder.equal(rootCurriculum.get("semester"), semester));
+        curriculumSubQuery.where(criteriaBuilder.equal(criteriaBuilder.mod(rootCurriculum.<Integer>get("semester"), 2), semester));
 
         selectStudy.
                 where(criteriaBuilder.and
                         (
-                                criteriaBuilder.in(rootStudy.get("group")).value(groupSubQuery),
+                                criteriaBuilder.equal(rootStudy.get("lecturer").get("id"), lecturerId),
                                 criteriaBuilder.in(rootStudy.get("curriculum")).value(curriculumSubQuery)
                         )
                 );
