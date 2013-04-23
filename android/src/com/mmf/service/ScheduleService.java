@@ -1,6 +1,7 @@
 package com.mmf.service;
 
 import com.mmf.db.dao.impl.LecturerDao;
+import com.mmf.db.model.Filter;
 import com.mmf.db.model.Lecturer;
 import com.mmf.util.EntityRegistry;
 import com.mmf.db.dao.impl.ScheduleDao;
@@ -19,17 +20,19 @@ public class ScheduleService {
     private final LecturerDao lecturerDao = (LecturerDao) EntityRegistry.get().getEntityDao(Lecturer.class);
 
 
-    public List<Schedule> getLessonsForDay(int course, int group, String subGroup, int currentDay) {
+    public List<Schedule> getLessonsForDay(Filter filter, int currentDay) {
         int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR)%2;
         if (week == 0){
             week = 2;
         }
 
-        List<Schedule> scheduleList = scheduleDao.getLessonsForDay(course, group, subGroup, currentDay, week);
+        List<Schedule> scheduleList = scheduleDao.getLessonsForDay(filter.getId(), currentDay, week);
         for (Schedule schedule : scheduleList){
             long lecturerId = schedule.getLecturer().getId();
             schedule.setLecturer(lecturerDao.get(lecturerId));
         }
         return scheduleList;
     }
+
+
 }

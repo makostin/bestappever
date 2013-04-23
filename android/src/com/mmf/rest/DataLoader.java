@@ -30,7 +30,7 @@ public class DataLoader {
         return instance;
     }
     
-    public void loadSchedule(int course, int group, String subGroup) throws ServiceLayerException, InvalidCredentialsException {
+    public Filter loadSchedule(int course, int group, String subGroup) throws ServiceLayerException, InvalidCredentialsException {
         try {
             List<Schedule> lessons = RestRequester.gesSchedule(course, group, subGroup);
             ScheduleDao scheduleDao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
@@ -46,21 +46,23 @@ public class DataLoader {
             filter.setGroupNumber(group);
             filter.setSubGroup(subGroup);
             long idFilter = filterDao.saveData(filter);
+            filter.setId(idFilter);
 
             for(Schedule schedule : lessons){
-                schedule.setCourse(course);
-                schedule.setGroupNumber(group);
-                schedule.setSubGroup(subGroup);
+//                schedule.setCourse(course);
+//                schedule.setGroupNumber(group);
+//                schedule.setSubGroup(subGroup);
                 schedule.setFilterId(idFilter);
             }
             scheduleDao.saveData(lessons);
+            return filter;
         } catch (DaoLayerException e) {
             throw new ServiceLayerException(e);
         }
     }
 
 
-    public void loadSchedule(Lecturer lecturer) throws InvalidCredentialsException, ServiceLayerException {
+    public Filter loadSchedule(Lecturer lecturer) throws InvalidCredentialsException, ServiceLayerException {
         try {
             List<Schedule> lessons = RestRequester.gesSchedule(lecturer.getId());
             ScheduleDao scheduleDao = (ScheduleDao) EntityRegistry.get().getEntityDao(Schedule.class);
@@ -74,12 +76,14 @@ public class DataLoader {
             filter = new Filter();
             filter.setLecturerId(lecturer.getId());
             long idFilter = filterDao.saveData(filter);
+            filter.setId(idFilter);
 
             for(Schedule schedule : lessons){
-                schedule.setLecturer(lecturer);
+//                schedule.setLecturer(lecturer);
                 schedule.setFilterId(idFilter);
             }
             scheduleDao.saveData(lessons);
+            return filter;
         } catch (DaoLayerException e) {
             throw new ServiceLayerException(e);
         }

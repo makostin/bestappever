@@ -7,8 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mmf.db.model.Schedule;
 import com.mmf.rest.deserializer.InitialDataDeserializer;
-import com.mmf.rest.deserializer.LecturerScheduleDeserializer;
-import com.mmf.rest.deserializer.StudentScheduleDeserializer;
+import com.mmf.rest.deserializer.ScheduleDeserializer;
 import com.mmf.rest.domain.InitialData;
 import com.mmf.rest.exceptions.RestException;
 import com.mmf.rest.exceptions.UnexpectedResponseCodeException;
@@ -27,8 +26,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -61,8 +58,8 @@ public class RestRequester {
 
 	private static final String TAG = "RestRequester";
 
-	public static final String SERVER_HTTP_DEV = "http://192.168.0.2:8080/";
-//	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
+//	public static final String SERVER_HTTP_DEV = "http://192.168.0.2:8080/";
+	public static final String SERVER_HTTP_DEV = "http://192.168.1.90:8080/";
 //	public static final String SERVER_HTTP_DEV = "http://127.0.0.1:8080/";
 
 	private static String getServerAddress() {
@@ -216,7 +213,7 @@ public class RestRequester {
             inputStreamReader = getReader(REST_API + "schedule/student" + params.toString());
             if(inputStreamReader != null){
                 GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(List.class, new StudentScheduleDeserializer());
+                gsonBuilder.registerTypeAdapter(List.class, new ScheduleDeserializer());
                 Gson gson = gsonBuilder.create();
                 Type listType = new TypeToken<List<Schedule>>() {}.getType();
                 scheduleList = gson.fromJson(inputStreamReader, listType);
@@ -242,7 +239,7 @@ public class RestRequester {
             inputStreamReader = getReader(REST_API + "schedule/lecturer" + params.toString());
             if(inputStreamReader != null){
                 GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(List.class, new LecturerScheduleDeserializer());
+                gsonBuilder.registerTypeAdapter(List.class, new ScheduleDeserializer());
                 Gson gson = gsonBuilder.create();
                 Type listType = new TypeToken<List<Schedule>>() {}.getType();
                 scheduleList = gson.fromJson(inputStreamReader, listType);

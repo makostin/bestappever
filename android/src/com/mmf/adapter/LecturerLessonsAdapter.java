@@ -47,8 +47,8 @@ public class LecturerLessonsAdapter extends ArrayAdapter<Schedule> {
 
         subject.setText(lesson.getDiscipline());
         course.setText(lesson.getCourse() + " course ");
-        group.setText(lesson.getSubGroup() + " group");
-        classRoom.setText(lesson.getClassroom());
+        group.setText(lesson.getGroupNumber() + lesson.getSubGroup() + " group");
+        classRoom.setText(String.valueOf(lesson.getClassroom()));
         date.setText(lesson.getTime());
 
         return lessonView;

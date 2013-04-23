@@ -7,6 +7,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mmf.R;
+import com.mmf.adapter.LecturerLessonsAdapter;
 import com.mmf.adapter.StudentLessonsAdapter;
 import com.mmf.android.listener.ActivitySwipeDetector;
 import com.mmf.db.model.Filter;
@@ -28,10 +29,7 @@ import com.mmf.util.Logger;
 import org.apache.http.auth.InvalidCredentialsException;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 public class LessonActivity extends BaseActivity implements SwipeInterface {
@@ -45,6 +43,7 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
     private Lecturer lecturer;
     private String date;
     private ScheduleType scheduleType;
+    private Filter filter;
 
     private TextView dayView;
     private SimpleDateFormat dateFormat;
@@ -80,12 +79,11 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
                     // if don't have internet connection then get schedule by filter id
                     if(InternetConnectionUtil.hasInternetConnection(LessonActivity.this)){
                         if (ScheduleType.STUDENT.equals(scheduleType)){
-                            DataLoader.getInstance().loadSchedule(course, group, subGroup);
+                            filter = DataLoader.getInstance().loadSchedule(course, group, subGroup);
                         } else {
-                            DataLoader.getInstance().loadSchedule(lecturer);
+                            filter = DataLoader.getInstance().loadSchedule(lecturer);
                         }
                     } else {
-                        Filter filter = null;
                         if (ScheduleType.STUDENT.equals(scheduleType)){
                             filter = filterService.getFilter(course, group, subGroup);
                         } else {
@@ -158,9 +156,14 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
     }
 
     private void updateView() {
-        List<Schedule> lessons = service.getLessonsForDay(course, group, subGroup, currentDay);
-        StudentLessonsAdapter adapterStudent = new StudentLessonsAdapter(this, R.layout.list_student_lessons_item, lessons);
-        listView.setAdapter(adapterStudent);
+        List<Schedule> lessons = service.getLessonsForDay(filter, currentDay);
+        if (ScheduleType.STUDENT.equals(scheduleType)){
+            StudentLessonsAdapter adapterStudent = new StudentLessonsAdapter(this, R.layout.list_student_lessons_item, lessons);
+            listView.setAdapter(adapterStudent);
+        } else {
+            LecturerLessonsAdapter adapterLecturer = new LecturerLessonsAdapter(this, R.layout.list_lecturer_lessons_item, lessons);
+            listView.setAdapter(adapterLecturer);
+        }
     }
 
     public void bottom2top(View v) {
