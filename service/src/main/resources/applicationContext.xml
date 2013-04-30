@@ -28,7 +28,30 @@
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
     <!-- Spring security settings-->
+    <bean id="customUserDetailsService" class="com.mmf.rest.service.CustomUserDetailsService">
+    </bean>
+
+    <security:authentication-manager alias="auth-manager">
+        <security:authentication-provider user-service-ref="customUserDetailsService">
+            <!--<security:password-encoder hash="md5"/>-->
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+
+    <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="customUserDetailsService"/>
+    </bean>
+
+    <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+        <property name="providers">
+            <list>
+                <ref local="daoAuthenticationProvider"/>
+            </list>
+        </property>
+    </bean>
+
     <security:http pattern="/rest/bsu/mmf/**" create-session="never" auto-config="true" use-expressions="true">
+        <!--<security:intercept-url pattern="/rest/bsu/mmf/public/**" access="permitAll" />-->
         <security:intercept-url pattern="/rest/bsu/mmf/**" access="hasAnyRole('EDITOR')" />
         <security:http-basic />
     </security:http>
@@ -46,11 +69,11 @@
     <!--<security:authentication-manager alias="authenticationManager">-->
         <!--<security:authentication-provider ref="remoteProvider" />-->
     <!--</security:authentication-manager>-->
-    <security:authentication-manager alias="authenticationManager">
-        <security:authentication-provider>
-            <security:user-service>
-                <security:user name="user" password="user" authorities="EDITOR" />
-            </security:user-service>
-        </security:authentication-provider>
-    </security:authentication-manager>
+    <!--<security:authentication-manager alias="authenticationManager">-->
+        <!--<security:authentication-provider>-->
+            <!--<security:user-service>-->
+                <!--<security:user name="user" password="user" authorities="EDITOR" />-->
+            <!--</security:user-service>-->
+        <!--</security:authentication-provider>-->
+    <!--</security:authentication-manager>-->
 </beans>

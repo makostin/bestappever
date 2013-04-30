@@ -126,6 +126,14 @@
             <version>1.6</version>
         </dependency>
 
+        <!--Cross domain-->
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+            <version>1.3.2</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--REST-->
         <dependency>
             <groupId>org.apache.cxf</groupId>
