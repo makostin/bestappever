@@ -16,6 +16,7 @@ public class NoteEntity implements EntityClass<Long>{
     private UserEntity user;
     private ScheduleEntity schedule;
     private String color;
+    private String text;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,5 +64,13 @@ public class NoteEntity implements EntityClass<Long>{
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

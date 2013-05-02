@@ -15,6 +15,7 @@ public class Note implements DomainClass<Long>{
     private User user;
     private Schedule schedule;
     private String color;
+    private String text;
 
     @Override
     public Long getId() {
@@ -34,13 +35,35 @@ public class Note implements DomainClass<Long>{
         this.date = date;
     }
 
-
-
     public String getColor() {
         return color;
     }
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
