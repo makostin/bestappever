@@ -18,7 +18,7 @@ public class ScheduleHelper {
     public static void convertToEntity(Schedule domain, ScheduleEntity entity) {
         if (entity != null) {
             entity.setDayOfWeek(domain.getDayOfWeek());
-            entity.setEveryNWeek(domain.getEveryNWeek());
+//            entity.setEveryNWeek(domain.getEveryNWeek());
             entity.setWeek(domain.getWeek());
         }
     }
@@ -33,7 +33,7 @@ public class ScheduleHelper {
         Schedule domain = new Schedule();
         domain.setId(entity.getId());
         domain.setDayOfWeek(entity.getDayOfWeek());
-        domain.setEveryNWeek(entity.getEveryNWeek());
+//        domain.setEveryNWeek(entity.getEveryNWeek());
         domain.setWeek(entity.getWeek());
         return domain;
     }

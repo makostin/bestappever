@@ -19,8 +19,6 @@ public class Lecturer extends User{
         super(id);
     }
 
-
-    @XmlTransient
     public Department getDepartment() {
         return department;
     }

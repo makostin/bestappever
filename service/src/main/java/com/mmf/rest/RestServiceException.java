@@ -11,6 +11,9 @@ import javax.ws.rs.core.Response;
  * 06.03.13
  */
 public class RestServiceException extends WebApplicationException {
+
+    private static final long serialVersionUID = 7629926072406542317L;
+
     public RestServiceException(int errorCode) {
         super(Response.status(errorCode).build());
     }

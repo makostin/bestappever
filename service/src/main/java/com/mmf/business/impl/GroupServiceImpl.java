@@ -56,16 +56,16 @@ public class GroupServiceImpl extends AbstractCrudService<Long, Group, GroupEnti
                     }
                 }
 
-                Group mainGroup = domain.getMainGroup();
-                if (mainGroup != null){
-                    GroupEntity groupEntity = groupDao.getEntityInstance(mainGroup.getId());
-                    GroupHelper.convertToEntity(mainGroup, groupEntity);
-
-                    if(entity != null){
-                        entity.setMainGroup(groupEntity);
-                    }
-
-                }
+//                Group mainGroup = domain.getMainGroup();
+//                if (mainGroup != null){
+//                    GroupEntity groupEntity = groupDao.getEntityInstance(mainGroup.getId());
+//                    GroupHelper.convertToEntity(mainGroup, groupEntity);
+//
+//                    if(entity != null){
+//                        entity.setMainGroup(groupEntity);
+//                    }
+//
+//                }
             } catch (DataAccessException e) {
                 throw new BusinessServiceException("Conversion to group entity error.", e);
             }
@@ -81,7 +81,7 @@ public class GroupServiceImpl extends AbstractCrudService<Long, Group, GroupEnti
 
         Group group = GroupHelper.convertToDomain(entity);
         group.setSpecialty(SpecialtyHelper.convertToDomain(entity.getSpecialty()));
-        group.setMainGroup(GroupHelper.convertToDomain(entity.getMainGroup()));
+//        group.setMainGroup(GroupHelper.convertToDomain(entity.getMainGroup()));
         for (StudentEntity studentEntity : entity.getStudents()){
             group.getStudents().add(StudentHelper.convertToDomain(studentEntity));
         }

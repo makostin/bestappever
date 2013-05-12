@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 19.03.13
  */
 public interface ScheduleService extends CrudService<Long, Schedule>{
-    List<ScheduleResponse> getSchedule(int semester, int yearOfEntrance, String groupName, String subGroupName) throws BusinessServiceException;
+    List<Schedule> getSchedule(int semester, int yearOfEntrance, String groupName, String subGroupName) throws BusinessServiceException;
 
-    List<ScheduleResponse> getSchedule(long lecturerId, int semester) throws BusinessServiceException;
+    List<Schedule> getSchedule(long lecturerId, int semester) throws BusinessServiceException;
 }

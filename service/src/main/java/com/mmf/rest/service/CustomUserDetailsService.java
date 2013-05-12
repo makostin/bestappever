@@ -1,91 +1,83 @@
 package com.mmf.rest.service;
 
+import com.mmf.business.BusinessServiceException;
+import com.mmf.business.LecturerService;
+import com.mmf.business.StudentService;
+import com.mmf.business.UserService;
+import com.mmf.business.domain.Lecturer;
+import com.mmf.business.domain.Student;
+import com.mmf.business.domain.User;
+import com.mmf.rest.RestServiceException;
+import org.apache.commons.httpclient.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * svetlana.voyteh
  * 30.04.13
  */
 public class CustomUserDetailsService implements UserDetailsService {
-//    private static final String[] DEFAULT_REMOTE_RIGHTS = {RoleManager.USER_TEAM};
-//    @Autowired
-//    private AccountDAO accountDAO;
-//    @Autowired
-//    private RoleDAO roleDAO;
-//    @Autowired
-//    private RoleManager roleManager;
-//    @Autowired
-//    private DaoAuthenticationProvider daoAuthenticationProvider;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private LecturerService lecturerService;
+    @Autowired
+    private DaoAuthenticationProvider daoAuthenticationProvider;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user;
+        try {
+            user = userService.getUser(username);
+            if (user == null) {
+                throw new UsernameNotFoundException(null);
+            }
+            return buildUserFromUserEntity(user);
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(HttpStatus.SC_UNAUTHORIZED);
+        }
+    }
+
+
+    private UserDetails buildUserFromUserEntity(User user) throws BusinessServiceException {
+
+//        String username = user.getLogin();
+//        String password = user.getPassword();
 //
-//    @Override
-//    public UserDetails loadUserByUsername(String username)
-//            throws UsernameNotFoundException, DataAccessException {
-//
-//        Account account;
-//        try {
-//            account = accountDAO.getByLogin(username);
-//            if (account == null) {
-//                throw new UsernameNotFoundException(null);
-//            }
-//        } catch (com.hiqo.croptracker.core.model.dao.DataAccessException ex) {
-//            throw new DataRetrievalFailureException(null, ex);
-//        }
-//
-//        return buildUserFromUserEntity(account);
-//    }
-//
-//    private UserDetails buildUserFromUserEntity(Account account) {
-//        return buildUserFromUserEntity(account, false);
-//    }
-//
-//    private UserDetails buildUserFromUserEntity(Account account, boolean remoteAccess) {
-//
-//        String username = account.getLogin();
-//        String password = account.getPassword();
-//
-//        boolean enabled = AccountStatusDAO.ACTIVE_STATUS_CODE.equals(account.getAccountStatus().getCode())
-//                && (account.getTeam() == null || AccountStatusDAO.ACTIVE_STATUS_CODE.equals(account.getTeam().getAccountStatus().getCode()));
+//        boolean enabled = true;
 //        boolean accountNonExpired = true;
 //        boolean credentialsNonExpired = true;
 //        boolean accountNonLocked = true;
-//        if (!remoteAccess) {
-//            if ((account.getRoles().isEmpty())
-//                    || (account.getRoles().size() == 1 && RoleManager.USER_HANDHELD.equals(account.getRoles().iterator().next().getCode()))) {
-//                accountNonLocked = false;
-//            }
-//        }
-//
-//        // Add user role access rights
-//        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-//        Set<Role> roles = account.getRoles();
-//        for (Role role : roles) {
-//            authorities.add(new GrantedAuthorityImpl("ROLE_" + role.getCode()));
-//        }
-//        if (remoteAccess) {
-//            for (String roleCode : DEFAULT_REMOTE_RIGHTS) {
-//                authorities.add(new GrantedAuthorityImpl("ROLE_" + roleCode));
-//            }
-//        }
-//
-//        // Add workflow access rights
-//        if (account.getTeam() == null) { // Superadmin
-//            authorities.add(new GrantedAuthorityImpl("ROLE_TEAM_" + WorkflowDAO.WORKFLOW_INPUT));
-//            authorities.add(new GrantedAuthorityImpl("ROLE_TEAM_" + WorkflowDAO.WORKFLOW_WATER));
-//        } else {
-//            Collection<Workflow> teamWorkflows = account.getTeam().getWorkflows();
-//            if (teamWorkflows != null) {
-//                for (Workflow workflow : teamWorkflows) {
-//                    authorities.add(new GrantedAuthorityImpl("ROLE_TEAM_" + workflow.getCode()));
-//                }
-//            }
-//            authorities.add(new GrantedAuthorityImpl("ROLE_TEAM_" + account.getTeam().getMeasureType().getCode()));
-//
-//        }
-//
-//        // Return user data
-//        return new User(username, password, enabled,
-//                accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-//    }
+
+        // Add user role access rights
+        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        if (studentService.get(user.getId()) != null){
+            ((ArrayList<SimpleGrantedAuthority>)user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        }
+
+        if (lecturerService.get(user.getId()) != null){
+            ((ArrayList<SimpleGrantedAuthority>)user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_LECTURER"));
+        }
+
+        if (user.getAdmin()){
+            ((ArrayList<SimpleGrantedAuthority>)user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+
+        ((ArrayList<SimpleGrantedAuthority>)user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        // Return user data
+        return user;
+//        return new org.springframework.security.core.userdetails.User(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+    }
 }

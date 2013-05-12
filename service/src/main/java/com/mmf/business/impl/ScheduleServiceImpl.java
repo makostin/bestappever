@@ -57,101 +57,125 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
 
     @Override
     @Transactional(rollbackFor = BusinessServiceException.class)
-    public List<ScheduleResponse> getSchedule(int semester, int yearOfEntrance, String groupName, String subGroupName) throws BusinessServiceException {
-        List<ScheduleEntity> scheduleList = scheduleDao.getSchedule(semester, yearOfEntrance, groupName, subGroupName);
-        List<ScheduleResponse> responseList = new ArrayList<ScheduleResponse>();
+    public List<Schedule> getSchedule(int semester, int yearOfEntrance, String groupName, String subGroupName) throws BusinessServiceException {
+        List<Schedule> responseList = new ArrayList<Schedule>();
+        List<ScheduleEntity> scheduleList = new ArrayList<ScheduleEntity>();
+        for (int i = 2; i <= 7; i++){
+            scheduleList.addAll(scheduleDao.getScheduleForDay(semester, yearOfEntrance, groupName, subGroupName, i));
+        }
+
         if(scheduleList.isEmpty()){
             return responseList;
         }
 
-        ScheduleResponse scheduleResponse = new ScheduleResponse();
-        int day = scheduleList.get(0).getDayOfWeek();
-        int size = scheduleList.size();
+//        ScheduleResponse scheduleResponse = new ScheduleResponse();
+//        int day = scheduleList.get(0).getDayOfWeek();
+//        int size = scheduleList.size();
         for(ScheduleEntity entity : scheduleList){
-            size--;
+//            size--;
             Schedule schedule = convertToDomain(entity);
+            schedule.setLecturer(schedule.getStudy().getLecturer());
+            schedule.setDiscipline(DisciplineHelper.convertToDomain(entity.getStudy().getCurriculum().getDiscipline()));
+            schedule.setGroup(schedule.getStudy().getGroup());
+            setDay(schedule);
 
-            DisciplineResponse disciplineResponse = new DisciplineResponse();
-            disciplineResponse.setName(entity.getStudy().getCurriculum().getDiscipline().getName());
-            disciplineResponse.setLecturer(schedule.getStudy().getLecturer());
-            disciplineResponse.setClassroom(schedule.getClassroom().getNumber());
-            disciplineResponse.setTime(schedule.getDisciplineTime());
-            disciplineResponse.setWeek(schedule.getWeek());
-
-            if (day != schedule.getDayOfWeek()) {
-                setDay(scheduleResponse, day);
-                responseList.add(scheduleResponse);
-                scheduleResponse = new ScheduleResponse();
-                scheduleResponse.getDisciplines().add(disciplineResponse);
-                day = schedule.getDayOfWeek();
-            } else if  (size == 0){
-                setDay(scheduleResponse, day);
-                scheduleResponse.getDisciplines().add(disciplineResponse);
-                responseList.add(scheduleResponse);
-            } else {
-                scheduleResponse.getDisciplines().add(disciplineResponse);
-            }
+//            DisciplineResponse disciplineResponse = new DisciplineResponse();
+//            disciplineResponse.setName(entity.getStudy().getCurriculum().getDiscipline().getName());
+//            disciplineResponse.setLecturer(schedule.getStudy().getLecturer());
+//            disciplineResponse.setClassroom(schedule.getClassroom().getNumber());
+//            disciplineResponse.setTime(schedule.getDisciplineTime());
+//            disciplineResponse.setWeek(schedule.getWeek());
+//
+//            if (day != schedule.getDayOfWeek()) {
+//                setDay(scheduleResponse, day);
+//                responseList.add(scheduleResponse);
+//                scheduleResponse = new ScheduleResponse();
+//                scheduleResponse.getDisciplines().add(disciplineResponse);
+//                day = schedule.getDayOfWeek();
+//            } else if  (size == 0){
+//                setDay(scheduleResponse, day);
+//                scheduleResponse.getDisciplines().add(disciplineResponse);
+//                responseList.add(scheduleResponse);
+//            } else {
+//                scheduleResponse.getDisciplines().add(disciplineResponse);
+//            }
+            responseList.add(schedule);
         }
         return responseList;  
     }
 
     @Override
     @Transactional(rollbackFor = BusinessServiceException.class)
-    public List<ScheduleResponse> getSchedule(long lecturerId, int semester) throws BusinessServiceException {
-        List<ScheduleEntity> scheduleList = scheduleDao.getSchedule(semester, lecturerId);
-        List<ScheduleResponse> responseList = new ArrayList<ScheduleResponse>();
-        ScheduleResponse scheduleResponse = new ScheduleResponse();
-        int day = scheduleList.get(0).getDayOfWeek();
-        int size = scheduleList.size();
+    public List<Schedule> getSchedule(long lecturerId, int semester) throws BusinessServiceException {
+        List<Schedule> responseList = new ArrayList<Schedule>();
+
+//        List<ScheduleEntity> scheduleList = scheduleDao.getSchedule(semester, lecturerId);
+        List<ScheduleEntity> scheduleList = new ArrayList<ScheduleEntity>();
+        for (int i = 2; i <= 7; i++){
+            scheduleList.addAll(scheduleDao.getScheduleForDay(semester, lecturerId, i));
+        }
+
+        if(scheduleList.isEmpty()){
+            return responseList;
+        }
+
+
+//        ScheduleResponse scheduleResponse = new ScheduleResponse();
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         for(ScheduleEntity entity : scheduleList){
-            size--;
+//            size--;
             Schedule schedule = convertToDomain(entity);
+            schedule.setDiscipline(DisciplineHelper.convertToDomain(entity.getStudy().getCurriculum().getDiscipline()));
+            schedule.setGroup(GroupHelper.convertToDomain(entity.getStudy().getGroup()));
+            schedule.setLecturer(schedule.getStudy().getLecturer());
+            setDay(schedule);
 
-            DisciplineResponse disciplineResponse = new DisciplineResponse();
-            disciplineResponse.setName(entity.getStudy().getCurriculum().getDiscipline().getName());
-            GroupEntity groupEntity = entity.getStudy().getGroup();
-            if (groupEntity.getName().length() > 1){
-                disciplineResponse.setSubGroup(groupEntity.getName().substring(groupEntity.getName().length()-1));
-                disciplineResponse.setGroup(Integer.parseInt(groupEntity.getName().substring(0, groupEntity.getName().length()-1)));
-            } else {
-                disciplineResponse.setGroup(Integer.parseInt(groupEntity.getName()));
-            }
+            responseList.add(schedule);
 
-            if (currentMonth < Calendar.JULY){
-                disciplineResponse.setCourse(currentYear - groupEntity.getYear());
-            } else {
-                disciplineResponse.setCourse(currentYear - groupEntity.getYear()+1);
-            }
-            disciplineResponse.setLecturer(schedule.getStudy().getLecturer());
-            disciplineResponse.setClassroom(schedule.getClassroom().getNumber());
-            disciplineResponse.setTime(schedule.getDisciplineTime());
-            disciplineResponse.setWeek(schedule.getWeek());
 
-            if (day != schedule.getDayOfWeek()) {
-                setDay(scheduleResponse, day);
-                responseList.add(scheduleResponse);
-                scheduleResponse = new ScheduleResponse();
-                scheduleResponse.getDisciplines().add(disciplineResponse);
-                day = schedule.getDayOfWeek();
-            } else if  (size == 0){
-                setDay(scheduleResponse, day);
-                scheduleResponse.getDisciplines().add(disciplineResponse);
-                responseList.add(scheduleResponse);
-            } else {
-                scheduleResponse.getDisciplines().add(disciplineResponse);
-            }
+//            DisciplineResponse disciplineResponse = new DisciplineResponse();
+//            disciplineResponse.setName(entity.getStudy().getCurriculum().getDiscipline().getName());
+//            GroupEntity groupEntity = entity.getStudy().getGroup();
+//            if (groupEntity.getName().length() > 1){
+//                disciplineResponse.setSubGroup(groupEntity.getName().substring(groupEntity.getName().length()-1));
+//                disciplineResponse.setGroup(Integer.parseInt(groupEntity.getName().substring(0, groupEntity.getName().length()-1)));
+//            } else {
+//                disciplineResponse.setGroup(Integer.parseInt(groupEntity.getName()));
+//            }
+//
+//            if (currentMonth < Calendar.JULY){
+//                disciplineResponse.setCourse(currentYear - groupEntity.getYear());
+//            } else {
+//                disciplineResponse.setCourse(currentYear - groupEntity.getYear()+1);
+//            }
+//            disciplineResponse.setLecturer(schedule.getStudy().getLecturer());
+//            disciplineResponse.setClassroom(schedule.getClassroom().getNumber());
+//            disciplineResponse.setTime(schedule.getDisciplineTime());
+//            disciplineResponse.setWeek(schedule.getWeek());
+
+//            if (day != schedule.getDayOfWeek()) {
+//                setDay(scheduleResponse, day);
+//                responseList.add(scheduleResponse);
+//                scheduleResponse = new ScheduleResponse();
+//                scheduleResponse.getDisciplines().add(disciplineResponse);
+//                day = schedule.getDayOfWeek();
+//            } else if  (size == 0){
+//                setDay(scheduleResponse, day);
+//                scheduleResponse.getDisciplines().add(disciplineResponse);
+//                responseList.add(scheduleResponse);
+//            } else {
+//                scheduleResponse.getDisciplines().add(disciplineResponse);
+//            }
         }
         return responseList;
     }
 
-    private void setDay(ScheduleResponse response, int day){
+    private void setDay(Schedule response){
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_WEEK, day);
+        calendar.set(Calendar.DAY_OF_WEEK, response.getDayOfWeek());
         String dayTitle = new SimpleDateFormat("EEEE", new Locale("ru", "RU")).format(calendar.getTime());
 
-        response.setDay(day);
         response.setDayTitle(dayTitle.substring(0, 1).toUpperCase() + dayTitle.substring(1));
     }
 

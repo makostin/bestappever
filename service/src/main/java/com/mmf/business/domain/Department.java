@@ -36,7 +36,6 @@ public class Department implements DomainClass<Long>{
         this.name = name;
     }
 
-    @XmlTransient
     public String getDescription() {
         return description;
     }

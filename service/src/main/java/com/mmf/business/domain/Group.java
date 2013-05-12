@@ -11,10 +11,11 @@ public class Group implements DomainClass<Long> {
     private static final long serialVersionUID = 4370536111918193061L;
 
     private Long id;
-    private String name;
+    private Integer number;
+    private Integer course;
+    private String subgroup;
     private Integer year;
     private Specialty specialty;
-    private Group mainGroup;
     private Set<Student> students = new HashSet<Student>();
 
     public Group(){}
@@ -33,14 +34,6 @@ public class Group implements DomainClass<Long> {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getYear() {
         return year;
     }
@@ -57,19 +50,35 @@ public class Group implements DomainClass<Long> {
         this.specialty = specialty;
     }
 
-    public Group getMainGroup() {
-        return mainGroup;
-    }
-
-    public void setMainGroup(Group mainGroup) {
-        this.mainGroup = mainGroup;
-    }
-
     public Set<Student> getStudents() {
         return students;
     }
 
     public void setStudents(Set<Student> students) {
         this.students = students;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Integer getCourse() {
+        return course;
+    }
+
+    public void setCourse(Integer course) {
+        this.course = course;
+    }
+
+    public String getSubgroup() {
+        return subgroup;
+    }
+
+    public void setSubgroup(String subgroup) {
+        this.subgroup = subgroup;
     }
 }

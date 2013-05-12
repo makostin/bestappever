@@ -10,6 +10,7 @@ import com.mmf.db.dao.DataAccessException;
 import com.mmf.db.dao.SpecialtyDao;
 import com.mmf.db.model.GroupEntity;
 import com.mmf.db.model.SpecialtyEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -25,7 +26,7 @@ import java.util.List;
 @Named
 public class SpecialtyServiceImpl extends AbstractCrudService<Long, Specialty, SpecialtyEntity, SpecialtyDao> implements SpecialtyService{
 
-    @Inject
+    @Autowired
     private SpecialtyDao specialtyDao;
 
     @Override

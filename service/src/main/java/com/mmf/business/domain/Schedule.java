@@ -1,5 +1,6 @@
 package com.mmf.business.domain;
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,11 @@ public class Schedule implements DomainClass<Long>{
     private Classroom classroom;
     private DisciplineTime disciplineTime;
     private Study study;
+    private Group group;
+    private Lecturer lecturer;
+    private Discipline discipline;
     private Integer dayOfWeek;
+    private String dayTitle;
     private Integer everyNWeek;
     private Integer week;
     private Set<Note> notes = new HashSet<Note>();
@@ -37,6 +42,15 @@ public class Schedule implements DomainClass<Long>{
         this.dayOfWeek = dayOfWeek;
     }
 
+    public String getDayTitle() {
+        return dayTitle;
+    }
+
+    public void setDayTitle(String dayTitle) {
+        this.dayTitle = dayTitle;
+    }
+
+    @XmlTransient
     public Integer getEveryNWeek() {
         return everyNWeek;
     }
@@ -69,6 +83,7 @@ public class Schedule implements DomainClass<Long>{
         this.disciplineTime = disciplineTime;
     }
 
+    @XmlTransient
     public Study getStudy() {
         return study;
     }
@@ -83,5 +98,29 @@ public class Schedule implements DomainClass<Long>{
 
     public void setNotes(Set<Note> notes) {
         this.notes = notes;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Lecturer getLecturer() {
+        return lecturer;
+    }
+
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
+    }
+
+    public Discipline getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
     }
 }
