@@ -1,4 +1,4 @@
-package com.mmf;
+package com.mmf.rest.util;
 
 import com.mmf.business.BusinessServiceException;
 import com.mmf.business.UserService;
@@ -14,7 +14,11 @@ import com.mmf.db.model.UserEntity;
 import com.sun.jersey.api.spring.Autowire;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.dao.SaltSource;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 
+import javax.inject.Named;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -32,24 +36,31 @@ public class PasswordGenerator {
     private static final String PASSWORD_FORMAT = "SHA-1";
     private static final String CHARSET = "UTF-8";
 
-    public void updatePasswords(UserService service) throws BusinessServiceException {
-        List<User> users = service.list();
+    private PasswordEncoder passwordEncoder;
+    private SaltSource saltSource;
+
+    public PasswordGenerator() {
+    }
+
+    public PasswordGenerator(PasswordEncoder passwordEncoder, SaltSource saltSource) {
+        this.passwordEncoder = passwordEncoder;
+        this.saltSource = saltSource;
+    }
+
+    public void hashPassword(User user) throws BusinessServiceException {
         byte[] bSalt;
         String sSalt = null;
         String sDigest = null;
-        for (User user : users) {
 
-            try {
-                bSalt = getSalt();
-                sSalt = byteToBase64(bSalt);
-                sDigest = getHash(ITERATION_NUMBER, user.getLogin(), bSalt, PASSWORD_FORMAT);
-                user.setPassword(sDigest);
-                user.setPasswordSalt(sSalt);
-                user.setPasswordFormat(PASSWORD_FORMAT);
-                service.update(user);
-            } catch (NoSuchAlgorithmException ignored) {
-            } catch (UnsupportedEncodingException ignored) {
-            }
+        try {
+            bSalt = getSalt();
+            sSalt = byteToBase64(bSalt);
+            user.setPasswordSalt(sSalt);
+            user.setPassword(passwordEncoder.encodePassword(user.getPassword(), saltSource.getSalt(user)));
+//            sDigest = getHash(ITERATION_NUMBER, user.getLogin(), bSalt, PASSWORD_FORMAT);
+//            user.setPassword(sDigest);
+            user.setPasswordFormat(PASSWORD_FORMAT);
+        } catch (NoSuchAlgorithmException ignored) {
         }
     }
 
@@ -76,5 +87,21 @@ public class PasswordGenerator {
 
     private static String byteToBase64(byte[] data) {
         return new String(Base64.encodeBase64(data));
+    }
+
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
+
+    public SaltSource getSaltSource() {
+        return saltSource;
+    }
+
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public void setSaltSource(SaltSource saltSource) {
+        this.saltSource = saltSource;
     }
 }

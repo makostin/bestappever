@@ -31,8 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private StudentService studentService;
     @Autowired
     private LecturerService lecturerService;
-    @Autowired
-    private DaoAuthenticationProvider daoAuthenticationProvider;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

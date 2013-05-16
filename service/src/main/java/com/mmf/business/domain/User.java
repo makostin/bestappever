@@ -4,6 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +15,7 @@ import java.util.Collection;
  * @author svetlana.voyteh
  * @date: 1/21/12
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User implements UserDetails, DomainClass<Long>{
 
     private static final long serialVersionUID = -61698930484704677L;
@@ -32,6 +36,11 @@ public class User implements UserDetails, DomainClass<Long>{
 
     public User(Long id) {
         this.id = id;
+    }
+
+    public User(Long id, String password) {
+        this.id = id;
+        this.password = password;
     }
 
     @Override

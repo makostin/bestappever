@@ -38,6 +38,11 @@
                     </security:password-encoder>
         </security:authentication-provider>
     </security:authentication-manager>
+    
+    <bean id="passwordGenerator" class="com.mmf.rest.util.PasswordGenerator">
+        <property name="passwordEncoder" ref="passwordEncoder"/>
+        <property name="saltSource" ref="saltSource"/>
+    </bean>
 
     <bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
         <property name="userPropertyToUse" value="passwordSalt" />
@@ -60,6 +65,7 @@
     </bean>
 
     <security:http pattern="/rest/bsu/mmf/**" create-session="never" auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/rest/bsu/mmf/login" access="permitAll" />
         <security:intercept-url pattern="/rest/bsu/mmf/user/**" access="permitAll" />
         <security:intercept-url pattern="/rest/bsu/mmf/**" access="hasAnyRole('ROLE_USER')" />
         <security:http-basic />
