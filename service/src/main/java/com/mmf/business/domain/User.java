@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Collection;
  * @author svetlana.voyteh
  * @date: 1/21/12
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class User implements UserDetails, DomainClass<Long>{
 
     private static final long serialVersionUID = -61698930484704677L;
@@ -76,11 +77,11 @@ public class User implements UserDetails, DomainClass<Long>{
         return authorities;
     }
 
-    @XmlTransient
     public String getPassword() {
         return password;
     }
 
+    @XmlTransient
     @Override
     public String getUsername() {
         return login;

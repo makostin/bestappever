@@ -37,6 +37,7 @@ public class LecturerServiceImpl extends AbstractCrudService<Long, Lecturer, Lec
     public void convertToEntity(Lecturer domain, LecturerEntity entity) throws BusinessServiceException {
         if (domain != null){
             try {
+                // todo:
                 Department department = domain.getDepartment();
                 if (department != null){
                     DepartmentEntity departmentEntity = departmentDao.getEntityInstance(department.getId());

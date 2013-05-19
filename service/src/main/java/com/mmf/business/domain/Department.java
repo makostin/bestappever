@@ -44,6 +44,7 @@ public class Department implements DomainClass<Long>{
         this.description = description;
     }
 
+    @XmlTransient
     public Set<Lecturer> getLecturers() {
         return lecturers;
     }

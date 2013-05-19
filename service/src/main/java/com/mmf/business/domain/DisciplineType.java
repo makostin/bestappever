@@ -1,10 +1,13 @@
 package com.mmf.business.domain;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * svetlana.voyteh
  * 05.02.13
  */
+@XmlRootElement
 public class DisciplineType implements DomainClass<Long>{
     private static final long serialVersionUID = -5064291874486669667L;
 

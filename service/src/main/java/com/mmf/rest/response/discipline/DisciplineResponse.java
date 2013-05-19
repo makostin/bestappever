@@ -1,34 +1,39 @@
-package com.mmf.business.domain;
+package com.mmf.rest.response.discipline;
 
+
+import com.mmf.business.domain.Discipline;
+import com.mmf.business.domain.DisciplineType;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author svetlana.voyteh
  * @date: 5/11/12
  */
 @XmlRootElement
-public class Discipline implements DomainClass<Long>{
+public class DisciplineResponse {
 
-    private static final long serialVersionUID = -6361800191146842503L;
     private Long id;
     private String name;
     private DisciplineType disciplineType;
-    private Long disciplineTypeId;
 
-    public Discipline(){}
+    public DisciplineResponse() {
+    }
 
-    public Discipline(Long id) {
+    public DisciplineResponse(Discipline discipline) {
+        this.id = discipline.getId();
+        this.name = discipline.getName();
+        this.disciplineType = discipline.getDisciplineType();
+    }
+
+    public DisciplineResponse(Long id) {
         this.id = id;
     }
 
-    @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -41,7 +46,6 @@ public class Discipline implements DomainClass<Long>{
         this.name = name;
     }
 
-    @XmlTransient
     public DisciplineType getDisciplineType() {
         return disciplineType;
     }
@@ -50,11 +54,4 @@ public class Discipline implements DomainClass<Long>{
         this.disciplineType = disciplineType;
     }
 
-    public Long getDisciplineTypeId() {
-        return disciplineTypeId;
-    }
-
-    public void setDisciplineTypeId(Long disciplineTypeId) {
-        this.disciplineTypeId = disciplineTypeId;
-    }
 }

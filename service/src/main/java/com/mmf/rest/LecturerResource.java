@@ -2,6 +2,7 @@ package com.mmf.rest;
 
 import com.mmf.business.LecturerService;
 import com.mmf.business.domain.Lecturer;
+import com.mmf.business.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

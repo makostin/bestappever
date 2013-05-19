@@ -18,6 +18,15 @@ public class StudentHelper {
      */
     public static void convertToEntity(Student domain, StudentEntity entity) {
         if (entity != null) {
+            entity.setId(domain.getId());
+            entity.setAdmin(domain.getAdmin());
+            entity.setLogin(domain.getLogin());
+            entity.setName(domain.getName());
+            entity.setPassword(domain.getPassword());
+            entity.setPasswordFormat(domain.getPasswordFormat());
+            entity.setPasswordSalt(domain.getPasswordSalt());
+            entity.setPatronymic(domain.getPatronymic());
+            entity.setSurname(domain.getSurname());
             entity.setPraepostor(domain.getPraepostor());
             entity.setYearOfEntrance(domain.getYearOfEntrance());
         }
@@ -31,8 +40,19 @@ public class StudentHelper {
      */
     public static Student convertToDomain(StudentEntity entity) {
         Student student = new Student();
+        student.setId(entity.getId());
+        student.setName(entity.getName());
+        student.setSurname(entity.getSurname());
+        student.setPatronymic(entity.getPatronymic());
+        student.setAdmin(entity.getAdmin());
+        student.setLogin(entity.getLogin());
+        student.setPassword(entity.getPassword());
+        student.setPasswordFormat(entity.getPasswordFormat());
+        student.setPasswordSalt(entity.getPasswordSalt());
+        student.setFullName(entity.getSurname() + " " + entity.getName() + " " + entity.getPatronymic());
         student.setPraepostor(entity.getPraepostor());
         student.setYearOfEntrance(entity.getYearOfEntrance());
+        student.setGroupId(entity.getGroup().getId());
         return student;
     }
 }

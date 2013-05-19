@@ -3,6 +3,10 @@ package com.mmf.rest;
 import com.mmf.business.BusinessServiceException;
 import com.mmf.business.CrudService;
 import com.mmf.business.domain.DomainClass;
+import com.mmf.business.domain.User;
+import com.mmf.rest.util.DomainUtil;
+import com.mmf.rest.util.NotNullPropertyException;
+import com.mmf.rest.util.NullPropertyException;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.*;
@@ -26,10 +30,12 @@ public abstract class CrudResource<T extends DomainClass<Long>, S extends CrudSe
     public Response get(@PathParam("id") long id){
         try {
             T domain = getService().get(id);
-            // todo: if domain == null return StatusCode=404
+            DomainUtil.checkingForNotNull(domain);
             return Response.ok(domain).header("Content-Encoding", "utf-8").build();
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
         }
     }
 
@@ -38,14 +44,16 @@ public abstract class CrudResource<T extends DomainClass<Long>, S extends CrudSe
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(T domain){
+    public Response add(T domain) {
         try {
-            getService().create(domain);
-            // todo: validate domain fields
+            DomainUtil.checkingForNull(domain.getId());
             validate(domain);
+            getService().create(domain);
             return Response.ok().header("Content-Encoding", "utf-8").build();
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
+        } catch (NotNullPropertyException e) {
+            throw new RestServiceException(Response.Status.BAD_REQUEST.getStatusCode());
         }
     }
 
@@ -56,12 +64,15 @@ public abstract class CrudResource<T extends DomainClass<Long>, S extends CrudSe
     public Response edit(@PathParam("id") long id, T newDomain){
         try {
             T domain = getService().get(id);
-            // todo: reset fields from newDomain to domain
+            DomainUtil.checkingForNotNull(domain);
+            validate(newDomain);
             updateFields(domain, newDomain);
             getService().update(domain);
             return Response.ok().header("Content-Encoding", "utf-8").build();
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
         }
     }
 

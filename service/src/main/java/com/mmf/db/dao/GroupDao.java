@@ -1,5 +1,6 @@
 package com.mmf.db.dao;
 
+import com.mmf.business.domain.Group;
 import com.mmf.db.model.GroupEntity;
 
 import java.util.List;
@@ -11,4 +12,6 @@ import java.util.List;
 public interface GroupDao extends GenericDao<Long, GroupEntity>{
 
     List<GroupEntity> getMainGroups();
+
+    GroupEntity getMainGroup(Integer number);
 }

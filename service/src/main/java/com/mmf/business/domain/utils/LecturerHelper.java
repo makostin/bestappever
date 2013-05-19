@@ -42,7 +42,9 @@ public class LecturerHelper {
         domain.setPatronymic(entity.getPatronymic());
         domain.setAdmin(entity.getAdmin());
         domain.setLogin(entity.getLogin());
+        domain.setPassword(entity.getPassword());
         domain.setFullName(entity.getSurname() + " " + entity.getName() + " " + entity.getPatronymic());
+        domain.setDepartmentId(entity.getDepartment().getId());
         return domain;
     }
 }

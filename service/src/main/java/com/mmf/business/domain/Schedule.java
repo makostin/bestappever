@@ -1,5 +1,6 @@
 package com.mmf.business.domain;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.Set;
  * svetlana.voyteh
  * 05.02.13
  */
+@XmlRootElement
 public class Schedule implements DomainClass<Long>{
     private static final long serialVersionUID = -8843236541522339438L;
 

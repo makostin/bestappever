@@ -1,12 +1,17 @@
 package com.mmf.business.domain;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
  * svetlana.voyteh
  * 12.03.13
  */
+@XmlRootElement
 public class Group implements DomainClass<Long> {
     private static final long serialVersionUID = 4370536111918193061L;
 
@@ -15,8 +20,9 @@ public class Group implements DomainClass<Long> {
     private Integer course;
     private String subgroup;
     private Integer year;
+    private Long specialtyId;
     private Specialty specialty;
-    private Set<Student> students = new HashSet<Student>();
+    private List<Student> students = new LinkedList<Student>();
 
     public Group(){}
 
@@ -42,24 +48,26 @@ public class Group implements DomainClass<Long> {
         this.year = year;
     }
 
+    @XmlTransient
     public Specialty getSpecialty() {
         return specialty;
+    }
+
+    public Integer getNumber() {
+        return number;
     }
 
     public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
 
-    public Set<Student> getStudents() {
+    @XmlTransient
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(Set<Student> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
-    }
-
-    public Integer getNumber() {
-        return number;
     }
 
     public void setNumber(Integer number) {
@@ -80,5 +88,13 @@ public class Group implements DomainClass<Long> {
 
     public void setSubgroup(String subgroup) {
         this.subgroup = subgroup;
+    }
+
+    public Long getSpecialtyId() {
+        return specialtyId;
+    }
+
+    public void setSpecialtyId(Long specialtyId) {
+        this.specialtyId = specialtyId;
     }
 }

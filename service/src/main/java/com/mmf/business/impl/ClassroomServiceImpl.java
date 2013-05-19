@@ -34,7 +34,7 @@ public class ClassroomServiceImpl extends AbstractCrudService<Long, Classroom, C
     @Override
     public void convertToEntity(Classroom domain, ClassroomEntity entity) throws BusinessServiceException {
         if (domain != null){
-            // todo
+            ClassroomHelper.convertToEntity(domain, entity);
         }
     }
 

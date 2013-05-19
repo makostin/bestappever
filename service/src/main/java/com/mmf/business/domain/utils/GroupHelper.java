@@ -4,6 +4,8 @@ import com.mmf.business.domain.Group;
 import com.mmf.db.model.GroupEntity;
 
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * svetlana.voyteh
@@ -20,7 +22,8 @@ public class GroupHelper {
     public static void convertToEntity(Group domain, GroupEntity entity) {
         if (entity != null) {
             entity.setYear(domain.getYear());
-            entity.setName(String.valueOf(domain.getNumber()) + domain.getSubgroup());
+            String subGroup = domain.getSubgroup() != null ? domain.getSubgroup() : "";
+            entity.setName(String.valueOf(domain.getNumber()) + subGroup);
         }
     }
 
@@ -36,14 +39,14 @@ public class GroupHelper {
 
         Group domain = new Group();
         domain.setId(entity.getId());
-//        domain.setName(entity.getName());
         domain.setYear(entity.getYear());
+        domain.setSpecialtyId(entity.getSpecialty().getId());
 
-        if (entity.getName().length() > 1){
-            domain.setSubgroup(entity.getName().substring(entity.getName().length()-1));
-            domain.setNumber(Integer.parseInt(entity.getName().substring(0, entity.getName().length()-1)));
-        } else {
-            domain.setNumber(Integer.parseInt(entity.getName()));
+        Pattern pattern = Pattern.compile("([0-9]{1,2})(a|b)*");
+        Matcher matcher = pattern.matcher(entity.getName());
+        if (matcher.find()){
+            domain.setNumber(Integer.parseInt(matcher.group(1)));
+            domain.setSubgroup(matcher.group(2));
         }
 
         if (currentMonth < Calendar.JULY){

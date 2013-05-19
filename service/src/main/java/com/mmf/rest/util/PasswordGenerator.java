@@ -32,9 +32,9 @@ import java.util.List;
 public class PasswordGenerator {
     private static final int SALT_SIZE = 8;
     private static final int ITERATION_NUMBER = 1000;
+    private static final String CHARSET = "UTF-8";
     private static final String ALGORITHM = "SHA1PRNG";
     private static final String PASSWORD_FORMAT = "SHA-1";
-    private static final String CHARSET = "UTF-8";
 
     private PasswordEncoder passwordEncoder;
     private SaltSource saltSource;
@@ -57,10 +57,9 @@ public class PasswordGenerator {
             sSalt = byteToBase64(bSalt);
             user.setPasswordSalt(sSalt);
             user.setPassword(passwordEncoder.encodePassword(user.getPassword(), saltSource.getSalt(user)));
-//            sDigest = getHash(ITERATION_NUMBER, user.getLogin(), bSalt, PASSWORD_FORMAT);
-//            user.setPassword(sDigest);
             user.setPasswordFormat(PASSWORD_FORMAT);
-        } catch (NoSuchAlgorithmException ignored) {
+        } catch (Exception e) {
+            throw new BusinessServiceException(e);
         }
     }
 
@@ -70,19 +69,6 @@ public class PasswordGenerator {
         byte[] bSalt = new byte[SALT_SIZE];
         random.nextBytes(bSalt);
         return bSalt;
-    }
-
-    private static String getHash(int iterationNb, String password, byte[] salt, String passwordFormat)
-            throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest digest = MessageDigest.getInstance(passwordFormat);
-        digest.reset();
-        digest.update(salt);
-        byte[] input = digest.digest(password.getBytes(CHARSET));
-        for (int i = 0; i < iterationNb; i++) {
-            digest.reset();
-            input = digest.digest(input);
-        }
-        return byteToBase64(input);
     }
 
     private static String byteToBase64(byte[] data) {

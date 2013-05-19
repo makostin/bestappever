@@ -1,5 +1,7 @@
 package com.mmf.business;
 
+import javax.ws.rs.core.Response;
+
 /**
  * Thrown by business methods to indicate that business error.
  *
@@ -47,6 +49,17 @@ public class BusinessServiceException extends Exception {
      */
     public BusinessServiceException(int errorCode) {
         super();
+        this.errorCode = errorCode;
+    }
+
+    /**
+     * Constructs a new exception with the specified error code.
+     *
+     * @param message message the detail message
+     * @param errorCode error code
+     */
+    public BusinessServiceException(String message, int errorCode) {
+        super(message);
         this.errorCode = errorCode;
     }
 

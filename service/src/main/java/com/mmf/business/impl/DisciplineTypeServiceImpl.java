@@ -33,7 +33,7 @@ public class DisciplineTypeServiceImpl extends AbstractCrudService<Long, Discipl
     @Override
     public void convertToEntity(DisciplineType domain, DisciplineTypeEntity entity) throws BusinessServiceException {
         if (domain != null){
-            // todo
+            DisciplineTypeHelper.convertToEntity(domain, entity);
         }
     }
 

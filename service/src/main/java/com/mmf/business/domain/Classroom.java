@@ -1,10 +1,13 @@
 package com.mmf.business.domain;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author svetlana.voyteh
  * @date: 5/11/12
  */
+@XmlRootElement
 public class Classroom implements DomainClass<Long>{
 
     private static final long serialVersionUID = 2413512151514903598L;

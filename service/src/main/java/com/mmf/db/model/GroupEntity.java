@@ -18,7 +18,14 @@ public class GroupEntity implements EntityClass<Long>{
     private Integer year;
     private SpecialtyEntity specialty;
     private GroupEntity mainGroup;
-    private Set<StudentEntity> students = new HashSet<StudentEntity>();
+//    private Set<StudentEntity> students = new HashSet<StudentEntity>();
+
+    public GroupEntity() {
+    }
+
+    public GroupEntity(Long id) {
+        this.id = id;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,14 +47,14 @@ public class GroupEntity implements EntityClass<Long>{
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    public Set<StudentEntity> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<StudentEntity> students) {
-        this.students = students;
-    }
+//    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+//    public Set<StudentEntity> getStudents() {
+//        return students;
+//    }
+//
+//    public void setStudents(Set<StudentEntity> students) {
+//        this.students = students;
+//    }
 
     @ManyToOne
     @JoinColumn(name = "IdSpecialty")

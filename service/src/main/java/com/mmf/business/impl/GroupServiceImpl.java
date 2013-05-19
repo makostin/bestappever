@@ -3,39 +3,35 @@ package com.mmf.business.impl;
 import com.mmf.business.BusinessServiceException;
 import com.mmf.business.GroupService;
 import com.mmf.business.domain.Group;
-import com.mmf.business.domain.Specialty;
-import com.mmf.business.domain.SpecialtyInfo;
-import com.mmf.business.domain.Student;
 import com.mmf.business.domain.utils.GroupHelper;
 import com.mmf.business.domain.utils.SpecialtyHelper;
 import com.mmf.business.domain.utils.StudentHelper;
 import com.mmf.db.dao.DataAccessException;
 import com.mmf.db.dao.GroupDao;
 import com.mmf.db.dao.SpecialtyDao;
+import com.mmf.db.dao.StudentDao;
 import com.mmf.db.model.GroupEntity;
 import com.mmf.db.model.SpecialtyEntity;
 import com.mmf.db.model.StudentEntity;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * svetlana.voyteh
  * 12.03.13
  */
 @Named
-public class GroupServiceImpl extends AbstractCrudService<Long, Group, GroupEntity, GroupDao> implements GroupService{
+public class GroupServiceImpl extends AbstractCrudService<Long, Group, GroupEntity, GroupDao> implements GroupService {
 
     @Inject
     private GroupDao groupDao;
 
     @Inject
     private SpecialtyDao specialtyDao;
+
+    @Inject
+    private StudentDao studentDao;
 
     @Override
     protected GroupDao getDao() {
@@ -44,32 +40,36 @@ public class GroupServiceImpl extends AbstractCrudService<Long, Group, GroupEnti
 
     @Override
     public void convertToEntity(Group domain, GroupEntity entity) throws BusinessServiceException {
-        if (domain != null){
+        if (domain != null) {
             try {
-                Specialty specialty = domain.getSpecialty();
-                if(specialty != null){
-                    SpecialtyEntity specialtyEntity = specialtyDao.getEntityInstance(specialty.getId());
-                    SpecialtyHelper.convertToEntity(specialty, specialtyEntity);
-
-                    if (entity != null){
-                        entity.setSpecialty(specialtyEntity);
-                    }
+                SpecialtyEntity specialtyEntity = specialtyDao.getEntityInstance(domain.getSpecialtyId());
+                if (specialtyEntity == null) {
+                    throw new BusinessServiceException("Such specialty doesn't exist.");
                 }
 
-//                Group mainGroup = domain.getMainGroup();
-//                if (mainGroup != null){
-//                    GroupEntity groupEntity = groupDao.getEntityInstance(mainGroup.getId());
-//                    GroupHelper.convertToEntity(mainGroup, groupEntity);
-//
-//                    if(entity != null){
-//                        entity.setMainGroup(groupEntity);
-//                    }
-//
-//                }
+                if (entity != null) {
+                    entity.setSpecialty(specialtyEntity);
+                }
+
+                if (domain.getSubgroup() == null) {
+                    if (entity != null) {
+                        entity.setMainGroup(null);
+                    }
+                } else {
+                    GroupEntity mainGroup = groupDao.getMainGroup(domain.getNumber());
+                    if (mainGroup == null) {
+                        throw new BusinessServiceException("Such group doesn't exist.");
+                    }
+
+                    if (entity != null) {
+                        entity.setMainGroup(mainGroup);
+                    }
+
+                }
+                GroupHelper.convertToEntity(domain, entity);
             } catch (DataAccessException e) {
                 throw new BusinessServiceException("Conversion to group entity error.", e);
             }
-            GroupHelper.convertToEntity(domain, entity);
         }
     }
 
@@ -81,8 +81,7 @@ public class GroupServiceImpl extends AbstractCrudService<Long, Group, GroupEnti
 
         Group group = GroupHelper.convertToDomain(entity);
         group.setSpecialty(SpecialtyHelper.convertToDomain(entity.getSpecialty()));
-//        group.setMainGroup(GroupHelper.convertToDomain(entity.getMainGroup()));
-        for (StudentEntity studentEntity : entity.getStudents()){
+        for (StudentEntity studentEntity : studentDao.getGroupStudents(group.getId())) {
             group.getStudents().add(StudentHelper.convertToDomain(studentEntity));
         }
         return group;

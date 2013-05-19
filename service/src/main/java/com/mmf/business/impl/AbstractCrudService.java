@@ -8,6 +8,7 @@ import com.mmf.db.dao.GenericDao;
 import com.mmf.db.model.EntityClass;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;

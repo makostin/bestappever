@@ -1,5 +1,6 @@
 package com.mmf.db.dao.jpa;
 
+import com.mmf.db.dao.DataAccessException;
 import com.mmf.db.dao.GroupDao;
 import com.mmf.db.model.GroupEntity;
 
@@ -33,5 +34,45 @@ public class GroupDaoImpl extends GenericJpaDao<Long, GroupEntity> implements Gr
         criteriaQuery.where(root.get("mainGroup").isNull());
         TypedQuery<GroupEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
+    }
+
+    @Override
+    public GroupEntity getMainGroup(Integer number) {
+        EntityManager entityManager = getEntityManager();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GroupEntity> criteriaQuery = criteriaBuilder.createQuery(GroupEntity.class);
+        Root<GroupEntity> root = criteriaQuery.from(GroupEntity.class);
+        criteriaQuery.where(criteriaBuilder.like(root.<String>get("name"), String.valueOf(number)));
+        TypedQuery<GroupEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public void delete(GroupEntity entity) throws DataAccessException {
+        try {
+            if (entity == null || entity.getId() == null){
+                throw new NullPointerException("delete: Entity or entityId is null.");
+            }
+            if(entity.getMainGroup() == null){
+                deleteSubgroups(entity.getId());
+            }
+            getEntityManager().remove(entity);
+        } catch (RuntimeException ex) {
+            throw new DataAccessException(ex);
+        }
+    }
+
+    private void deleteSubgroups(Long id) {
+        EntityManager entityManager = getEntityManager();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GroupEntity> criteriaQuery = criteriaBuilder.createQuery(GroupEntity.class);
+        Root<GroupEntity> root = criteriaQuery.from(GroupEntity.class);
+        criteriaQuery.where(criteriaBuilder.equal(root.get("mainGroup").get("id"), id));
+        TypedQuery<GroupEntity> query = entityManager.createQuery(criteriaQuery);
+        
+        List<GroupEntity> subgroups = query.getResultList();
+        for (GroupEntity groupEntity : subgroups){
+            entityManager.remove(groupEntity);
+        }
     }
 }
