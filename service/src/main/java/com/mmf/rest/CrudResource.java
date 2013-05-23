@@ -35,7 +35,7 @@ public abstract class CrudResource<T extends DomainClass<Long>, S extends CrudSe
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class CrudResource<T extends DomainClass<Long>, S extends CrudSe
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 

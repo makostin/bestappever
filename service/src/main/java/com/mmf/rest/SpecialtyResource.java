@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class SpecialtyResource extends CrudResource<Specialty, SpecialtyService>
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 
@@ -75,7 +76,7 @@ public class SpecialtyResource extends CrudResource<Specialty, SpecialtyService>
     public Response list() {
         try {
             List<Specialty> specialties = getService().list();
-            List<SpecialtyResponse> specialtyResponses = new ArrayList<SpecialtyResponse>(specialties.size());
+            List<SpecialtyResponse> specialtyResponses = new LinkedList<SpecialtyResponse> ();
             for (Specialty specialty : specialties) {
                 SpecialtyResponse specialtyResponse = new SpecialtyResponse(specialty);
                 specialtyResponses.add(specialtyResponse);
@@ -97,7 +98,7 @@ public class SpecialtyResource extends CrudResource<Specialty, SpecialtyService>
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 }

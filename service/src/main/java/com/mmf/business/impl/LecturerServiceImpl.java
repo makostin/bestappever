@@ -37,21 +37,20 @@ public class LecturerServiceImpl extends AbstractCrudService<Long, Lecturer, Lec
     public void convertToEntity(Lecturer domain, LecturerEntity entity) throws BusinessServiceException {
         if (domain != null){
             try {
-                // todo:
-                Department department = domain.getDepartment();
-                if (department != null){
-                    DepartmentEntity departmentEntity = departmentDao.getEntityInstance(department.getId());
-                    DepartmentHelper.convertToEntity(department, departmentEntity);
+                LecturerHelper.convertToEntity(domain, entity);
 
-                    if (entity != null){
-                        entity.setDepartment(departmentEntity);
-                    }
+                DepartmentEntity departmentEntity = departmentDao.getEntityInstance(domain.getDepartmentId());
+                if (departmentEntity == null){
+                    throw new BusinessServiceException("Such department doesn't exist.");
+                }
+
+                if (entity != null){
+                    entity.setDepartment(departmentEntity);
                 }
 
             } catch (DataAccessException e) {
                 throw new BusinessServiceException("Conversion to lecturer entity error.", e);
             }
-            LecturerHelper.convertToEntity(domain, entity);
         }
     }
 
@@ -64,5 +63,10 @@ public class LecturerServiceImpl extends AbstractCrudService<Long, Lecturer, Lec
         Lecturer lecturer = LecturerHelper.convertToDomain(entity);
         lecturer.setDepartment(DepartmentHelper.convertToDomain(entity.getDepartment()));
         return lecturer;
+    }
+
+    @Override
+    public Lecturer getLecturer(String login) throws BusinessServiceException {
+        return convertToDomain(lecturerDao.getLecturer(login));
     }
 }

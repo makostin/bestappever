@@ -19,12 +19,12 @@ public class LecturerHelper {
         if (entity != null) {
             entity.setAdmin(domain.getAdmin());
             entity.setLogin(domain.getLogin());
-            entity.setName(domain.getName());
             entity.setPassword(domain.getPassword());
             entity.setPasswordFormat(domain.getPasswordFormat());
             entity.setPasswordSalt(domain.getPasswordSalt());
-            entity.setPatronymic(domain.getPatronymic());
+            entity.setName(domain.getName());
             entity.setSurname(domain.getSurname());
+            entity.setPatronymic(domain.getPatronymic());
         }
     }
 

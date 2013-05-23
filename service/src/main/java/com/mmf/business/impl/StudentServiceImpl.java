@@ -62,4 +62,9 @@ public class StudentServiceImpl extends AbstractCrudService<Long, Student, Stude
 
         return student;
     }
+
+    @Override
+    public Student getStudent(String login) throws BusinessServiceException {
+        return convertToDomain(studentDao.getUser(login));
+    }
 }

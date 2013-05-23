@@ -52,6 +52,7 @@ public abstract class GenericJpaDao<Identifier extends Serializable, Entity exte
                 throw new NullPointerException("create: Entity is null.");
             }
             getEntityManager().persist(entity);
+//            getEntityManager().merge(entity);
         } catch (RuntimeException ex) {
             throw new DataAccessException(ex);
         }

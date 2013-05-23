@@ -18,15 +18,14 @@ public class StudentHelper {
      */
     public static void convertToEntity(Student domain, StudentEntity entity) {
         if (entity != null) {
-            entity.setId(domain.getId());
             entity.setAdmin(domain.getAdmin());
             entity.setLogin(domain.getLogin());
-            entity.setName(domain.getName());
             entity.setPassword(domain.getPassword());
             entity.setPasswordFormat(domain.getPasswordFormat());
-            entity.setPasswordSalt(domain.getPasswordSalt());
             entity.setPatronymic(domain.getPatronymic());
+            entity.setName(domain.getName());
             entity.setSurname(domain.getSurname());
+            entity.setPasswordSalt(domain.getPasswordSalt());
             entity.setPraepostor(domain.getPraepostor());
             entity.setYearOfEntrance(domain.getYearOfEntrance());
         }

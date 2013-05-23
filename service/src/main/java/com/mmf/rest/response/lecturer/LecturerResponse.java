@@ -1,6 +1,8 @@
-package com.mmf.rest.response.student;
+package com.mmf.rest.response.lecturer;
 
+import com.mmf.business.domain.Department;
 import com.mmf.business.domain.Group;
+import com.mmf.business.domain.Lecturer;
 import com.mmf.business.domain.Student;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -13,7 +15,7 @@ import java.util.LinkedList;
  * Date: 19.05.13
  */
 @XmlRootElement
-public class StudentResponse {
+public class LecturerResponse {
 
     private Long id;
     private String name;
@@ -23,51 +25,31 @@ public class StudentResponse {
     private String login;
     private String password;
     private Boolean isAdmin;
-    private Group group;
-    private Integer yearOfEntrance;
-    private Boolean isPraepostor;
+    private Department department;
     private Collection<GrantedAuthority> authorities = new LinkedList<GrantedAuthority>();
 
-    public StudentResponse() {
+    public LecturerResponse() {
     }
 
-    public StudentResponse(Student student) {
-        this.id = student.getId();
-        this.name = student.getName();
-        this.surname = student.getSurname();
-        this.patronymic = student.getPatronymic();
-        this.fullName = student.getFullName();
-        this.login = student.getLogin();
-        this.password = student.getPassword();
-        this.isAdmin = student.getAdmin();
-        this.group = student.getGroup();
-        this.yearOfEntrance = student.getYearOfEntrance();
-        this.isPraepostor = student.getPraepostor();
-        this.authorities.addAll(student.getAuthorities());
+    public LecturerResponse(Lecturer lecturer) {
+        this.id = lecturer.getId();
+        this.name = lecturer.getName();
+        this.surname = lecturer.getSurname();
+        this.patronymic = lecturer.getPatronymic();
+        this.fullName = lecturer.getFullName();
+        this.login = lecturer.getLogin();
+        this.password = lecturer.getPassword();
+        this.isAdmin = lecturer.getAdmin();
+        this.department = lecturer.getDepartment();
+        this.authorities.addAll(lecturer.getAuthorities());
     }
 
-    public Group getGroup() {
-        return group;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    public Integer getYearOfEntrance() {
-        return yearOfEntrance;
-    }
-
-    public void setYearOfEntrance(Integer yearOfEntrance) {
-        this.yearOfEntrance = yearOfEntrance;
-    }
-
-    public Boolean getPraepostor() {
-        return isPraepostor;
-    }
-
-    public void setPraepostor(Boolean praepostor) {
-        isPraepostor = praepostor;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public Long getId() {

@@ -6,11 +6,17 @@ import com.mmf.business.domain.User;
 import com.mmf.rest.util.DomainUtil;
 import com.mmf.rest.util.NullPropertyException;
 import com.mmf.rest.util.PasswordGenerator;
+import com.mmf.rest.util.UserRoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * User: svetlana.voyteh
@@ -61,4 +67,36 @@ public class UserResource extends CrudResource<User, UserService> {
         domain.setAdmin(newDomain.getAdmin());
     }
 
+    @Override
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@PathParam("id") long id){
+        try {
+            User domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            UserRoleUtil.setRoles(domain);
+            return Response.ok(domain).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
+
+    @Override
+    @GET
+    @Path("/list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response list(){
+        try {
+            List<User> users = getService().list();
+            for(User user : users){
+                UserRoleUtil.setRoles(user);
+            }
+            return Response.ok(users).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        }
+    }
 }

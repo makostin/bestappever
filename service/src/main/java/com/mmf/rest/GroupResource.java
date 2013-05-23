@@ -76,7 +76,7 @@ public class GroupResource extends CrudResource<Group, GroupService> {
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 
@@ -107,14 +107,14 @@ public class GroupResource extends CrudResource<Group, GroupService> {
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 
     @GET
     @Path("/{id}/students")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getStudentsyOfGroup(@PathParam("id") long id) {
+    public Response getStudentsOfGroup(@PathParam("id") long id) {
         try {
             Group domain = getService().get(id);
             DomainUtil.checkingForNotNull(domain);
@@ -122,7 +122,7 @@ public class GroupResource extends CrudResource<Group, GroupService> {
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 }

@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface StudentDao extends GenericDao<Long, StudentEntity>{
     List<StudentEntity> getGroupStudents(Long groupId);
+
+    StudentEntity getUser(String login);
 }

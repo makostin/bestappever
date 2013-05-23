@@ -51,7 +51,18 @@ public class StudentDaoImpl extends GenericJpaDao<Long, StudentEntity> implement
         return query.getResultList();
     }
 
-//    @Override
+    @Override
+    public StudentEntity getUser(String login) {
+        EntityManager entityManager = getEntityManager();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<StudentEntity> criteriaQuery = criteriaBuilder.createQuery(StudentEntity.class);
+        Root<StudentEntity> root = criteriaQuery.from(StudentEntity.class);
+        criteriaQuery.where(criteriaBuilder.equal(root.get("login"), login));
+        TypedQuery<StudentEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getSingleResult();
+    }
+
+    //    @Override
 //    public void create(StudentEntity studentEntity) throws DataAccessException {
 //        try {
 //            if (studentEntity == null){

@@ -9,4 +9,5 @@ import javax.inject.Named;
  * 05.03.13
  */
 public interface LecturerDao extends GenericDao<Long, LecturerEntity>{
+    LecturerEntity getLecturer(String login);
 }

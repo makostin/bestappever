@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @author svetlana.voyteh
@@ -31,7 +32,7 @@ public class User implements UserDetails, DomainClass<Long>{
     private String passwordSalt;
     private String passwordFormat;
     private Boolean isAdmin;
-    private Collection<? extends GrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+    private Collection<? extends GrantedAuthority> authorities = new LinkedList<GrantedAuthority> ();
 
     public User(){}
 
@@ -71,10 +72,13 @@ public class User implements UserDetails, DomainClass<Long>{
         this.login = login;
     }
 
-    @XmlTransient
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
     public String getPassword() {

@@ -4,13 +4,10 @@ import com.mmf.business.BusinessServiceException;
 import com.mmf.business.LecturerService;
 import com.mmf.business.StudentService;
 import com.mmf.business.UserService;
-import com.mmf.business.domain.Lecturer;
-import com.mmf.business.domain.Student;
 import com.mmf.business.domain.User;
 import com.mmf.rest.RestServiceException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * svetlana.voyteh
@@ -50,33 +48,22 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
     private UserDetails buildUserFromUserEntity(User user) throws BusinessServiceException {
-
-//        String username = user.getLogin();
-//        String password = user.getPassword();
-//
-//        boolean enabled = true;
-//        boolean accountNonExpired = true;
-//        boolean credentialsNonExpired = true;
-//        boolean accountNonLocked = true;
-
         // Add user role access rights
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        if (studentService.get(user.getId()) != null){
-            ((ArrayList<SimpleGrantedAuthority>)user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        if (studentService.get(user.getId()) != null) {
+            ((LinkedList<SimpleGrantedAuthority>) user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_STUDENT"));
         }
 
-        if (lecturerService.get(user.getId()) != null){
-            ((ArrayList<SimpleGrantedAuthority>)user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_LECTURER"));
+        if (lecturerService.get(user.getId()) != null) {
+            ((LinkedList<SimpleGrantedAuthority>) user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_LECTURER"));
         }
 
-        if (user.getAdmin()){
-            ((ArrayList<SimpleGrantedAuthority>)user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (user.getAdmin()) {
+            ((LinkedList<SimpleGrantedAuthority>) user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
-        ((ArrayList<SimpleGrantedAuthority>)user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_USER"));
+        ((LinkedList<SimpleGrantedAuthority>) user.getAuthorities()).add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        // Return user data
         return user;
-//        return new org.springframework.security.core.userdetails.User(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 }

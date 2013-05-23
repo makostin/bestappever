@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -63,7 +64,7 @@ public class DepartmentResource extends CrudResource<Department, DepartmentServi
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 
@@ -74,7 +75,7 @@ public class DepartmentResource extends CrudResource<Department, DepartmentServi
     public Response list() {
         try {
             List<Department> departments = getService().list();
-            List<DepartmentResponse> departmentResponses = new ArrayList<DepartmentResponse>(departments.size());
+            List<DepartmentResponse> departmentResponses = new LinkedList<DepartmentResponse>();
             for (Department department : departments) {
                 DepartmentResponse departmentResponse = new DepartmentResponse(department);
                 departmentResponses.add(departmentResponse);
@@ -96,7 +97,7 @@ public class DepartmentResource extends CrudResource<Department, DepartmentServi
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NullPropertyException e) {
-            throw new RestServiceException(Response.Status.NOT_FOUND.getStatusCode());
+            return Response.noContent().build();
         }
     }
 }
