@@ -1,41 +1,46 @@
-package com.mmf.business.domain;
+package com.mmf.rest.response.note;
 
-
-import com.mmf.business.domain.adapter.DateAdapter;
+import com.mmf.business.domain.Note;
+import com.mmf.business.domain.Schedule;
+import com.mmf.business.domain.User;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 /**
- * svetlana.voyteh
- * 05.02.13
+ * User: svetlana.voyteh
+ * Date: 25.05.13
  */
 @XmlRootElement
-public class Note implements DomainClass<Long> {
-    private static final long serialVersionUID = 8119639825256443031L;
+public class NoteResponse {
 
     private Long id;
     private Date date;
     private User user;
-    private Long userId;
     private Schedule schedule;
-    private Long scheduleId;
     private String color;
     private String text;
 
-    @Override
+    public NoteResponse() {
+    }
+
+    public NoteResponse(Note note) {
+        this.id = note.getId();
+        this.color = note.getColor();
+        this.date = note.getDate();
+        this.text = note.getText();
+        this.user = note.getUser();
+        this.schedule = note.getSchedule();
+    }
+
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
-    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getDate() {
         return date;
     }
@@ -52,7 +57,6 @@ public class Note implements DomainClass<Long> {
         this.color = color;
     }
 
-    @XmlTransient
     public User getUser() {
         return user;
     }
@@ -61,7 +65,6 @@ public class Note implements DomainClass<Long> {
         this.user = user;
     }
 
-    @XmlTransient
     public Schedule getSchedule() {
         return schedule;
     }
@@ -78,19 +81,5 @@ public class Note implements DomainClass<Long> {
         this.text = text;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(Long scheduleId) {
-        this.scheduleId = scheduleId;
-    }
 }

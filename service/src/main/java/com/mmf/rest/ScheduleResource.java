@@ -4,6 +4,9 @@ import com.mmf.business.BusinessServiceException;
 import com.mmf.business.LecturerService;
 import com.mmf.business.ScheduleService;
 import com.mmf.business.domain.Schedule;
+import com.mmf.rest.response.schedule.ScheduleResponse;
+import com.mmf.rest.util.DomainUtil;
+import com.mmf.rest.util.NullPropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,13 +23,132 @@ import java.util.List;
  */
 @Service
 @Path("schedule")
-public class ScheduleResource {
+public class ScheduleResource extends CrudResource<Schedule, ScheduleService>{
 
     @Autowired
     private ScheduleService scheduleService;
 
     @Autowired
     private LecturerService lecturerService;
+
+    @Override
+    protected ScheduleService getService() {
+        return scheduleService;
+    }
+
+    @Override
+    protected void validate(Schedule domain) {
+        try {
+            DomainUtil.checkingForNotNull(domain.getWeek());
+            DomainUtil.checkingForNotNull(domain.getDayOfWeek());
+            DomainUtil.checkingForNotNull(domain.getStudyId());
+            DomainUtil.checkingForNotNull(domain.getClassroomId());
+            DomainUtil.checkingForNotNull(domain.getDisciplineTimeId());
+        } catch (NullPropertyException e) {
+            throw new RestServiceException(Response.Status.BAD_REQUEST.getStatusCode());
+        }
+    }
+
+    @Override
+    protected void updateFields(Schedule domain, Schedule newDomain) {
+        domain.setDayOfWeek(newDomain.getDayOfWeek());
+        domain.setWeek(newDomain.getWeek());
+        domain.setClassroomId(newDomain.getClassroomId());
+        domain.setDisciplineTimeId(newDomain.getDisciplineTimeId());
+        domain.setStudyId(newDomain.getStudyId());
+    }
+
+    @Override
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@PathParam("id") long id){
+        try {
+            Schedule domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            return Response.ok(new ScheduleResponse(domain)).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
+
+    @Override
+    @GET
+    @Path("/list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response list(){
+        try {
+            List<ScheduleResponse> scheduleResponses = new LinkedList<ScheduleResponse>();
+            for(Schedule schedule : getService().list()){
+                scheduleResponses.add(new ScheduleResponse(schedule));
+            }
+            return Response.ok(scheduleResponses).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        }
+    }
+
+    @GET
+    @Path("/{id}/classroom")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getClassroom(@PathParam("id") long id){
+        try {
+            Schedule domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            return Response.ok(domain.getClassroom()).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/study")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStudy(@PathParam("id") long id){
+        try {
+            Schedule domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            return Response.ok(domain.getStudy()).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/disciplineTime")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDisciplineTime(@PathParam("id") long id){
+        try {
+            Schedule domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            return Response.ok(domain.getDisciplineTime()).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/notes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNotes(@PathParam("id") long id){
+        try {
+            Schedule domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            return Response.ok(domain.getNotes()).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
 
 
     @GET
@@ -93,4 +216,6 @@ public class ScheduleResource {
             throw new RestServiceException(e.getErrorCode());
         }
     }
+
+
 }

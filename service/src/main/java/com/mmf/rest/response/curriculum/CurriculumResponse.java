@@ -1,16 +1,14 @@
-package com.mmf.business.domain;
+package com.mmf.rest.response.curriculum;
 
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import com.mmf.business.domain.Curriculum;
+import com.mmf.business.domain.Discipline;
+import com.mmf.business.domain.Specialty;
 
 /**
- * User: admin
- * Date: 14.10.12
+ * User: svetlana.voyteh
+ * Date: 25.05.13
  */
-@XmlRootElement
-public class Curriculum implements DomainClass<Long>{
-    private static final long serialVersionUID = -6007177809701217399L;
+public class CurriculumResponse {
 
     private Long id;
     private Integer hours;
@@ -18,23 +16,26 @@ public class Curriculum implements DomainClass<Long>{
     private Boolean exam;
     private Boolean setoff;
     private Discipline discipline;
-    private Long disciplineId;
     private Specialty specialty;
-    private Long specialtyId;
 
-    public Curriculum(){}
+    public CurriculumResponse() {
+    }
 
-    public Curriculum(Long id) {
-        this.id = id;
+    public CurriculumResponse(Curriculum curriculum) {
+        this.id = curriculum.getId();
+        this.hours = curriculum.getHours();
+        this.semester = curriculum.getSemester();
+        this.exam = curriculum.getExam();
+        this.setoff = curriculum.getSetoff();
+        this.discipline = curriculum.getDiscipline();
+        this.specialty = curriculum.getSpecialty();
     }
 
 
-    @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -71,7 +72,6 @@ public class Curriculum implements DomainClass<Long>{
         this.setoff = setoff;
     }
 
-    @XmlTransient
     public Discipline getDiscipline() {
         return discipline;
     }
@@ -80,7 +80,6 @@ public class Curriculum implements DomainClass<Long>{
         this.discipline = discipline;
     }
 
-    @XmlTransient
     public Specialty getSpecialty() {
         return specialty;
     }
@@ -89,19 +88,4 @@ public class Curriculum implements DomainClass<Long>{
         this.specialty = specialty;
     }
 
-    public Long getDisciplineId() {
-        return disciplineId;
-    }
-
-    public void setDisciplineId(Long disciplineId) {
-        this.disciplineId = disciplineId;
-    }
-
-    public Long getSpecialtyId() {
-        return specialtyId;
-    }
-
-    public void setSpecialtyId(Long specialtyId) {
-        this.specialtyId = specialtyId;
-    }
 }

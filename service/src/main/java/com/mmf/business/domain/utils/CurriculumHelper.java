@@ -1,8 +1,6 @@
 package com.mmf.business.domain.utils;
 
 import com.mmf.business.domain.Curriculum;
-import com.mmf.business.domain.Discipline;
-import com.mmf.business.domain.Specialty;
 import com.mmf.db.model.CurriculumEntity;
 
 /**
@@ -39,8 +37,8 @@ public class CurriculumHelper {
         domain.setHours(entity.getHours());
         domain.setSemester(entity.getSemester());
         domain.setSetoff(entity.getSetoff());
-        domain.setDiscipline(new Discipline(entity.getDiscipline().getId()));
-        domain.setSpecialty(new Specialty(entity.getSpecialty().getId()));
+        domain.setDisciplineId(entity.getDiscipline().getId());
+        domain.setSpecialtyId(entity.getSpecialty().getId());
         return domain;
     }
 

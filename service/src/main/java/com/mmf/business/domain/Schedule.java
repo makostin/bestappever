@@ -15,11 +15,17 @@ public class Schedule implements DomainClass<Long>{
 
     private Long id;
     private Classroom classroom;
+    private Long classroomId;
     private DisciplineTime disciplineTime;
+    private Long disciplineTimeId;
     private Study study;
+    private Long studyId;
     private Group group;
+    private Long groupId;
     private Lecturer lecturer;
+    private Long lecturerId;
     private Discipline discipline;
+    private Long disciplineId;
     private Integer dayOfWeek;
     private String dayTitle;
     private Integer everyNWeek;
@@ -69,6 +75,7 @@ public class Schedule implements DomainClass<Long>{
         this.week = week;
     }
 
+    @XmlTransient
     public Classroom getClassroom() {
         return classroom;
     }
@@ -77,6 +84,7 @@ public class Schedule implements DomainClass<Long>{
         this.classroom = classroom;
     }
 
+    @XmlTransient
     public DisciplineTime getDisciplineTime() {
         return disciplineTime;
     }
@@ -94,6 +102,7 @@ public class Schedule implements DomainClass<Long>{
         this.study = study;
     }
 
+    @XmlTransient
     public Set<Note> getNotes() {
         return notes;
     }
@@ -102,6 +111,7 @@ public class Schedule implements DomainClass<Long>{
         this.notes = notes;
     }
 
+    @XmlTransient
     public Group getGroup() {
         return group;
     }
@@ -110,6 +120,7 @@ public class Schedule implements DomainClass<Long>{
         this.group = group;
     }
 
+    @XmlTransient
     public Lecturer getLecturer() {
         return lecturer;
     }
@@ -118,11 +129,60 @@ public class Schedule implements DomainClass<Long>{
         this.lecturer = lecturer;
     }
 
+    @XmlTransient
     public Discipline getDiscipline() {
         return discipline;
     }
 
     public void setDiscipline(Discipline discipline) {
         this.discipline = discipline;
+    }
+
+    public Long getClassroomId() {
+        return classroomId;
+    }
+
+    public void setClassroomId(Long classroomId) {
+        this.classroomId = classroomId;
+    }
+
+    public Long getDisciplineTimeId() {
+        return disciplineTimeId;
+    }
+
+    public void setDisciplineTimeId(Long disciplineTimeId) {
+        this.disciplineTimeId = disciplineTimeId;
+    }
+
+    public Long getStudyId() {
+        return studyId;
+    }
+
+    public void setStudyId(Long studyId) {
+        this.studyId = studyId;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Long getDisciplineId() {
+        return disciplineId;
+    }
+
+    public void setDisciplineId(Long disciplineId) {
+        this.disciplineId = disciplineId;
+    }
+
+    public Long getLecturerId() {
+        return lecturerId;
+    }
+
+    public void setLecturerId(Long lecturerId) {
+        this.lecturerId = lecturerId;
     }
 }

@@ -1,6 +1,6 @@
 package com.mmf.business.domain;
 
-import com.mmf.business.domain.adapter.DateAdapter;
+import com.mmf.business.domain.adapter.TimeAdapter;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.Date;
  * svetlana.voyteh
  * 05.02.13
  */
-public class DisciplineTime implements DomainClass<Long>{
+public class DisciplineTime implements DomainClass<Long> {
     private static final long serialVersionUID = 2799886693021576931L;
 
     private Long id;
@@ -28,7 +28,7 @@ public class DisciplineTime implements DomainClass<Long>{
         this.id = id;
     }
 
-    @XmlJavaTypeAdapter(DateAdapter.class)
+    @XmlJavaTypeAdapter(TimeAdapter.class)
     public Date getStartTime() {
         return startTime;
     }
@@ -37,7 +37,7 @@ public class DisciplineTime implements DomainClass<Long>{
         this.startTime = startTime;
     }
 
-    @XmlJavaTypeAdapter(DateAdapter.class)
+    @XmlJavaTypeAdapter(TimeAdapter.class)
     public Date getEndTime() {
         return endTime;
     }

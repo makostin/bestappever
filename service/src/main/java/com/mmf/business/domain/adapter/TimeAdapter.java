@@ -8,9 +8,9 @@ import java.util.Date;
  * User: svetlana.voyteh
  * Date: 21.03.13
  */
-public class DateAdapter extends XmlAdapter<String, Date>{
+public class TimeAdapter extends XmlAdapter<String, Date>{
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
     @Override
     public Date unmarshal(String v) throws Exception {
