@@ -4,6 +4,7 @@ import com.mmf.business.BusinessServiceException;
 import com.mmf.business.LecturerService;
 import com.mmf.business.ScheduleService;
 import com.mmf.business.domain.Schedule;
+import com.mmf.rest.response.schedule.ScheduleGroupResponse;
 import com.mmf.rest.response.schedule.ScheduleResponse;
 import com.mmf.rest.util.DomainUtil;
 import com.mmf.rest.util.NullPropertyException;
@@ -150,6 +151,51 @@ public class ScheduleResource extends CrudResource<Schedule, ScheduleService>{
         }
     }
 
+    @GET
+    @Path("/{id}/group")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getGroup(@PathParam("id") long id){
+        try {
+            Schedule domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            return Response.ok(domain.getGroup()).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/lecturer")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLecturer(@PathParam("id") long id){
+        try {
+            Schedule domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            return Response.ok(domain.getLecturer()).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/discipline")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDiscipline(@PathParam("id") long id){
+        try {
+            Schedule domain = getService().get(id);
+            DomainUtil.checkingForNotNull(domain);
+            return Response.ok(domain.getDiscipline()).header("Content-Encoding", "utf-8").build();
+        } catch (BusinessServiceException e) {
+            throw new RestServiceException(e.getErrorCode());
+        } catch (NullPropertyException e) {
+            return Response.noContent().build();
+        }
+    }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -181,19 +227,26 @@ public class ScheduleResource extends CrudResource<Schedule, ScheduleService>{
             semester = course * 2 - 1;
             yearOfEntrance = currentYear - course + 1;
         }
-        String subGroupName = String.valueOf(group) + subGroup;
+        String subGroupName = "".equals(subGroup) ? subGroup : String.valueOf(group) + subGroup;
         try {
             List<Schedule> scheduleList = scheduleService.getSchedule(semester, yearOfEntrance, String.valueOf(group), subGroupName);
             List<ScheduleResponse> scheduleResponseList = new LinkedList<ScheduleResponse>();
+            ScheduleGroupResponse groupResponse = new ScheduleGroupResponse();
+            int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR)%2;
+            groupResponse.setCurrentWeek(currentWeek == 0 ? 2 : currentWeek);
+            int day = 2;
             for (Schedule response : scheduleList) {
+                if (day != response.getDayOfWeek()){
+                    groupResponse.setSchedule(scheduleResponseList, day);
+                    scheduleResponseList.clear();
+                    day = response.getDayOfWeek();
+                }
                 response.setLecturer(lecturerService.get(response.getLecturerId()));
-//                response.getGroup().setCourse(course);
-//                response.getGroup().setNumber(group);
-//                response.getGroup().setSubgroup(subGroup);
                 scheduleResponseList.add(new ScheduleResponse(response));
             }
+            groupResponse.setSchedule(scheduleResponseList, day);
 
-            return Response.ok(scheduleResponseList).header("Content-Encoding", "utf-8").build();
+            return Response.ok(groupResponse).header("Content-Encoding", "utf-8").build();
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         }
@@ -209,11 +262,23 @@ public class ScheduleResource extends CrudResource<Schedule, ScheduleService>{
                 semester = 1;
             }
             List<Schedule> scheduleList = scheduleService.getSchedule(lecturerId, semester);
+            List<ScheduleResponse> scheduleResponseList = new LinkedList<ScheduleResponse>();
+            ScheduleGroupResponse groupResponse = new ScheduleGroupResponse();
+            int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR)%2;
+            groupResponse.setCurrentWeek(currentWeek == 0 ? 2 : currentWeek);
+            int day = 2;
             for (Schedule response : scheduleList) {
+                if (day != response.getDayOfWeek()){
+                    groupResponse.setSchedule(scheduleResponseList, day);
+                    scheduleResponseList.clear();
+                    day = response.getDayOfWeek();
+                }
                 response.setLecturer(lecturerService.get(response.getLecturerId()));
+                scheduleResponseList.add(new ScheduleResponse(response));
             }
+            groupResponse.setSchedule(scheduleResponseList, day);
 
-            return Response.ok(scheduleList).header("Content-Encoding", "utf-8").build();
+            return Response.ok(groupResponse).header("Content-Encoding", "utf-8").build();
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         }

@@ -5,9 +5,7 @@ import com.mmf.business.StudyService;
 import com.mmf.business.domain.Specialty;
 import com.mmf.business.domain.SpecialtyInfo;
 import com.mmf.business.domain.Study;
-import com.mmf.business.domain.utils.GroupHelper;
-import com.mmf.business.domain.utils.SpecialtyHelper;
-import com.mmf.business.domain.utils.StudyHelper;
+import com.mmf.business.domain.utils.*;
 import com.mmf.db.dao.*;
 import com.mmf.db.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,9 +74,9 @@ public class StudyServiceImpl extends AbstractCrudService<Long, Study, StudyEnti
         }
 
         Study study = StudyHelper.convertToDomain(entity);
-        study.setGroupId(entity.getGroup().getId());
-        study.setLecturerId(entity.getLecturer().getId());
-        study.setCurriculumId(entity.getCurriculum().getId());
+        study.setGroup(GroupHelper.convertToDomain(entity.getGroup()));
+        study.setLecturer(LecturerHelper.convertToDomain(entity.getLecturer()));
+        study.setCurriculum(CurriculumHelper.convertToDomain(entity.getCurriculum()));
         return study;
     }
 

@@ -88,18 +88,27 @@ public class ScheduleDaoImpl extends GenericJpaDao<Long, ScheduleEntity> impleme
         Subquery<GroupEntity> groupSubQuery = criteriaQuery.subquery(GroupEntity.class);
         Root<GroupEntity> rootGroup = groupSubQuery.from(GroupEntity.class);
         groupSubQuery.select(rootGroup);
-        groupSubQuery.
-                where(criteriaBuilder.and
-                        (
-                                criteriaBuilder.equal(rootGroup.get("year"), yearOfEntrance),
-                                criteriaBuilder.or
-                                        (
-                                                criteriaBuilder.equal(rootGroup.get("name"), groupName),
-                                                criteriaBuilder.equal(rootGroup.get("name"), subGroupName)
-                                        )
-                        )
-                );
-
+        if ("".equals(subGroupName)){
+            groupSubQuery.
+                    where(criteriaBuilder.and
+                            (
+                                    criteriaBuilder.equal(rootGroup.get("year"), yearOfEntrance),
+                                    criteriaBuilder.like(rootGroup.<String>get("name"), groupName + "%")
+                            )
+                    );
+        } else {
+            groupSubQuery.
+                    where(criteriaBuilder.and
+                            (
+                                    criteriaBuilder.equal(rootGroup.get("year"), yearOfEntrance),
+                                    criteriaBuilder.or
+                                            (
+                                                    criteriaBuilder.equal(rootGroup.get("name"), groupName),
+                                                    criteriaBuilder.equal(rootGroup.get("name"), subGroupName)
+                                            )
+                            )
+                    );
+        }
         Subquery<CurriculumEntity> curriculumSubQuery = criteriaQuery.subquery(CurriculumEntity.class);
         Root<CurriculumEntity> rootCurriculum = curriculumSubQuery.from(CurriculumEntity.class);
         curriculumSubQuery.select(rootCurriculum);

@@ -110,12 +110,7 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
         }
 
         for (ScheduleEntity entity : scheduleList) {
-            Schedule schedule = convertToDomain(entity);
-//            schedule.setLecturer(schedule.getStudy().getLecturer());
-//            schedule.setDiscipline(DisciplineHelper.convertToDomain(entity.getStudy().getCurriculum().getDiscipline()));
-//            schedule.setGroup(schedule.getStudy().getGroup());
-            setDay(schedule);
-            responseList.add(schedule);
+            responseList.add(convertToDomain(entity));
         }
         return responseList;
     }
@@ -135,9 +130,9 @@ public class ScheduleServiceImpl extends AbstractCrudService<Long, Schedule, Sch
 
         for (ScheduleEntity entity : scheduleList) {
             Schedule schedule = convertToDomain(entity);
-            schedule.setDiscipline(DisciplineHelper.convertToDomain(entity.getStudy().getCurriculum().getDiscipline()));
-            schedule.setGroup(GroupHelper.convertToDomain(entity.getStudy().getGroup()));
-            schedule.setLecturer(schedule.getStudy().getLecturer());
+//            schedule.setDiscipline(DisciplineHelper.convertToDomain(entity.getStudy().getCurriculum().getDiscipline()));
+//            schedule.setGroup(GroupHelper.convertToDomain(entity.getStudy().getGroup()));
+//            schedule.setLecturer(schedule.getStudy().getLecturer());
             setDay(schedule);
 
             responseList.add(schedule);

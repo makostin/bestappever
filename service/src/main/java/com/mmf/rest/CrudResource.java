@@ -44,12 +44,13 @@ public abstract class CrudResource<T extends DomainClass<Long>, S extends CrudSe
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response add(T domain) {
         try {
             DomainUtil.checkingForNull(domain.getId());
             validate(domain);
             getService().create(domain);
-            return Response.ok().header("Content-Encoding", "utf-8").build();
+            return Response.ok(domain).header("Content-Encoding", "utf-8").build();
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         } catch (NotNullPropertyException e) {

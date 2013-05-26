@@ -31,6 +31,7 @@ public class DisciplineHelper {
         Discipline domain = new Discipline();
         domain.setId(entity.getId());
         domain.setName(entity.getName());
+        domain.setDisciplineTypeId(entity.getDisciplineType().getId());
         return domain;
     }
 }
