@@ -3,8 +3,10 @@ package com.mmf.rest.response.note;
 import com.mmf.business.domain.Note;
 import com.mmf.business.domain.Schedule;
 import com.mmf.business.domain.User;
+import com.mmf.business.domain.adapter.DateAdapter;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 /**
@@ -41,6 +43,7 @@ public class NoteResponse {
         this.id = id;
     }
 
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getDate() {
         return date;
     }

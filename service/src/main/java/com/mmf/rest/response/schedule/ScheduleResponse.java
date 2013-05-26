@@ -20,6 +20,9 @@ public class ScheduleResponse {
     private Classroom classroom;
     private DisciplineTime disciplineTime;
     private Study study;
+    private Group group;
+    private Lecturer lecturer;
+    private Discipline discipline;
     private Integer dayOfWeek;
     private String dayTitle;
     private Integer week;
@@ -34,6 +37,9 @@ public class ScheduleResponse {
         this.classroom = schedule.getClassroom();
         this.disciplineTime = schedule.getDisciplineTime();
         this.study = schedule.getStudy();
+        this.group = schedule.getGroup();
+        this.lecturer = schedule.getLecturer();
+        this.discipline = schedule.getDiscipline();
         this.week = schedule.getWeek();
         this.notes.addAll(schedule.getNotes());
         this.dayOfWeek = schedule.getDayOfWeek();
@@ -109,5 +115,29 @@ public class ScheduleResponse {
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Lecturer getLecturer() {
+        return lecturer;
+    }
+
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
+    }
+
+    public Discipline getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
     }
 }

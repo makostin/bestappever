@@ -184,14 +184,16 @@ public class ScheduleResource extends CrudResource<Schedule, ScheduleService>{
         String subGroupName = String.valueOf(group) + subGroup;
         try {
             List<Schedule> scheduleList = scheduleService.getSchedule(semester, yearOfEntrance, String.valueOf(group), subGroupName);
+            List<ScheduleResponse> scheduleResponseList = new LinkedList<ScheduleResponse>();
             for (Schedule response : scheduleList) {
-                response.setLecturer(lecturerService.get(response.getLecturer().getId()));
-                response.getGroup().setCourse(course);
-                response.getGroup().setNumber(group);
-                response.getGroup().setSubgroup(subGroup);
+                response.setLecturer(lecturerService.get(response.getLecturerId()));
+//                response.getGroup().setCourse(course);
+//                response.getGroup().setNumber(group);
+//                response.getGroup().setSubgroup(subGroup);
+                scheduleResponseList.add(new ScheduleResponse(response));
             }
 
-            return Response.ok(scheduleList).header("Content-Encoding", "utf-8").build();
+            return Response.ok(scheduleResponseList).header("Content-Encoding", "utf-8").build();
         } catch (BusinessServiceException e) {
             throw new RestServiceException(e.getErrorCode());
         }
@@ -208,7 +210,7 @@ public class ScheduleResource extends CrudResource<Schedule, ScheduleService>{
             }
             List<Schedule> scheduleList = scheduleService.getSchedule(lecturerId, semester);
             for (Schedule response : scheduleList) {
-                response.setLecturer(lecturerService.get(response.getLecturer().getId()));
+                response.setLecturer(lecturerService.get(response.getLecturerId()));
             }
 
             return Response.ok(scheduleList).header("Content-Encoding", "utf-8").build();
