@@ -44,9 +44,13 @@ public class StudentResource extends CrudResource<Student, StudentService> {
             DomainUtil.checkingForNotNull(domain.getSurname());
             DomainUtil.checkingForNotNull(domain.getPatronymic());
             DomainUtil.checkingForNotNull(domain.getLogin());
-            DomainUtil.checkingForNotNull(domain.getPassword());
             DomainUtil.checkingForNotNull(domain.getAdmin());
-            passwordGenerator.hashPassword(domain);
+            if (domain.getId() == null){
+                DomainUtil.checkingForNotNull(domain.getPassword());
+                passwordGenerator.hashPassword(domain);
+            } else if (domain.getPassword() != null && !"".equals(domain.getPassword())){
+                passwordGenerator.hashPassword(domain);
+            }
             DomainUtil.checkingForNotNull(domain.getPraepostor());
             DomainUtil.checkingForNotNull(domain.getYearOfEntrance());
             DomainUtil.checkingForNotNull(domain.getGroupId());
@@ -63,9 +67,11 @@ public class StudentResource extends CrudResource<Student, StudentService> {
         domain.setSurname(newDomain.getSurname());
         domain.setPatronymic(newDomain.getPatronymic());
         domain.setLogin(newDomain.getLogin());
-        domain.setPassword(newDomain.getPassword());
-        domain.setPasswordSalt(newDomain.getPasswordSalt());
-        domain.setPasswordFormat(newDomain.getPasswordFormat());
+        if (newDomain.getPassword() != null && !"".equals(newDomain.getPassword())){
+            domain.setPassword(newDomain.getPassword());
+            domain.setPasswordSalt(newDomain.getPasswordSalt());
+            domain.setPasswordFormat(newDomain.getPasswordFormat());
+        }
         domain.setAdmin(newDomain.getAdmin());
         domain.setPraepostor(newDomain.getPraepostor());
         domain.setYearOfEntrance(newDomain.getYearOfEntrance());

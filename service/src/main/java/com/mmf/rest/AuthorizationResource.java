@@ -3,6 +3,7 @@ package com.mmf.rest;
 import com.mmf.business.BusinessServiceException;
 import com.mmf.business.LecturerService;
 import com.mmf.business.StudentService;
+import com.mmf.business.UserService;
 import com.mmf.business.domain.Lecturer;
 import com.mmf.business.domain.Student;
 import com.mmf.business.domain.User;
@@ -31,6 +32,9 @@ import java.util.regex.Pattern;
 public class AuthorizationResource {
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     StudentService studentService;
 
     @Autowired
@@ -43,11 +47,18 @@ public class AuthorizationResource {
             String credentials = new String(Base64.decodeBase64(userAgent.split(" ")[1]));
             int index = credentials.indexOf(":");
             String login = credentials.substring(0, index);
-            User user = studentService.getStudent(login);
+
+            User temp = userService.getUser(login);
+            if(temp == null){
+                throw new RestServiceException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+            }
+
+            User user = studentService.get(temp.getId());
             if (user == null){
-                user = lecturerService.getLecturer(login);
+                user = lecturerService.get(temp.getId());
                 if (user == null){
-                    throw new RestServiceException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+                    user = temp;
+                    UserRoleUtil.setRoles(user);
                 } else {
                     UserRoleUtil.setRoles((Lecturer)user);
                 }

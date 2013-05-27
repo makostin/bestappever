@@ -47,9 +47,13 @@ public class LecturerResource extends CrudResource<Lecturer, LecturerService> {
             DomainUtil.checkingForNotNull(domain.getSurname());
             DomainUtil.checkingForNotNull(domain.getPatronymic());
             DomainUtil.checkingForNotNull(domain.getLogin());
-            DomainUtil.checkingForNotNull(domain.getPassword());
             DomainUtil.checkingForNotNull(domain.getAdmin());
-            passwordGenerator.hashPassword(domain);
+            if (domain.getId() == null){
+                DomainUtil.checkingForNotNull(domain.getPassword());
+                passwordGenerator.hashPassword(domain);
+            } else if (domain.getPassword() != null && !"".equals(domain.getPassword())){
+                passwordGenerator.hashPassword(domain);
+            }
             DomainUtil.checkingForNotNull(domain.getDepartmentId());
         } catch (NullPropertyException e) {
             throw new RestServiceException(Response.Status.BAD_REQUEST.getStatusCode());
@@ -64,9 +68,11 @@ public class LecturerResource extends CrudResource<Lecturer, LecturerService> {
         domain.setSurname(newDomain.getSurname());
         domain.setPatronymic(newDomain.getPatronymic());
         domain.setLogin(newDomain.getLogin());
-        domain.setPassword(newDomain.getPassword());
-        domain.setPasswordSalt(newDomain.getPasswordSalt());
-        domain.setPasswordFormat(newDomain.getPasswordFormat());
+        if (newDomain.getPassword() != null && !"".equals(newDomain.getPassword())){
+            domain.setPassword(newDomain.getPassword());
+            domain.setPasswordSalt(newDomain.getPasswordSalt());
+            domain.setPasswordFormat(newDomain.getPasswordFormat());
+        }
         domain.setAdmin(newDomain.getAdmin());
         domain.setDepartmentId(newDomain.getDepartmentId());
     }
