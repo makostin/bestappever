@@ -59,10 +59,10 @@ public class InitialDataDeserializer implements JsonDeserializer<InitialData> {
         array = data.getAsJsonArray("specialties");
         for(JsonElement specialtyJson : array){
             JsonObject specialtyObject = specialtyJson.getAsJsonObject();
-            Specialty specialty = new Specialty();
-            specialty.setName(specialtyObject.get("name").getAsString());
 
             for(JsonElement groupNumber : specialtyObject.getAsJsonArray("groupNumbers")){
+                Specialty specialty = new Specialty();
+                specialty.setName(specialtyObject.get("name").getAsString());
                 specialty.setNumber(groupNumber.getAsInt());
                 initialData.getSpecialties().add(specialty);
             }

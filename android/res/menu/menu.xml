@@ -5,8 +5,8 @@
           android:title="@string/menu_options"
           android:showAsAction="ifRoom"
             />
-    <item android:id="@+id/menu_week"
-          android:title="@string/menu_week"
+    <item android:id="@+id/menu_schedule"
+          android:title="@string/menu_schedule"
           android:showAsAction="ifRoom"
             />
 </menu>

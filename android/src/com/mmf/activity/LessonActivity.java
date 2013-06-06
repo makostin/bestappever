@@ -1,11 +1,10 @@
 package com.mmf.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import com.actionbarsherlock.view.Menu;
 import com.mmf.R;
 import com.mmf.adapter.LecturerLessonsAdapter;
 import com.mmf.adapter.StudentLessonsAdapter;
@@ -14,18 +13,15 @@ import com.mmf.db.model.Filter;
 import com.mmf.db.model.Lecturer;
 import com.mmf.db.model.Schedule;
 import com.mmf.db.model.ScheduleType;
+import com.mmf.prefs.CredentialsPrefs;
 import com.mmf.prefs.OptionPrefs;
 import com.mmf.rest.DataLoader;
 import com.mmf.rest.exceptions.ServiceLayerException;
 import com.mmf.rest.task.LoadDataTask;
-import com.mmf.service.BusinessLayerException;
 import com.mmf.service.FilterService;
 import com.mmf.service.LecturerService;
 import com.mmf.service.ScheduleService;
-import com.mmf.util.DialogFragmentUtil;
-import com.mmf.util.IntentUtil;
-import com.mmf.util.InternetConnectionUtil;
-import com.mmf.util.Logger;
+import com.mmf.util.*;
 import org.apache.http.auth.InvalidCredentialsException;
 
 import java.text.SimpleDateFormat;
@@ -35,10 +31,12 @@ import java.util.*;
 public class LessonActivity extends BaseActivity implements SwipeInterface {
 
 
+    private static final int ADD_NOTE = 0x1b;
     private ListView listView;
     private int currentDay;
     private int course;
     private int group;
+    private String header;
     private String subGroup;
     private Lecturer lecturer;
     private String date;
@@ -66,6 +64,16 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
         service = new ScheduleService();
         filterService = new FilterService();
         lecturerService = new LecturerService();
+
+        TextView login = (TextView) findViewById(R.id.text_login);
+        if (CredentialsPrefs.IsLogined.get()){
+            login.setVisibility(View.VISIBLE);
+            login.setText(CredentialsPrefs.Login.get());
+        } else {
+            login.setVisibility(View.INVISIBLE);
+            login.setText("");
+        }
+
         init();
         loadData();
     }
@@ -126,16 +134,16 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
         subGroup = OptionPrefs.Subgroup.get();
         lecturer = lecturerService.getLecturer(OptionPrefs.Lecturer.get());
 
-        String header = "";
+        header = "";
         if (ScheduleType.STUDENT.equals(scheduleType)){
-            header = "Course " + course + ", group " + group + subGroup;
+            header = StringUtils.getStringByResource(R.string.course) + " " + course + ", " + StringUtils.getStringByResource(R.string.group) + " " + group + subGroup;
         } else {
             header = lecturer.getFullName();
         }
-        ((TextView) findViewById(R.id.header)).setText(header);
+        ((TextView) findViewById(R.id.text_header)).setText(header);
 
         currentDay = calendar.get(Calendar.DAY_OF_WEEK);
-        dateFormat = new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.US);
+        dateFormat = new SimpleDateFormat("EEEE, dd.MM.yyyy", new Locale("ru", "RU"));
         if (currentDay == 1) {  // if currentDay == Sunday
             currentDay++;
             calendar.add(Calendar.DATE, 1); // +1 day to Monday
@@ -143,16 +151,41 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
         } else {
             date = dateFormat.format(new Date());
         }
-        dayView = (TextView) findViewById(R.id.day);
+        dayView = (TextView) findViewById(R.id.text_day);
         dayView.setText(date);
 
         listView = (ListView) findViewById(R.id.list);
         listView.setTextFilterEnabled(true);
         ActivitySwipeDetector swipe = new ActivitySwipeDetector(this);
-        listView.setOnTouchListener(swipe);
+//        listView.setOnTouchListener(swipe);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Schedule schedule = (Schedule) listView.getAdapter().getItem(position);
+                Intent intent = new Intent(LessonActivity.this, NoteActivity.class);
+                intent.putExtra("date", date);
+                intent.putExtra("time", schedule.getTime());
+                intent.putExtra("discipline", schedule.getDiscipline());
+                intent.putExtra("classroom", schedule.getClassroom());
+                intent.putExtra("header", schedule.getLecturer().getFullName());
+                startActivityForResult(intent, ADD_NOTE);
+            }
+        });
+
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout_main);
         layout.setOnTouchListener(swipe);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case ADD_NOTE:
+                // todo:
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void updateView() {
@@ -201,71 +234,10 @@ public class LessonActivity extends BaseActivity implements SwipeInterface {
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-////        try {
-//            Intent intent;
-//            switch (item.getItemId()) {
-//                case R.id.menu_home:
-//                    intent = new Intent(LessonActivity.this, OptionActivity.class);
-//                    intent.putExtra("isOptionExist", true);
-//                    intent.putExtra("role", role);
-//                    LessonActivity.this.startActivity(intent);
-//                    LessonActivity.this.finish();
-//                    break;
-//                case R.id.menu_login:
-//                    intent = new Intent(LessonActivity.this, LoginActivity.class);
-//                    if (StringUtils.getStringByResource(R.string.menu_login).equals(item.getTitle())) {
-//                        LessonActivity.this.startActivityForResult(intent, LOGIN);
-//                    } else {
-//                        findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
-//                        findViewById(R.id.login).setVisibility(View.INVISIBLE);
-////                        studentOptionService.logout();
-//                    }
-//                    break;
-//            }
-////        } catch (BusinessLayerException ble){
-////            Logger.getInstance().error(ble);
-////        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (data == null) return;
-//            if (resultCode == RESULT_OK) {
-//                switch (requestCode) {
-//                    case LOGIN:
-//                        String login = data.getStringExtra("login");
-//                        findViewById(R.id.welcome).setVisibility(View.VISIBLE);
-//                        TextView loginTextView = ((TextView)findViewById(R.id.login));
-//                        loginTextView.setVisibility(View.VISIBLE);
-//                        loginTextView.setText(login);
-//                        break;
-//                }
-//            }
-//    }
-//
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-////        MenuItem loginItem = menu.getItem(1);
-////        try {
-////            if (studentOptionService.isLogin()) {
-////                loginItem.setTitle(R.string.menu_logout);
-////            } else {
-////                loginItem.setTitle(R.string.menu_login);
-////            }
-////        } catch (BusinessLayerException ble){
-////            Logger.getInstance().error(ble);
-////        }
-//        return super.onPrepareOptionsMenu(menu);
-//    }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.findItem(R.id.menu_schedule).setVisible(false);
+        return true;
+    }
 }

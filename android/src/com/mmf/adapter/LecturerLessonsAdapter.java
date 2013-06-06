@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.mmf.R;
 import com.mmf.db.model.Schedule;
+import com.mmf.util.StringUtils;
 
 import java.util.List;
 
@@ -46,8 +47,8 @@ public class LecturerLessonsAdapter extends ArrayAdapter<Schedule> {
         TextView date = (TextView) lessonView.findViewById(R.id.time);
 
         subject.setText(lesson.getDiscipline());
-        course.setText(lesson.getCourse() + " course ");
-        group.setText(lesson.getGroupNumber() + lesson.getSubGroup() + " group");
+        course.setText(StringUtils.getStringByResource(R.string.course) + " " + lesson.getCourse() + ", ");
+        group.setText(StringUtils.getStringByResource(R.string.group) + " " + lesson.getGroupNumber() + lesson.getSubGroup());
         classRoom.setText(String.valueOf(lesson.getClassroom()));
         date.setText(lesson.getTime());
 

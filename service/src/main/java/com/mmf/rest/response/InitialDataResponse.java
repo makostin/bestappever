@@ -2,6 +2,7 @@ package com.mmf.rest.response;
 
 import com.mmf.business.domain.Department;
 import com.mmf.business.domain.SpecialtyInfo;
+import com.mmf.rest.response.department.DepartmentResponse;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class InitialDataResponse {
     private String secondSemesterStart;
     private String secondSemesterEnd;
     private List<String> subGroups;
-    private List<Department> departments;
+    private List<DepartmentResponse> departments;
     private List<SpecialtyInfo> specialties;
 
 
@@ -47,11 +48,11 @@ public class InitialDataResponse {
         this.subGroups = subGroups;
     }
 
-    public List<Department> getDepartments() {
+    public List<DepartmentResponse> getDepartments() {
         return departments;
     }
 
-    public void setDepartments(List<Department> departments) {
+    public void setDepartments(List<DepartmentResponse> departments) {
         this.departments = departments;
     }
 

@@ -7,6 +7,7 @@ import com.mmf.business.SpecialtyService;
 import com.mmf.business.domain.Department;
 import com.mmf.business.domain.SpecialtyInfo;
 import com.mmf.rest.response.InitialDataResponse;
+import com.mmf.rest.response.department.DepartmentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class InitialDataResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getInitialData(){
         try {
-            List<Department> departmentList = departmentService.list();
+            List<DepartmentResponse> departmentList = departmentService.listDepartments();
             List<SpecialtyInfo> specialties = specialtyService.getSpecialtyInfos();
 
             InitialDataResponse initialData = new InitialDataResponse();

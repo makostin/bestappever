@@ -5,12 +5,17 @@ import com.mmf.business.DepartmentService;
 import com.mmf.business.domain.Department;
 import com.mmf.business.domain.utils.DepartmentHelper;
 import com.mmf.business.domain.utils.LecturerHelper;
+import com.mmf.db.dao.DataAccessException;
 import com.mmf.db.dao.DepartmentDao;
 import com.mmf.db.model.DepartmentEntity;
 import com.mmf.db.model.LecturerEntity;
+import com.mmf.rest.response.department.DepartmentResponse;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * svetlana.voyteh
@@ -48,5 +53,20 @@ public class DepartmentServiceImpl extends AbstractCrudService<Long, Department,
             department.getLecturers().add(LecturerHelper.convertToDomain(lecturerEntity));
         }
         return department;
+    }
+
+    @Override
+    @Transactional(rollbackFor = BusinessServiceException.class)
+    public List<DepartmentResponse> listDepartments() throws BusinessServiceException {
+        try {
+            List<Department> departments = convertToDomain(departmentDao.list());
+            List<DepartmentResponse> departmentResponses = new LinkedList<DepartmentResponse>();
+            for(Department department : departments){
+                departmentResponses.add(new DepartmentResponse(department));
+            }
+            return departmentResponses;
+        } catch (DataAccessException e) {
+            throw new BusinessServiceException(e);
+        }
     }
 }

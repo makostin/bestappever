@@ -89,6 +89,10 @@ public class DataLoader {
         }
     }
 
+    public boolean login(String login, String password) throws InvalidCredentialsException, RestException {
+        return RestRequester.login(login, password);
+    }
+
     public void init() throws ServiceLayerException, InvalidCredentialsException {
         try {
             InitialData initialData = RestRequester.getInitialData();

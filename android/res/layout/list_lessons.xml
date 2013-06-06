@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <TextView android:id="@+id/text_day"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        >
-    <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-        <TextView android:id="@+id/day"
+              android:layout_height="30dip"
+              android:background="#0b386a"
+              android:textColor="#FFF"
+              android:textStyle="bold"
+              android:textSize="16sp"
+              android:paddingTop="10dip"
+              android:paddingLeft="10dip"/>
+    <TextView android:id="@+id/text_header"
+              android:layout_width="fill_parent"
+              android:layout_height="20dip"
+              android:layout_below="@id/text_day"
+              android:background="#0b386a"
+              android:textColor="#FFF"
+              android:paddingLeft="10dip"
+              android:textSize="12sp"/>
+    <TextView android:id="@+id/text_login"
+              android:layout_width="wrap_content"
+              android:layout_height="20dip"
+              android:layout_alignParentRight="true"
+              android:background="#0b386a"
+              android:textColor="#FFF"
+              android:paddingRight="10dip"
+              android:layout_marginTop="30dip"
+              android:textSize="12sp"/>
+    <LinearLayout android:orientation="vertical"
                   android:layout_width="fill_parent"
-                  android:layout_height="30dp"
-                  android:background="#0b386a"
-                  android:textColor="#FFF"
-                  android:textStyle="bold"
-                  android:textSize="16sp"
-                  android:paddingTop="10dp"
-                  android:paddingLeft="10dp"
-                  android:text="day"/>
-        <TextView android:id="@+id/header"
-                  android:layout_width="fill_parent"
-                  android:layout_height="20dp"
-                  android:layout_below="@id/day"
-                  android:background="#0b386a"
-                  android:textColor="#FFF"
-                  android:paddingLeft="10dp"
-                  android:textSize="12sp"
-                  android:text="header"/>
-        <LinearLayout android:orientation="vertical"
-                      android:layout_width="fill_parent"
-                      android:layout_height="fill_parent"
-                      android:layout_below="@id/header"
-                      android:id="@+id/layout_main">
-            <ListView android:id="@+id/list"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_weight="1"
-                      android:drawSelectorOnTop="false"
-                    />
-        </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+                  android:layout_height="fill_parent"
+                  android:layout_below="@id/text_header"
+                  android:id="@+id/layout_main">
+        <ListView android:id="@+id/list"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:drawSelectorOnTop="false"
+                />
+    </LinearLayout>
+</RelativeLayout>

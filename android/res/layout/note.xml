@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:padding="10dip"
+                      >
+
+    <TextView android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dip"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#0b386a"
+                        android:text="@string/title_discipline"
+        />
+
+    <TextView android:id="@+id/text_date"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="10dip"
+              android:textSize="12sp"
+              android:textColor="#0b386a"
+            />
+
+    <RelativeLayout android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+            >
+        <TextView android:id="@+id/text_time"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="10dip"
+                  android:paddingLeft="20dip"
+                  android:textSize="60sp"
+                  android:textStyle="bold"
+                  android:textColor="#0b386a"/>
+
+        <RelativeLayout android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="10dip"
+                        android:paddingBottom="10dip"
+                        android:layout_alignParentRight="true"
+                        android:paddingRight="20dip"
+                >
+
+
+            <TextView android:id="@+id/text_classroom"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_alignParentRight="true"
+                      android:paddingTop="10dip"
+                      android:textSize="18sp"
+                      android:textColor="#0b386a"/>
+
+            <TextView android:id="@+id/text_discipline"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_alignParentRight="true"
+                      android:layout_below="@id/text_classroom"
+                      android:paddingTop="35dip"
+                      android:textSize="18sp"
+                      android:textStyle="bold"
+                      android:textColor="#0b386a"/>
+
+            <TextView android:id="@+id/text_header"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_alignParentRight="true"
+                      android:layout_below="@id/text_discipline"
+                      android:textSize="18sp"
+                      android:textColor="#0b386a"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="5dip"
+              android:textSize="18sp"
+              android:textStyle="bold"
+              android:gravity="center"
+              android:textColor="#0b386a"
+              android:text="@string/title_note"
+            />
+
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:lines="7"
+            android:gravity="top|left"
+            android:inputType="textMultiLine"
+            android:scrollHorizontally="false"
+            />
+
+    <Button
+            android:id="@+id/button_add_note"
+            android:layout_width="fill_parent"
+            android:layout_height="30dip"
+            android:layout_marginTop="20dip"
+            android:background="#0b386a"
+            android:textColor="#fff"
+            android:text="@string/button_add_note"
+            />
+
+</LinearLayout>

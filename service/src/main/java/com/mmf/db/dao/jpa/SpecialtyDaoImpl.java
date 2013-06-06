@@ -32,7 +32,7 @@ public class SpecialtyDaoImpl extends GenericJpaDao<Long, SpecialtyEntity> imple
         CriteriaQuery<SpecialtyEntity> criteriaQuery = criteriaBuilder.createQuery(SpecialtyEntity.class);
         Root<SpecialtyEntity> root = criteriaQuery.from(SpecialtyEntity.class);
         Join<SpecialtyEntity, GroupEntity> join = root.join("groups");
-        criteriaQuery.where(join.get("mainGroup").isNull());
+        criteriaQuery.where(join.get("mainGroup").isNull()).groupBy(root.get("id"));
         TypedQuery<SpecialtyEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
