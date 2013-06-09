@@ -112,7 +112,7 @@
         <security:intercept-url pattern="/rest/bsu/mmf/schedule/list" access="permitAll" />
 
         <!--<security:intercept-url pattern="/rest/bsu/mmf/**" access="permitAll" />-->
-        <security:intercept-url pattern="/rest/bsu/mmf/**" access="hasAnyRole('ROLE_USER')" />
+        <security:intercept-url pattern="/rest/bsu/mmf/**" access="hasAnyRole('ROLE_ADMIN')" />
         <security:http-basic />
     </security:http>
 
